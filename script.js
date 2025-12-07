@@ -1,111 +1,159 @@
-/* =========================================
-   1. INITIALIZATION & UTILS
-   ========================================= */
 document.addEventListener('DOMContentLoaded', () => {
     lucide.createIcons();
     initScrollReveal();
+    initCursor();
+    initTilt();
+    typeWriterEffect();
     loadProjects();
 });
 
-/* =========================================
-   2. MOBILE MENU
-   ========================================= */
-function toggleMobileMenu() {
-    const nav = document.getElementById('mobile-nav');
-    nav.classList.toggle('active');
+/* --- 1. TYPING EFFECT (Hero) --- */
+function typeWriterEffect() {
+    const el = document.querySelector('.type-effect');
+    if(!el) return;
+    const text = el.getAttribute('data-text');
+    let i = 0;
+    
+    function type() {
+        if (i < text.length) {
+            el.textContent += text.charAt(i);
+            i++;
+            setTimeout(type, 100);
+        }
+    }
+    // Start after a small delay
+    setTimeout(type, 1000);
 }
 
-/* =========================================
-   3. SCROLL REVEAL ANIMATION
-   ========================================= */
-function initScrollReveal() {
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('active');
-            }
+/* --- 2. CUSTOM CURSOR --- */
+function initCursor() {
+    const dot = document.getElementById('cursor-dot');
+    const outline = document.getElementById('cursor-outline');
+    
+    // Disable on mobile
+    if(window.innerWidth < 768) return;
+
+    window.addEventListener('mousemove', (e) => {
+        const posX = e.clientX;
+        const posY = e.clientY;
+
+        // Dot follows instantly
+        dot.style.left = `${posX}px`;
+        dot.style.top = `${posY}px`;
+
+        // Outline follows with delay
+        outline.animate({
+            left: `${posX}px`,
+            top: `${posY}px`
+        }, { duration: 500, fill: "forwards" });
+    });
+
+    // Add hover effect for clickable items
+    const clickables = document.querySelectorAll('a, button, .project-card, .host-card');
+    clickables.forEach(el => {
+        el.addEventListener('mouseenter', () => document.body.classList.add('hovering'));
+        el.addEventListener('mouseleave', () => document.body.classList.remove('hovering'));
+    });
+}
+
+/* --- 3. 3D TILT EFFECT --- */
+function initTilt() {
+    const cards = document.querySelectorAll('.tilt-card');
+    cards.forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            // Calculate rotation based on mouse position
+            const xRot = -1 * ((y - rect.height/2) / 20);
+            const yRot = (x - rect.width/2) / 20;
+            
+            card.style.transform = `perspective(1000px) rotateX(${xRot}deg) rotateY(${yRot}deg)`;
         });
-    }, { threshold: 0.1 });
-
-    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+        
+        card.addEventListener('mouseleave', () => {
+            card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0)';
+        });
+    });
 }
 
-/* =========================================
-   4. AUTO-LOAD PROJECTS (API)
-   ========================================= */
+/* --- 4. PROJECT LOADER (Robust Fallback) --- */
 async function loadProjects() {
     const grid = document.getElementById('project-grid');
     if(!grid) return;
 
+    // Manual list as fallback if API fails
+    const fallbackProjects = [
+        "Personal Ai Agent.png", 
+        "Lead Gen System.png", 
+        "Dashboard.jpg"
+    ];
+
     try {
-        // Fetch list of images from our Vercel API
         const response = await fetch('/api/projects');
-        const images = await response.json();
+        let images = await response.json();
+
+        // Use fallback if API returns empty (common in dev environments)
+        if (!images || images.length === 0) {
+            console.warn("API empty, using fallback list.");
+            // Filter only valid fallback images (you must ensure these files exist!)
+            images = fallbackProjects; 
+        }
 
         if (images.length > 0) {
-            grid.innerHTML = ''; // Clear loader
-            
+            grid.innerHTML = ''; 
             images.forEach((filename, index) => {
-                // Clean filename for display (remove ext, replace hyphens)
                 let title = filename.replace(/\.[^/.]+$/, "").replace(/-/g, " ");
-                title = title.replace(/\b\w/g, l => l.toUpperCase()); // Capitalize
-
-                // Add delay for staggering effect
                 const delay = index * 100;
-
-                const card = `
+                grid.innerHTML += `
                     <div class="project-card reveal" style="transition-delay: ${delay}ms" 
                          onclick="openLightbox('projects/${filename}', '${title}')">
-                        <img src="projects/${filename}" alt="${title}" loading="lazy">
+                        <img src="projects/${filename}" alt="${title}" onerror="this.style.display='none'">
                     </div>
                 `;
-                grid.innerHTML += card;
             });
-
-            // Re-init observer for new elements
             setTimeout(() => {
                 lucide.createIcons();
-                document.querySelectorAll('.project-card').forEach(el => {
-                    // Manually trigger observer logic if needed or just add class
-                    el.classList.add('active'); 
-                });
+                initScrollReveal(); 
             }, 100);
-
         } else {
-            grid.innerHTML = '<p style="text-align:center; color:#555; width:100%;">No case studies found.</p>';
+            grid.innerHTML = '<p style="text-align:center; color:#555;">No projects found.</p>';
         }
     } catch (error) {
-        console.error("Failed to load projects:", error);
-        grid.innerHTML = '<p style="text-align:center; color:#555; width:100%;">Database Connection Error.</p>';
+        console.error("Loader failed:", error);
+        grid.innerHTML = '<p style="text-align:center; color:#555;">System Offline.</p>';
     }
 }
 
-/* =========================================
-   5. LIGHTBOX SYSTEM
-   ========================================= */
+/* --- 5. MOBILE MENU --- */
+window.toggleMobileMenu = () => {
+    document.getElementById('mobile-nav').classList.toggle('active');
+}
+
+/* --- 6. SCROLL REVEAL --- */
+function initScrollReveal() {
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) entry.target.classList.add('active');
+        });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+}
+
+/* --- 7. LIGHTBOX --- */
 const lightbox = document.getElementById('lightbox');
 const lightboxImg = document.getElementById('lightbox-img');
-const lightboxCap = document.getElementById('lightbox-caption');
-
 window.openLightbox = (src, title) => { 
-    lightbox.style.display = 'flex'; 
-    lightboxImg.src = src; 
-    lightboxCap.innerText = title || "Workflow Detail";
-    document.body.style.overflow = 'hidden'; // Lock scroll
+    lightbox.style.display = 'flex'; lightboxImg.src = src; 
+    document.body.style.overflow = 'hidden'; 
 };
-
 window.closeLightbox = () => { 
     lightbox.style.display = 'none'; 
-    document.body.style.overflow = 'auto'; // Unlock scroll
+    document.body.style.overflow = 'auto'; 
 };
 
-lightbox.addEventListener('click', (e) => {
-    if (e.target === lightbox) closeLightbox();
-});
-
-/* =========================================
-   6. DEMO SIMULATOR LOGIC
-   ========================================= */
+/* --- 8. SIMULATOR LOGIC --- */
 const demoForm = document.getElementById('agentForm');
 const runBtn = document.getElementById('runBtn');
 const consoleOut = document.getElementById('console-output');
@@ -113,94 +161,64 @@ const consoleOut = document.getElementById('console-output');
 if(demoForm) {
     demoForm.addEventListener('submit', async (e) => {
         e.preventDefault();
-        
-        // --- STEP 0: PREPARE UI ---
         runBtn.disabled = true;
-        runBtn.innerHTML = '<i data-lucide="loader-2" class="animate-spin"></i> Initializing Agent...';
+        runBtn.innerHTML = '<i data-lucide="loader-2" class="animate-spin"></i> Initializing...';
         lucide.createIcons();
-        consoleOut.innerHTML = ''; // Clear logs
+        consoleOut.innerHTML = ''; 
         
-        // Reset Visuals
-        document.querySelectorAll('.node').forEach(el => el.classList.remove('active'));
-        document.querySelectorAll('.connector').forEach(el => el.classList.remove('active'));
-
-        // Helper for logs
-        const log = (msg, type = '') => {
+        document.querySelectorAll('.node, .connector').forEach(el => el.classList.remove('active'));
+        const log = (msg, type='') => {
             const time = new Date().toLocaleTimeString([], { hour12: false });
             consoleOut.innerHTML += `<div class="log-line ${type}">[${time}] ${msg}</div>`;
             consoleOut.scrollTop = consoleOut.scrollHeight;
-        };
+        }
 
         log("System initialized.", "text-muted");
-
-        // --- STEP 1: WEBHOOK TRIGGER ---
         await wait(500);
-        activateNode('node-1');
-        log("Webhook received payload.", "processing");
         
-        // --- STEP 2: TRANSITION TO AI ---
-        await wait(500);
-        activateConn('conn-1');
+        document.getElementById('node-1').classList.add('active');
+        log("Webhook Triggered.", "processing");
         await wait(800);
+        document.getElementById('conn-1').classList.add('active');
         
-        // --- STEP 3: AI PROCESSING ---
-        activateNode('node-2');
-        log("AI analyzing intent...", "processing");
-        const problem = document.getElementById('problem').value.substring(0, 20) + "...";
-        log(`Context extracted: "${problem}"`);
-        
-        // --- STEP 4: TRANSITION TO EXECUTION ---
+        await wait(800);
+        document.getElementById('node-2').classList.add('active');
+        log("AI Agent analyzing payload...", "processing");
         await wait(1500);
-        activateConn('conn-2');
+        document.getElementById('conn-2').classList.add('active');
         
-        // --- STEP 5: EXECUTION ---
-        activateNode('node-3');
-        log("Generating automation strategy...", "processing");
-        log("Accessing Vector Database... [OK]");
+        await wait(800);
+        document.getElementById('node-3').classList.add('active');
+        log("Execution plan generated.", "processing");
         
-        // --- STEP 6: OUTPUT ---
-        await wait(1200);
-        activateConn('conn-3');
-        activateNode('node-4');
-        log("Drafting email report...", "processing");
-
-        // --- STEP 7: SEND REAL DATA (OPTIONAL) ---
-        // This actually hits your API so you get the lead!
+        // Fire actual API (Fire & Forget)
         try {
             const data = {
                 name: document.getElementById('name').value,
                 email: document.getElementById('email').value,
                 problem: document.getElementById('problem').value
             };
-            
-            // Fire and forget (don't wait for response to keep animation smooth)
             fetch('/api/trigger', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(data)
             });
-        } catch(e) { console.log("Offline mode"); }
+        } catch(e) {}
 
-        // --- STEP 8: FINISH ---
-        await wait(500);
-        log("MISSION COMPLETE. Email dispatched.", "success");
+        await wait(1200);
+        document.getElementById('conn-3').classList.add('active');
+        document.getElementById('node-4').classList.add('active');
+        log("Report dispatched via Gmail.", "success");
         
-        runBtn.innerHTML = '<i data-lucide="check"></i> Simulation Complete';
+        runBtn.innerHTML = '<i data-lucide="check"></i> Complete';
         runBtn.style.background = '#22c55e';
-        runBtn.style.boxShadow = 'none';
-
-        // Reset button after delay
+        
         setTimeout(() => {
             runBtn.disabled = false;
             runBtn.innerHTML = '<i data-lucide="play"></i> Run Simulation';
-            runBtn.style.background = ''; // Revert to CSS
+            runBtn.style.background = '';
             lucide.createIcons();
         }, 5000);
     });
 }
-
-// Utility: Wait function
 function wait(ms) { return new Promise(r => setTimeout(r, ms)); }
-// Utility: Visual Activators
-function activateNode(id) { document.getElementById(id).classList.add('active'); }
-function activateConn(id) { document.getElementById(id).classList.add('active'); }
