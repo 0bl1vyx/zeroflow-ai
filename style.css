@@ -59,8 +59,9 @@ body.hovering .cursor-outline {
     background-color: rgba(0, 0, 0, 0.95); 
     justify-content: center; align-items: center;
     backdrop-filter: blur(10px);
-    cursor: auto !important; /* Forces cursor visibility */
+    cursor: auto !important; /* Force cursor visibility */
 }
+/* Ensure all children of lightbox also have normal cursor */
 .lightbox * { cursor: auto !important; }
 
 .lightbox-content { position: relative; max-width: 90%; max-height: 90%; display: flex; flex-direction: column; align-items: center; }
@@ -143,7 +144,6 @@ header { min-height: 100vh; display: flex; flex-direction: column; justify-conte
 @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
 .hero-desc { color: var(--text-muted); max-width: 650px; font-size: 1.25rem; margin-bottom: 40px; }
 
-/* MINI WORKFLOW VISUAL */
 .hero-mini-flow {
     display: flex; align-items: center; gap: 15px; margin-bottom: 40px;
     background: rgba(255, 255, 255, 0.03); padding: 15px 30px; border-radius: 50px;
@@ -199,7 +199,7 @@ header { min-height: 100vh; display: flex; flex-direction: column; justify-conte
 .step-connector { flex: 0.5; height: 1px; background: #333; margin-top: 30px; display: none; }
 @media(min-width: 900px) { .step-connector { display: block; } }
 
-/* NEW HOSTING GRID */
+/* HOSTING GRID */
 .hosting-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 25px; perspective: 1000px; }
 .host-card {
     background: var(--glass-bg); backdrop-filter: blur(12px); border: 1px solid var(--glass-border);
@@ -207,7 +207,6 @@ header { min-height: 100vh; display: flex; flex-direction: column; justify-conte
     transform-style: preserve-3d;
 }
 .host-card:hover { border-color: var(--neon-orange); }
-.host-card.highlight { border-color: var(--neon-orange); background: rgba(255, 107, 0, 0.05); }
 .host-icon { 
     width: 40px; height: 40px; background: #151515; border: 1px solid #333; border-radius: 10px;
     display: flex; align-items: center; justify-content: center; color: var(--neon-orange); margin-bottom: 15px;
@@ -227,33 +226,13 @@ header { min-height: 100vh; display: flex; flex-direction: column; justify-conte
 .tpl-card h4 { font-size: 1.1rem; margin-bottom: 8px; }
 .tpl-card p { font-size: 0.9rem; color: #888; }
 
-/* --- 11. PRICING (FIXED TEXT COLOR) --- */
+/* --- 11. PRICING --- */
 .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; align-items: center; }
 .price-card {
     background: #0e0e0e; border: 1px solid #333; padding: 40px; border-radius: 16px; position: relative;
     transition: transform 0.3s;
 }
 .price-card:hover { border-color: #444; }
-
-.price-card.highlight { 
-    background: #121212; 
-    border-color: var(--neon-orange); 
-    transform: scale(1.05); 
-    z-index: 2; 
-    box-shadow: 0 10px 40px rgba(0,0,0,0.5); 
-}
-/* FORCE WHITE TEXT IN HIGHLIGHT CARD */
-.price-card.highlight .price-tier, 
-.price-card.highlight .price-amt, 
-.price-card.highlight li,
-.price-card.highlight span,
-.price-card.highlight i { 
-    color: #ffffff !important; 
-}
-.price-card.highlight .price-amt span {
-    color: #cccccc !important;
-}
-.price-card.highlight i { color: var(--neon-orange) !important; }
 
 .badge { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: var(--neon-orange); color: white; padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 800; }
 .price-tier { font-size: 1.2rem; color: #aaa; margin-bottom: 15px; }
@@ -277,27 +256,13 @@ section { padding: 100px 5%; max-width: 1300px; margin: 0 auto; }
 .divider { width: 60px; height: 3px; background: var(--neon-orange); margin: 25px 0; }
 
 .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
-
-.profile-container {
-    display: flex; justify-content: center; align-items: center;
-}
+.profile-container { display: flex; justify-content: center; align-items: center; }
 .image-wrapper { 
-    width: 280px; height: 280px; 
-    border-radius: 50%; 
-    border: 2px solid var(--neon-orange); 
-    overflow: hidden; 
-    box-shadow: 0 0 30px rgba(255, 107, 0, 0.2);
-    position: relative;
-    transition: 0.3s;
+    width: 280px; height: 280px; border-radius: 50%; border: 2px solid var(--neon-orange); 
+    overflow: hidden; box-shadow: 0 0 30px rgba(255, 107, 0, 0.2); position: relative; transition: 0.3s;
 }
 .image-wrapper:hover { transform: scale(1.05); border-color: #fff; }
-.profile-img { 
-    width: 100%; height: 100%; 
-    object-fit: cover; 
-    border-radius: 50%; 
-    filter: grayscale(100%); 
-    transition: 0.5s; 
-}
+.profile-img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; filter: grayscale(100%); transition: 0.5s; }
 .profile-img:hover { filter: grayscale(0%); }
 
 .tech-stack-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-top: 30px; }
@@ -335,10 +300,7 @@ section { padding: 100px 5%; max-width: 1300px; margin: 0 auto; }
     box-shadow: 0 0 10px var(--neon-orange);
     opacity: 0; transition: none;
 }
-.connector.active .packet {
-    animation: travel 0.8s linear forwards;
-    opacity: 1;
-}
+.connector.active .packet { animation: travel 0.8s linear forwards; opacity: 1; }
 @keyframes travel { 0% { left: 0; } 100% { left: 100%; } }
 
 .console-window { border: 1px solid #333; border-radius: 8px; overflow: hidden; }
@@ -376,4 +338,49 @@ footer { border-top: 1px solid #222; padding: 60px 0; background: #050505; text-
     .close-mobile { position: absolute; top: 30px; right: 30px; color: white; font-size: 2rem; }
     .case-study-banner { text-align: center; justify-content: center; }
     .cs-link { margin: 0 auto; }
+}
+
+/* ======================================================= */
+/* !!! TEXT VISIBILITY FIX FOR HIGHLIGHT CARDS !!! */
+/* ======================================================= */
+
+/* 1. Target both Pricing and Hosting highlighted cards */
+.price-card.highlight, 
+.host-card.highlight {
+    background: #080808 !important; /* Ensure extremely dark bg for contrast */
+    border: 1px solid var(--neon-orange);
+    transform: scale(1.05);
+    z-index: 2;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+}
+
+/* 2. FORCE WHITE TEXT on all relevant child elements */
+.price-card.highlight .price-tier,
+.price-card.highlight .price-amt,
+.price-card.highlight ul li,
+.price-card.highlight ul li span,
+.host-card.highlight h3,
+.host-card.highlight p,
+.host-card.highlight .host-desc,
+.host-card.highlight ul li {
+    color: #ffffff !important;
+    text-shadow: 0 0 2px rgba(0,0,0,0.8); /* Adds separation from bg */
+}
+
+/* 3. Keep Icons Orange */
+.price-card.highlight i,
+.host-card.highlight i {
+    color: var(--neon-orange) !important;
+}
+
+/* 4. Sub-text specific styling */
+.price-card.highlight .price-amt span {
+    color: #cccccc !important;
+    font-weight: normal;
+}
+
+/* 5. Ensure badge text is white */
+.price-card.highlight .badge,
+.host-card.highlight .badge {
+    color: #ffffff !important;
 }
