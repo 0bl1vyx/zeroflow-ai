@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZeroFlow AI | Automation & Agents</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+    <nav>
+        <div class="logo">
+            <i data-lucide="zap"></i> ZeroFlow <span>AI</span>
+        </div>
+        <div class="links">
+            <a href="#work">Work</a>
+            <a href="#demo" class="btn">Book Audit</a>
+        </div>
+    </nav>
+
+    <header>
+        <div class="glow"></div>
+        <h1>Automate the Boring. <br> <span>Scale the Interesting.</span></h1>
+        <p>I build custom n8n workflows and AI agents that save you 20+ hours a week.</p>
+    </header>
+
+    <section id="work">
+        <h2>Recent Workflows</h2>
+        <div class="grid">
+            <div class="card">
+                <img src="/workflow-1.jpg" alt="Workflow 1">
+                <div class="content">
+                    <h3>Lead Gen Scraper</h3>
+                    <p>Auto-scrapes LinkedIn & validates emails.</p>
+                </div>
+            </div>
+            <div class="card">
+                <img src="/workflow-2.jpg" alt="Workflow 2">
+                <div class="content">
+                    <h3>Support AI Agent</h3>
+                    <p>Auto-replies to tickets using Gemini.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="demo">
+        <div class="form-container">
+            <h2><i data-lucide="cpu"></i> Try the AI Architect</h2>
+            <p>Tell me a manual task. My AI agent will email you a solution instantly.</p>
+            
+            <form id="automationForm">
+                <input type="text" id="name" placeholder="Your Name" required>
+                <input type="email" id="email" placeholder="Your Email" required>
+                <textarea id="problem" placeholder="Describe a manual task (e.g. 'I copy invoice data to Excel manually')" required></textarea>
+                <button type="submit" id="submitBtn">Generate Solution</button>
+            </form>
+            
+            <div id="successMessage" class="hidden">
+                <i data-lucide="check-circle" style="color: #4ade80;"></i>
+                <h3>Workflow Triggered!</h3>
+                <p>Check your email in 2 minutes.</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        &copy; 2025 ZeroFlow AI. Built with n8n & Vercel.
+    </footer>
+
+    <script src="script.js"></script>
+    <script>lucide.createIcons();</script>
+</body>
+</html>
