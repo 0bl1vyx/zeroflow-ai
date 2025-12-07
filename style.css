@@ -39,7 +39,7 @@ body.hovering .cursor-outline {
     .cursor-dot, .cursor-outline { display: none; }
 }
 
-/* --- 3. BACKGROUNDS --- */
+/* --- 3. BACKGROUNDS & NETWORK --- */
 .noise-overlay {
     position: fixed; top: 0; left: 0; width: 100%; height: 100%;
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.04'/%3E%3C/svg%3E");
@@ -49,8 +49,12 @@ body.hovering .cursor-outline {
     position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1;
     background: radial-gradient(circle at 50% 50%, rgba(255, 107, 0, 0.06) 0%, transparent 70%);
 }
+#neuro-network {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    z-index: -1; opacity: 0.3; pointer-events: none;
+}
 
-/* --- 4. TYPOGRAPHY --- */
+/* --- 4. TYPOGRAPHY & GLITCH --- */
 h1, h2, h3, .brand { font-family: 'Space Grotesk', sans-serif; }
 h1 { font-size: clamp(3rem, 7vw, 5.5rem); line-height: 1.1; margin-bottom: 25px; font-weight: 700; }
 .highlight {
@@ -59,6 +63,32 @@ h1 { font-size: clamp(3rem, 7vw, 5.5rem); line-height: 1.1; margin-bottom: 25px;
 }
 .cursor-blink { animation: blink 1s infinite; color: var(--neon-orange); margin-left: 5px; }
 @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+/* GLITCH EFFECT */
+.glitch-hover { position: relative; display: inline-block; }
+.glitch-hover::before, .glitch-hover::after {
+    content: attr(data-text); position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    background: var(--dark-bg); opacity: 0.8; clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+    transition: 0.3s; pointer-events: none;
+}
+.glitch-hover:hover::before {
+    left: -2px; text-shadow: 2px 0 #ff00c1; clip-path: polygon(0 20%, 100% 20%, 100% 40%, 0 40%);
+    animation: glitch-anim-1 2s infinite linear alternate-reverse;
+}
+.glitch-hover:hover::after {
+    left: 2px; text-shadow: -2px 0 #00fff9; clip-path: polygon(0 60%, 100% 60%, 100% 80%, 0 80%);
+    animation: glitch-anim-2 2s infinite linear alternate-reverse;
+}
+@keyframes glitch-anim-1 {
+    0% { clip-path: polygon(0 20%, 100% 20%, 100% 40%, 0 40%); }
+    20% { clip-path: polygon(0 60%, 100% 60%, 100% 80%, 0 80%); }
+    40% { clip-path: polygon(0 10%, 100% 10%, 100% 30%, 0 30%); }
+    100% { clip-path: polygon(0 0, 100% 0, 100% 10%, 0 10%); }
+}
+@keyframes glitch-anim-2 {
+    0% { clip-path: polygon(0 10%, 100% 10%, 100% 30%, 0 30%); }
+    100% { clip-path: polygon(0 50%, 100% 50%, 100% 70%, 0 70%); }
+}
 
 /* --- 5. NAVIGATION --- */
 nav {
@@ -179,9 +209,23 @@ section { padding: 100px 5%; max-width: 1300px; margin: 0 auto; }
 .node.active { opacity: 1; transform: scale(1.1); }
 .node-icon { width: 50px; height: 50px; background: #111; border: 1px solid #333; border-radius: 12px; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; color: #555; transition: 0.4s; }
 .node.active .node-icon { border-color: var(--neon-orange); color: var(--neon-orange); box-shadow: 0 0 20px rgba(255,107,0,0.2); }
-.connector { flex-grow: 1; height: 2px; background: #222; margin: 0 10px; position: relative; overflow: hidden; }
-.connector::after { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: var(--neon-orange); transition: 0.5s; }
-.connector.active::after { left: 0; }
+
+/* Better Connector Animation */
+.connector { flex-grow: 1; height: 2px; background: #222; margin: 0 10px; position: relative; overflow: visible; }
+.connector .packet {
+    position: absolute; top: -4px; left: 0; width: 10px; height: 10px;
+    background: var(--neon-orange); border-radius: 50%;
+    box-shadow: 0 0 10px var(--neon-orange);
+    opacity: 0; transition: none;
+}
+.connector.active .packet {
+    animation: travel 0.8s linear forwards;
+    opacity: 1;
+}
+@keyframes travel {
+    0% { left: 0; }
+    100% { left: 100%; }
+}
 
 .console-window { border: 1px solid #333; border-radius: 8px; overflow: hidden; }
 .console-log { height: 150px; background: #000; padding: 15px; font-family: 'Courier New', monospace; font-size: 0.85rem; overflow-y: auto; color: #ccc; }
@@ -210,6 +254,27 @@ footer { border-top: 1px solid #222; padding: 60px 0; background: #050505; text-
 .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s ease-out; }
 .reveal.active { opacity: 1; transform: translateY(0); }
 
+/* --- TERMINAL WIDGET --- */
+.terminal-widget {
+    position: fixed; bottom: 20px; right: 20px; width: 350px;
+    background: rgba(10, 10, 10, 0.95); border: 1px solid #333;
+    border-radius: 8px 8px 0 0; z-index: 999; overflow: hidden;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.5); transform: translateY(calc(100% - 40px));
+    transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.terminal-widget.open { transform: translateY(0); border-color: var(--neon-orange); }
+.terminal-header {
+    background: #111; padding: 10px 15px; cursor: pointer; display: flex;
+    justify-content: space-between; font-family: monospace; font-size: 0.9rem;
+    color: var(--neon-orange); border-bottom: 1px solid #333;
+}
+.terminal-body { height: 300px; padding: 15px; overflow-y: auto; font-size: 0.85rem; }
+.msg { margin-bottom: 10px; padding: 8px 12px; border-radius: 4px; max-width: 85%; }
+.msg.bot { background: #1a1a1a; color: #ddd; border-left: 2px solid var(--neon-orange); }
+.msg.user { background: rgba(255, 107, 0, 0.1); color: white; margin-left: auto; text-align: right; }
+.terminal-input { display: flex; padding: 10px; background: #000; border-top: 1px solid #333; }
+.terminal-input input { background: transparent; border: none; color: white; width: 100%; outline: none; margin-left: 5px; font-family: monospace; }
+
 @media (max-width: 900px) {
     .about-grid, .demo-wrapper { grid-template-columns: 1fr; }
     .demo-control { border-right: none; border-bottom: 1px solid #333; }
@@ -224,4 +289,6 @@ footer { border-top: 1px solid #222; padding: 60px 0; background: #050505; text-
     .mobile-nav-overlay.active { opacity: 1; pointer-events: all; }
     .mobile-nav-overlay a { font-size: 1.5rem; color: white; text-decoration: none; font-weight: 700; }
     .close-mobile { position: absolute; top: 30px; right: 30px; color: white; font-size: 2rem; }
+    /* Hide terminal on mobile to prevent overlay issues */
+    .terminal-widget { display: none; }
 }
