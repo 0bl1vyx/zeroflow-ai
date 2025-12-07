@@ -6,248 +6,17 @@
     <title>ZeroFlow AI | Enterprise Automation</title>
     <script src="https://unpkg.com/lucide@latest"></script>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
-    
-    <style>
-        /* --- CORE VARIABLES --- */
-        :root {
-            --neon-orange: #ff6b00;
-            --neon-red: #ff2a2a;
-            --glass-bg: rgba(20, 20, 20, 0.7);
-            --glass-border: rgba(255, 255, 255, 0.08);
-            --bg-black: #050505;
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        html { scroll-behavior: smooth; }
-
-        body {
-            background-color: var(--bg-black);
-            color: #fff;
-            font-family: 'Inter', sans-serif;
-            overflow-x: hidden;
-            line-height: 1.6;
-        }
-
-        /* --- BACKGROUND FX --- */
-        .bg-mesh {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1;
-            background: radial-gradient(circle at 50% 50%, rgba(255, 107, 0, 0.05) 0%, transparent 50%),
-                        radial-gradient(circle at 90% 10%, rgba(255, 42, 42, 0.03) 0%, transparent 40%);
-        }
-        .grid-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
-            background-image: linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-            background-size: 50px 50px;
-            mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
-        }
-
-        /* --- TYPOGRAPHY --- */
-        h1, h2, h3, .brand { font-family: 'Space Grotesk', sans-serif; }
-        
-        /* --- NAVBAR --- */
-        nav {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 15px 5%; position: fixed; width: 100%; top: 0; z-index: 100;
-            background: rgba(5, 5, 5, 0.9); backdrop-filter: blur(15px);
-            border-bottom: 1px solid var(--glass-border);
-        }
-
-        .brand { 
-            font-family: 'Inter', sans-serif; 
-            font-weight: 700; 
-            font-size: 1.5rem; 
-            display: flex; align-items: center; gap: 8px; 
-            color: white; letter-spacing: -0.5px;
-        }
-        
-        .brand i { 
-            width: 24px; height: 24px; stroke-width: 3px; 
-            transform: rotate(-10deg); color: white;
-        }
-
-        .brand span { 
-            color: var(--neon-orange); font-weight: 800; 
-            text-shadow: 0 0 15px rgba(255, 107, 0, 0.4);
-        }
-        
-        .nav-links { display: flex; gap: 30px; align-items: center; }
-        .nav-links a { text-decoration: none; color: #888; font-weight: 500; transition: 0.3s; font-size: 0.9rem; }
-        .nav-links a:hover { color: white; }
-        
-        .nav-btn {
-            background: transparent; border: 1px solid rgba(255,255,255,0.2); color: white;
-            padding: 8px 20px; border-radius: 50px; font-weight: 600; cursor: pointer;
-            transition: 0.3s; font-size: 0.9rem; text-decoration: none;
-        }
-        .nav-btn:hover { border-color: var(--neon-orange); box-shadow: 0 0 20px rgba(255, 107, 0, 0.2); }
-
-        /* --- HERO SECTION --- */
-        header {
-            min-height: 90vh; display: flex; flex-direction: column; justify-content: center; align-items: center;
-            text-align: center; padding: 120px 20px 50px; position: relative;
-        }
-        .hero-badge {
-            background: rgba(255, 107, 0, 0.1); border: 1px solid rgba(255, 107, 0, 0.3);
-            color: var(--neon-orange); padding: 5px 15px; border-radius: 20px; font-size: 0.8rem;
-            margin-bottom: 25px; text-transform: uppercase; letter-spacing: 2px;
-        }
-        h1 {
-            font-size: clamp(3rem, 7vw, 6rem); line-height: 1.1; margin-bottom: 25px;
-            background: linear-gradient(135deg, #fff 40%, rgba(255,255,255,0.4));
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-        }
-        h1 b { color: var(--neon-orange); -webkit-text-fill-color: var(--neon-orange); }
-        .hero-desc { color: #a1a1aa; max-width: 650px; font-size: 1.25rem; margin-bottom: 40px; }
-        
-        .cta-btn {
-            background: linear-gradient(90deg, var(--neon-orange), var(--neon-red));
-            color: white; border: none; padding: 18px 40px; font-size: 1.1rem; font-weight: 700;
-            border-radius: 8px; cursor: pointer; transition: 0.3s; text-transform: uppercase;
-            box-shadow: 0 10px 30px -10px rgba(255, 107, 0, 0.5); letter-spacing: 1px;
-            text-decoration: none; display: inline-flex; align-items: center; gap: 10px;
-        }
-        .cta-btn:hover { transform: translateY(-3px); box-shadow: 0 20px 40px -10px rgba(255, 107, 0, 0.7); }
-
-        /* --- SECTION COMMONS --- */
-        section { padding: 100px 5%; max-width: 1200px; margin: 0 auto; }
-        .section-header { margin-bottom: 60px; text-align: center; }
-        .section-header h2 { font-size: 2.5rem; text-transform: uppercase; margin-bottom: 10px; }
-        .section-header p { color: #666; font-size: 1.1rem; }
-        .divider { width: 50px; height: 3px; background: var(--neon-orange); margin: 20px auto; }
-
-        /* --- ABOUT (WHO AM I) --- */
-        .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
-        
-        .profile-container {
-            display: flex; justify-content: center; position: relative;
-        }
-        .profile-img { 
-            width: 280px; height: 280px; 
-            border-radius: 50%; /* CIRCLE */
-            object-fit: cover;
-            border: 2px solid var(--neon-orange);
-            box-shadow: 0 0 30px rgba(255, 107, 0, 0.3); /* GLOW */
-            filter: grayscale(20%); transition: 0.5s;
-            animation: pulse-glow 3s infinite alternate;
-        }
-        @keyframes pulse-glow {
-            0% { box-shadow: 0 0 30px rgba(255, 107, 0, 0.3); }
-            100% { box-shadow: 0 0 60px rgba(255, 107, 0, 0.6); }
-        }
-        .profile-img:hover { filter: grayscale(0%); transform: scale(1.05); }
-
-        .about-text h2 { font-size: 2.5rem; margin-bottom: 20px; }
-        .about-text p { color: #888; font-size: 1.1rem; line-height: 1.7; margin-bottom: 20px; }
-        .tech-stack { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 30px; }
-        .tech-tag { 
-            background: #111; border: 1px solid #333; padding: 8px 16px; border-radius: 4px; 
-            font-size: 0.9rem; color: #ccc; display: flex; align-items: center; gap: 8px;
-        }
-        .tech-tag i { color: var(--neon-orange); width: 16px; height: 16px; }
-
-        /* --- PROCESS SECTION (New) --- */
-        .process-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 30px; margin-top: 40px; }
-        .process-card {
-            background: #111; padding: 30px; border: 1px solid var(--glass-border); border-radius: 12px;
-            text-align: center; transition: 0.3s; position: relative;
-        }
-        .process-card:hover { border-color: var(--neon-orange); transform: translateY(-5px); }
-        .step-number { 
-            font-size: 3rem; font-weight: 800; color: #222; position: absolute; top: 10px; right: 20px; z-index: 0; 
-        }
-        .process-icon { color: var(--neon-orange); margin-bottom: 20px; position: relative; z-index: 1; }
-        .process-card h3 { margin-bottom: 10px; position: relative; z-index: 1; }
-        .process-card p { color: #666; font-size: 0.9rem; position: relative; z-index: 1; }
-
-        /* --- HOSTING SECTION (New) --- */
-        .hosting-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
-        .host-card {
-            background: rgba(255,255,255,0.02); border: 1px solid var(--glass-border);
-            padding: 40px; border-radius: 16px; position: relative; overflow: hidden;
-        }
-        .host-card.featured { border-color: var(--neon-orange); background: rgba(255, 107, 0, 0.05); }
-        .host-card h3 { font-size: 1.5rem; margin-bottom: 10px; }
-        .host-card .badge { 
-            background: var(--neon-orange); color: white; padding: 5px 10px; font-size: 0.7rem; 
-            border-radius: 20px; text-transform: uppercase; font-weight: bold; margin-left: 10px;
-        }
-        .host-card ul { list-style: none; margin-top: 20px; }
-        .host-card li { display: flex; gap: 10px; margin-bottom: 15px; color: #ccc; font-size: 0.9rem; }
-        .host-card li i { color: var(--neon-orange); }
-
-        /* --- PORTFOLIO --- */
-        .masonry { column-count: 3; column-gap: 25px; }
-        @media(max-width:1000px){ .masonry{column-count: 2;} }
-        @media(max-width:600px){ .masonry{column-count: 1; .about-grid { grid-template-columns: 1fr; }} }
-
-        .project-card {
-            background: #111; border: 1px solid var(--glass-border); border-radius: 12px;
-            overflow: hidden; margin-bottom: 25px; break-inside: avoid;
-            transition: 0.4s; position: relative; group: hover; cursor: zoom-in;
-        }
-        .project-card:hover { border-color: var(--neon-orange); transform: translateY(-5px); }
-        .project-card img { width: 100%; display: block; opacity: 0.9; transition: 0.4s; }
-        .project-card:hover img { opacity: 1; scale: 1.02; }
-        
-        .card-overlay {
-            position: absolute; bottom: 0; left: 0; width: 100%;
-            background: linear-gradient(to top, black 30%, transparent);
-            padding: 20px; opacity: 1; transition: 0.3s;
-        }
-        .card-overlay h3 { font-size: 1.1rem; text-shadow: 0 2px 4px black; }
-
-        /* --- LIGHTBOX --- */
-        .lightbox {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.95); z-index: 1000;
-            display: none; justify-content: center; align-items: center;
-            padding: 20px; opacity: 0; transition: opacity 0.3s;
-        }
-        .lightbox.active { display: flex; opacity: 1; }
-        .lightbox img { max-width: 95%; max-height: 95vh; box-shadow: 0 0 50px rgba(0,0,0,0.5); border: 1px solid #333; }
-        .close-lightbox { position: absolute; top: 30px; right: 30px; color: white; font-size: 3rem; cursor: pointer; }
-
-        /* --- TERMINAL FORM --- */
-        #terminal { padding-top: 50px; padding-bottom: 150px; }
-        .terminal-window {
-            width: 100%; max-width: 800px; margin: 0 auto;
-            background: rgba(20,20,20,0.9); border: 1px solid #333; border-radius: 10px;
-            box-shadow: 0 0 50px rgba(0,0,0,0.8); overflow: hidden;
-        }
-        .terminal-header { background: #1a1a1a; padding: 10px 20px; display: flex; gap: 8px; border-bottom: 1px solid #333; }
-        .dot { width: 12px; height: 12px; border-radius: 50%; }
-        .dot.red { background: #ff5f56; } .dot.yellow { background: #ffbd2e; } .dot.green { background: #27c93f; }
-        
-        .terminal-body { padding: 40px; font-family: 'Courier New', monospace; }
-        .cli-input {
-            width: 100%; background: transparent; border: none; border-bottom: 1px solid #333;
-            color: var(--neon-orange); font-family: inherit; font-size: 1.1rem; padding: 10px 0; margin-bottom: 20px;
-        }
-        .cli-input:focus { outline: none; border-bottom-color: var(--neon-orange); }
-        .cli-prompt { color: #666; font-size: 0.9rem; margin-bottom: 5px; display: block; }
-        #console-output { color: #27c93f; margin-top: 20px; display: none; }
-        .blink { animation: blink 1s infinite; }
-        @keyframes blink { 50% { opacity: 0; } }
-
-        footer { text-align: center; padding: 40px; color: #444; font-size: 0.9rem; border-top: 1px solid #111; }
-        
-        /* Mobile Nav */
-        @media(max-width: 768px) {
-            .nav-links { display: none; }
-            .about-grid { grid-template-columns: 1fr; text-align: center; }
-            .profile-container { margin-bottom: 30px; }
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
+    <div class="noise-overlay"></div>
     <div class="bg-mesh"></div>
     <div class="grid-overlay"></div>
 
     <div class="lightbox" id="lightbox">
         <span class="close-lightbox" onclick="closeLightbox()">&times;</span>
-        <img id="lightbox-img" src="" alt="Full Screen View">
+        <img id="lightbox-img" src="" alt="Workflow Detail">
     </div>
 
     <nav>
@@ -257,262 +26,209 @@
         </div>
         <div class="nav-links">
             <a href="#about">Profile</a>
-            <a href="#process">Process</a>
+            <a href="#process">Method</a>
+            <a href="#pricing">Pricing</a>
             <a href="#work">Work</a>
-            <a href="#hosting">Hosting</a>
             <a href="#terminal" class="nav-btn">Start Automation</a>
         </div>
-    </nav>
+        </nav>
 
     <header>
-        <div class="hero-badge">System Online • v3.0</div>
-        <h1>Automate the Boring.<br><b>Scale the Interesting.</b></h1>
-        <p class="hero-desc">I build autonomous n8n agents that run your business while you sleep. Stop doing manual data entry. Start dominating.</p>
-        <a href="#terminal" class="cta-btn">Deploy Agent <i data-lucide="arrow-right"></i></a>
+        <div class="hero-badge reveal">System Online • v3.0</div>
+        <h1 class="glitch-wrapper reveal" data-text="Automate the Boring. Scale the Interesting.">
+            Automate the Boring.<br>
+            <span class="highlight">Scale the Interesting.</span>
+        </h1>
+        <p class="hero-desc reveal">
+            Stop renting your automation. Start owning your intelligence. 
+            I build <b>Self-Hosted n8n AI Agents</b> that cut operational costs by 70% and require zero monthly fees.
+        </p>
+        <div class="reveal">
+            <a href="#pricing" class="cta-btn">View Packages <i data-lucide="arrow-down"></i></a>
+        </div>
     </header>
+
+    <div class="marquee-container">
+        <div class="marquee-content">
+            <span><i data-lucide="zap"></i> n8n Workflow</span>
+            <span><i data-lucide="bot"></i> OpenAI GPT-4</span>
+            <span><i data-lucide="database"></i> Vector Database</span>
+            <span><i data-lucide="message-circle"></i> Telegram Bots</span>
+            <span><i data-lucide="table"></i> Airtable Sync</span>
+            <span><i data-lucide="webhook"></i> Webhooks</span>
+            <span><i data-lucide="brain-circuit"></i> Anthropic Claude</span>
+            <span><i data-lucide="mail"></i> Gmail Automation</span>
+            
+            <span><i data-lucide="zap"></i> n8n Workflow</span>
+            <span><i data-lucide="bot"></i> OpenAI GPT-4</span>
+            <span><i data-lucide="database"></i> Vector Database</span>
+            <span><i data-lucide="message-circle"></i> Telegram Bots</span>
+            <span><i data-lucide="table"></i> Airtable Sync</span>
+            <span><i data-lucide="webhook"></i> Webhooks</span>
+            <span><i data-lucide="brain-circuit"></i> Anthropic Claude</span>
+            <span><i data-lucide="mail"></i> Gmail Automation</span>
+        </div>
+    </div>
 
     <section id="about">
         <div class="about-grid">
-            <div class="profile-container">
+            <div class="profile-container reveal">
                 <img src="profile.jpg" alt="Priyo" class="profile-img" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png'">
             </div>
-            <div class="about-text">
-                <h2>Who is ZeroFlow?</h2>
-                <div class="divider" style="margin: 20px 0;"></div>
+            <div class="about-text reveal">
+                <h2 class="glitch-hover" data-text="Who is ZeroFlow?">Who is ZeroFlow?</h2>
+                <div class="divider"></div>
                 <p>
-                    I'm <strong>Priyo (0bl1vyx)</strong>, a developer from West Bengal. 
-                    I don't just write code; I break it to make it stronger.
+                    I'm <strong>Priyo (0bl1vyx)</strong>. I don't just connect APIs; I build digital employees.
                 </p>
                 <p>
-                    With a background in <strong>Cybersecurity & Bug Bounty Hunting</strong>, I approach automation differently. 
-                    I build secure, error-proof systems using <strong>n8n and AI Agents</strong> that handle complex logic without breaking.
+                    With a background in <strong>Cybersecurity & Bug Bounty Hunting</strong>, I approach automation with a "Security First" mindset. 
+                    Most developers build fragile workflows that break when an API changes. I build <strong>self-healing systems</strong> 
+                    that detect errors and fix themselves.
                 </p>
                 
                 <div class="tech-stack">
-                    <span class="tech-tag"><i data-lucide="zap"></i> n8n</span>
-                    <span class="tech-tag"><i data-lucide="brain-circuit"></i> AI Agents</span>
-                    <span class="tech-tag"><i data-lucide="shield"></i> Security</span>
-                    <span class="tech-tag"><i data-lucide="terminal"></i> Linux</span>
+                    <span class="tech-tag"><i data-lucide="shield-check"></i> Error-Proof Logic</span>
+                    <span class="tech-tag"><i data-lucide="server"></i> Self-Hosted (Cheap)</span>
+                    <span class="tech-tag"><i data-lucide="lock"></i> Enterprise Security</span>
                 </div>
             </div>
         </div>
     </section>
 
     <section id="process">
-        <div class="section-header">
-            <h2>My Workflow</h2>
-            <p>How I turn your chaos into order.</p>
+        <div class="section-header reveal">
+            <h2 class="glitch-hover" data-text="The Protocol">The Protocol</h2>
+            <p>From chaos to autonomous order in 4 steps.</p>
         </div>
         <div class="process-grid">
-            <div class="process-card">
+            <div class="process-card reveal">
                 <span class="step-number">01</span>
                 <i data-lucide="search" class="process-icon"></i>
                 <h3>Discovery</h3>
-                <p>I analyze your manual tasks and find the bottlenecks slowing you down.</p>
+                <p>I dissect your manual tasks to find the hidden bottlenecks costing you money.</p>
             </div>
-            <div class="process-card">
+            <div class="process-card reveal">
                 <span class="step-number">02</span>
                 <i data-lucide="pencil-ruler" class="process-icon"></i>
                 <h3>Architecture</h3>
-                <p>I design a secure, logic-proof workflow map before writing a single line of code.</p>
+                <p>I design a logic-proof roadmap. No code is written until the logic is flawless.</p>
             </div>
-            <div class="process-card">
+            <div class="process-card reveal">
                 <span class="step-number">03</span>
-                <i data-lucide="code-2" class="process-icon"></i>
+                <i data-lucide="cpu" class="process-icon"></i>
                 <h3>Development</h3>
-                <p>I build the agents using n8n and AI, testing edge cases to prevent crashes.</p>
+                <p>I build your agents in n8n, integrating AI guards to prevent hallucinations.</p>
             </div>
-            <div class="process-card">
+            <div class="process-card reveal">
                 <span class="step-number">04</span>
                 <i data-lucide="rocket" class="process-icon"></i>
                 <h3>Deployment</h3>
-                <p>I launch the system and provide you with documentation on how to control it.</p>
+                <p>I hand over the keys. You get full documentation and a system that just works.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="pricing">
+        <div class="section-header reveal">
+            <h2 class="glitch-hover" data-text="Investment Options">Investment Options</h2>
+            <p>Transparent pricing. Delivered securely via Fiverr.</p>
+        </div>
+        <div class="pricing-grid">
+            <div class="price-card reveal">
+                <div class="price-header">
+                    <h3>Prototype</h3>
+                    <div class="price">₹1,417</div>
+                    <p>Perfect for simple linear tasks.</p>
+                </div>
+                <ul class="features">
+                    <li><i data-lucide="check"></i> 1 Automation Workflow</li>
+                    <li><i data-lucide="check"></i> 2 API Integrations</li>
+                    <li><i data-lucide="check"></i> Standard Error Handling</li>
+                    <li><i data-lucide="clock"></i> 5 Days Delivery</li>
+                </ul>
+                <a href="https://www.fiverr.com/yodhyam_gamedev/build-a-complete-ai-chatbot-for-your-website-using-chatbase" target="_blank" class="nav-btn-outline">Select Basic</a>
+            </div>
+    
+            <div class="price-card popular reveal">
+                <div class="badge">BEST VALUE</div>
+                <div class="price-header">
+                    <h3>AI Agent</h3>
+                    <div class="price">₹4,723</div>
+                    <p>Smart decision-making system.</p>
+                </div>
+                <ul class="features">
+                    <li><i data-lucide="check"></i> <strong>Custom AI Logic</strong></li>
+                    <li><i data-lucide="check"></i> 6 API Integrations</li>
+                    <li><i data-lucide="check"></i> Vector Memory (RAG)</li>
+                    <li><i data-lucide="check"></i> Self-Healing Logic</li>
+                </ul>
+                <a href="https://www.fiverr.com/yodhyam_gamedev/build-a-complete-ai-chatbot-for-your-website-using-chatbase" target="_blank" class="cta-btn full-width">Select Standard</a>
+            </div>
+    
+            <div class="price-card reveal">
+                <div class="price-header">
+                    <h3>Enterprise</h3>
+                    <div class="price">₹14,169</div>
+                    <p>Full Multi-Agent Ecosystem.</p>
+                </div>
+                <ul class="features">
+                    <li><i data-lucide="check"></i> <strong>Autonomous Agents</strong></li>
+                    <li><i data-lucide="check"></i> 10+ API Integrations</li>
+                    <li><i data-lucide="check"></i> Complex Business Logic</li>
+                    <li><i data-lucide="check"></i> 1 Month Support</li>
+                </ul>
+                <a href="https://www.fiverr.com/yodhyam_gamedev/build-a-complete-ai-chatbot-for-your-website-using-chatbase" target="_blank" class="nav-btn-outline">Select Premium</a>
             </div>
         </div>
     </section>
 
     <section id="work">
-        <div class="section-header">
-            <h2>Workflow Database</h2>
-            <p>Click any workflow to inspect details.</p>
+        <div class="section-header reveal">
+            <h2 class="glitch-hover" data-text="Workflow Database">Workflow Database</h2>
+            <p>Click any blueprint to inspect the architecture.</p>
         </div>
         <div class="masonry" id="project-grid">
             </div>
     </section>
 
-    <section id="hosting">
-        <div class="section-header">
-            <h2>Hosting Options</h2>
-            <p>Flexible deployment to suit your security needs.</p>
-        </div>
-        <div class="hosting-grid">
-            <div class="host-card">
-                <h3>Self-Hosted VPS</h3>
-                <p>Maximum privacy and control.</p>
-                <ul>
-                    <li><i data-lucide="check"></i> 100% Data Ownership</li>
-                    <li><i data-lucide="check"></i> Runs on Hetzner/DigitalOcean</li>
-                    <li><i data-lucide="check"></i> Cheapest Long Term</li>
-                </ul>
-            </div>
-            <div class="host-card featured">
-                <h3>GitHub Actions <span class="badge">Recommended</span></h3>
-                <p>The "ZeroFlow" Special. Serverless.</p>
-                <ul>
-                    <li><i data-lucide="check"></i> $0 Monthly Cost</li>
-                    <li><i data-lucide="check"></i> Trigger via Webhook</li>
-                    <li><i data-lucide="check"></i> Perfect for Batch Jobs</li>
-                </ul>
-            </div>
-            <div class="host-card">
-                <h3>n8n Cloud</h3>
-                <p>Managed service for ease of use.</p>
-                <ul>
-                    <li><i data-lucide="check"></i> No Maintenance</li>
-                    <li><i data-lucide="check"></i> Instant Setup</li>
-                    <li><i data-lucide="check"></i> Priority Support</li>
-                </ul>
-            </div>
-        </div>
-    </section>
-
     <section id="terminal">
-        <div class="section-header">
-            <h2>Initialize Agent</h2>
+        <div class="section-header reveal">
+            <h2 class="glitch-hover" data-text="Initialize Agent">Initialize Agent</h2>
         </div>
-        <div class="terminal-window">
+        <div class="terminal-window reveal">
             <div class="terminal-header">
                 <div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div>
-                <div style="margin-left:auto; color:#666; font-size:0.8rem; font-family:monospace;">bash -- agent-init</div>
+                <div class="terminal-title">bash -- agent-init</div>
             </div>
             <div class="terminal-body">
                 <form id="agentForm">
                     <label class="cli-prompt">// ENTER TARGET NAME</label>
                     <input type="text" id="name" class="cli-input" placeholder="John Doe" required>
                     
-                    <label class="cli-prompt">// ENTER COMMUNICATION CHANNEL (EMAIL)</label>
+                    <label class="cli-prompt">// ENTER EMAIL FOR REPORT</label>
                     <input type="email" id="email" class="cli-input" placeholder="john@company.com" required>
                     
-                    <label class="cli-prompt">// DEFINE MISSION PARAMETERS (THE PROBLEM)</label>
+                    <label class="cli-prompt">// DESCRIBE MISSION (THE PROBLEM)</label>
                     <input type="text" id="problem" class="cli-input" placeholder="e.g. Scrape LinkedIn leads and sync to Airtable..." required>
                     
-                    <button type="submit" id="runBtn" class="cta-btn" style="width:100%; margin-top:10px;">
+                    <button type="submit" id="runBtn" class="cta-btn" style="width:100%; margin-top:20px;">
                         <i data-lucide="terminal"></i> INITIALIZE AGENT
                     </button>
                 </form>
 
                 <div id="console-output">
-                    > CONNECTING TO GITHUB ACTIONS...<br>
-                    > ANALYZING REQUEST...<br>
-                    > <b>SUCCESS:</b> AGENT DEPLOYED via Gmail Relay.<br>
-                    > Check your inbox for the mission brief.
-                </div>
+                    </div>
             </div>
         </div>
     </section>
 
     <footer>
-        [ SYSTEM STATUS: OPERATIONAL ] <br> &copy; 2025 ZeroFlow AI.
+        <div class="reveal">
+            [ SYSTEM STATUS: OPERATIONAL ] <br> &copy; 2025 ZeroFlow AI.
+        </div>
     </footer>
 
-    <script>
-        lucide.createIcons();
-
-        /* --- DYNAMIC PORTFOLIO LOGIC --- */
-        // NOTE: Browsers cannot "scan" folders for security reasons. 
-        // You MUST list your files here, but I added logic to handle spaces and any extension.
-        
-        const myProjects = [
-            "Personal Ai Agent.png", 
-            // Add other files from your projects folder here:
-            // "Another Project.jpg",
-            // "LinkedIn Bot.png"
-        ];
-
-        const grid = document.getElementById('project-grid');
-
-        function formatTitle(filename) {
-            // Remove extension (.png, .jpg)
-            let name = filename.replace(/\.[^/.]+$/, "");
-            // Capitalize First Letters (optional, since your filename looks good already)
-            return name;
-        }
-
-        if (myProjects.length > 0 && grid) {
-            myProjects.forEach(filename => {
-                const title = formatTitle(filename);
-                // We assume images are in 'projects/' folder based on your screenshot
-                grid.innerHTML += `
-                    <div class="project-card" onclick="openLightbox('projects/${filename}')">
-                        <img src="projects/${filename}" alt="${title}">
-                        <div class="card-overlay">
-                            <h3>${title}</h3>
-                        </div>
-                    </div>
-                `;
-            });
-        } else if (grid) {
-            grid.innerHTML = '<p style="color:#666; text-align:center;">No workflows loaded. Update the array in index.html.</p>';
-        }
-
-        /* --- LIGHTBOX LOGIC --- */
-        const lightbox = document.getElementById('lightbox');
-        const lightboxImg = document.getElementById('lightbox-img');
-
-        function openLightbox(src) {
-            lightboxImg.src = src;
-            lightbox.classList.add('active');
-            document.body.style.overflow = 'hidden'; 
-        }
-
-        function closeLightbox() {
-            lightbox.classList.remove('active');
-            document.body.style.overflow = 'auto'; 
-        }
-
-        if(lightbox) {
-            lightbox.addEventListener('click', (e) => {
-                if (e.target === lightbox) closeLightbox();
-            });
-        }
-
-        /* --- FORM LOGIC --- */
-        const form = document.getElementById('agentForm');
-        const output = document.getElementById('console-output');
-        const btn = document.getElementById('runBtn');
-
-        if(form) {
-            form.addEventListener('submit', async (e) => {
-                e.preventDefault();
-                btn.innerHTML = "PROCESSING <span class='blink'>_</span>";
-                btn.style.opacity = "0.7";
-
-                const data = {
-                    name: document.getElementById('name').value,
-                    email: document.getElementById('email').value,
-                    problem: document.getElementById('problem').value
-                };
-
-                try {
-                    const res = await fetch('/api/trigger', {
-                        method: 'POST',
-                        headers: {'Content-Type': 'application/json'},
-                        body: JSON.stringify(data)
-                    });
-
-                    if(res.ok) {
-                        form.style.display = 'none';
-                        output.style.display = 'block';
-                    } else {
-                        alert("System Error: Check GitHub Token");
-                        btn.innerHTML = "RETRY";
-                    }
-                } catch(err) {
-                    alert("Connection Failed");
-                    btn.innerHTML = "RETRY";
-                }
-            });
-        }
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
