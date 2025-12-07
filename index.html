@@ -8,7 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     
     <style>
-        /* --- CORE VISUALS --- */
+        /* --- CORE VARIABLES --- */
         :root {
             --neon-orange: #ff6b00;
             --neon-red: #ff2a2a;
@@ -18,7 +18,6 @@
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        
         html { scroll-behavior: smooth; }
 
         body {
@@ -26,9 +25,10 @@
             color: #fff;
             font-family: 'Inter', sans-serif;
             overflow-x: hidden;
+            line-height: 1.6;
         }
 
-        /* Animated Background */
+        /* --- BACKGROUND FX --- */
         .bg-mesh {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1;
             background: radial-gradient(circle at 50% 50%, rgba(255, 107, 0, 0.05) 0%, transparent 50%),
@@ -42,10 +42,10 @@
             mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
         }
 
-        /* Typography */
-        h1, h2, h3 { font-family: 'Space Grotesk', sans-serif; }
+        /* --- TYPOGRAPHY --- */
+        h1, h2, h3, .brand { font-family: 'Space Grotesk', sans-serif; }
         
-        /* Navbar */
+        /* --- NAVBAR --- */
         nav {
             display: flex; justify-content: space-between; align-items: center;
             padding: 15px 5%; position: fixed; width: 100%; top: 0; z-index: 100;
@@ -53,35 +53,26 @@
             border-bottom: 1px solid var(--glass-border);
         }
 
-        /* NEW LOGO STYLES */
         .brand { 
-            font-family: 'Inter', sans-serif; /* Matches your screenshot font */
+            font-family: 'Inter', sans-serif; 
             font-weight: 700; 
             font-size: 1.5rem; 
-            display: flex; 
-            align-items: center; 
-            gap: 10px; 
-            color: white;
-            letter-spacing: -0.5px;
+            display: flex; align-items: center; gap: 8px; 
+            color: white; letter-spacing: -0.5px;
         }
         
-        /* The Lightning Bolt Icon */
         .brand i { 
-            width: 24px; 
-            height: 24px; 
-            stroke-width: 2.5px; /* Thicker lines like the image */
-            transform: rotate(-10deg); /* Slight tilt for dynamic look */
+            width: 24px; height: 24px; stroke-width: 3px; 
+            transform: rotate(-10deg); color: white;
         }
 
-        /* The 'AI' Text */
         .brand span { 
-            color: var(--neon-orange); 
-            font-weight: 800; /* Extra bold */
-            text-shadow: 0 0 15px rgba(255, 107, 0, 0.4); /* Subtle glow */
+            color: var(--neon-orange); font-weight: 800; 
+            text-shadow: 0 0 15px rgba(255, 107, 0, 0.4);
         }
         
         .nav-links { display: flex; gap: 30px; align-items: center; }
-        .nav-links a { text-decoration: none; color: #888; font-weight: 500; transition: 0.3s; }
+        .nav-links a { text-decoration: none; color: #888; font-weight: 500; transition: 0.3s; font-size: 0.9rem; }
         .nav-links a:hover { color: white; }
         
         .nav-btn {
@@ -91,7 +82,7 @@
         }
         .nav-btn:hover { border-color: var(--neon-orange); box-shadow: 0 0 20px rgba(255, 107, 0, 0.2); }
 
-        /* Hero Section */
+        /* --- HERO SECTION --- */
         header {
             min-height: 90vh; display: flex; flex-direction: column; justify-content: center; align-items: center;
             text-align: center; padding: 120px 20px 50px; position: relative;
@@ -107,9 +98,8 @@
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
         h1 b { color: var(--neon-orange); -webkit-text-fill-color: var(--neon-orange); }
-        .hero-desc { color: #a1a1aa; max-width: 650px; font-size: 1.25rem; margin-bottom: 40px; line-height: 1.6; }
+        .hero-desc { color: #a1a1aa; max-width: 650px; font-size: 1.25rem; margin-bottom: 40px; }
         
-        /* Buttons */
         .cta-btn {
             background: linear-gradient(90deg, var(--neon-orange), var(--neon-red));
             color: white; border: none; padding: 18px 40px; font-size: 1.1rem; font-weight: 700;
@@ -119,9 +109,34 @@
         }
         .cta-btn:hover { transform: translateY(-3px); box-shadow: 0 20px 40px -10px rgba(255, 107, 0, 0.7); }
 
-        /* ABOUT SECTION */
-        #about { padding: 100px 5%; max-width: 1200px; margin: 0 auto; }
+        /* --- SECTION COMMONS --- */
+        section { padding: 100px 5%; max-width: 1200px; margin: 0 auto; }
+        .section-header { margin-bottom: 60px; text-align: center; }
+        .section-header h2 { font-size: 2.5rem; text-transform: uppercase; margin-bottom: 10px; }
+        .section-header p { color: #666; font-size: 1.1rem; }
+        .divider { width: 50px; height: 3px; background: var(--neon-orange); margin: 20px auto; }
+
+        /* --- ABOUT (WHO AM I) --- */
         .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+        
+        .profile-container {
+            display: flex; justify-content: center; position: relative;
+        }
+        .profile-img { 
+            width: 280px; height: 280px; 
+            border-radius: 50%; /* CIRCLE */
+            object-fit: cover;
+            border: 2px solid var(--neon-orange);
+            box-shadow: 0 0 30px rgba(255, 107, 0, 0.3); /* GLOW */
+            filter: grayscale(20%); transition: 0.5s;
+            animation: pulse-glow 3s infinite alternate;
+        }
+        @keyframes pulse-glow {
+            0% { box-shadow: 0 0 30px rgba(255, 107, 0, 0.3); }
+            100% { box-shadow: 0 0 60px rgba(255, 107, 0, 0.6); }
+        }
+        .profile-img:hover { filter: grayscale(0%); transform: scale(1.05); }
+
         .about-text h2 { font-size: 2.5rem; margin-bottom: 20px; }
         .about-text p { color: #888; font-size: 1.1rem; line-height: 1.7; margin-bottom: 20px; }
         .tech-stack { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 30px; }
@@ -131,18 +146,37 @@
         }
         .tech-tag i { color: var(--neon-orange); width: 16px; height: 16px; }
 
-        .about-image { position: relative; }
-        .about-image img { 
-            width: 100%; border-radius: 20px; border: 1px solid var(--glass-border); 
-            filter: grayscale(100%); transition: 0.5s;
+        /* --- PROCESS SECTION (New) --- */
+        .process-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 30px; margin-top: 40px; }
+        .process-card {
+            background: #111; padding: 30px; border: 1px solid var(--glass-border); border-radius: 12px;
+            text-align: center; transition: 0.3s; position: relative;
         }
-        .about-image:hover img { filter: grayscale(0%); border-color: var(--neon-orange); }
+        .process-card:hover { border-color: var(--neon-orange); transform: translateY(-5px); }
+        .step-number { 
+            font-size: 3rem; font-weight: 800; color: #222; position: absolute; top: 10px; right: 20px; z-index: 0; 
+        }
+        .process-icon { color: var(--neon-orange); margin-bottom: 20px; position: relative; z-index: 1; }
+        .process-card h3 { margin-bottom: 10px; position: relative; z-index: 1; }
+        .process-card p { color: #666; font-size: 0.9rem; position: relative; z-index: 1; }
 
-        /* PORTFOLIO GRID */
-        #work { padding: 100px 5%; max-width: 1400px; margin: 0 auto; }
-        .section-header { margin-bottom: 60px; border-left: 4px solid var(--neon-orange); padding-left: 20px; }
-        .section-header h2 { font-size: 2.5rem; text-transform: uppercase; }
-        
+        /* --- HOSTING SECTION (New) --- */
+        .hosting-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+        .host-card {
+            background: rgba(255,255,255,0.02); border: 1px solid var(--glass-border);
+            padding: 40px; border-radius: 16px; position: relative; overflow: hidden;
+        }
+        .host-card.featured { border-color: var(--neon-orange); background: rgba(255, 107, 0, 0.05); }
+        .host-card h3 { font-size: 1.5rem; margin-bottom: 10px; }
+        .host-card .badge { 
+            background: var(--neon-orange); color: white; padding: 5px 10px; font-size: 0.7rem; 
+            border-radius: 20px; text-transform: uppercase; font-weight: bold; margin-left: 10px;
+        }
+        .host-card ul { list-style: none; margin-top: 20px; }
+        .host-card li { display: flex; gap: 10px; margin-bottom: 15px; color: #ccc; font-size: 0.9rem; }
+        .host-card li i { color: var(--neon-orange); }
+
+        /* --- PORTFOLIO --- */
         .masonry { column-count: 3; column-gap: 25px; }
         @media(max-width:1000px){ .masonry{column-count: 2;} }
         @media(max-width:600px){ .masonry{column-count: 1; .about-grid { grid-template-columns: 1fr; }} }
@@ -158,12 +192,12 @@
         
         .card-overlay {
             position: absolute; bottom: 0; left: 0; width: 100%;
-            background: linear-gradient(to top, black 20%, transparent);
+            background: linear-gradient(to top, black 30%, transparent);
             padding: 20px; opacity: 1; transition: 0.3s;
         }
         .card-overlay h3 { font-size: 1.1rem; text-shadow: 0 2px 4px black; }
 
-        /* LIGHTBOX */
+        /* --- LIGHTBOX --- */
         .lightbox {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.95); z-index: 1000;
@@ -172,23 +206,16 @@
         }
         .lightbox.active { display: flex; opacity: 1; }
         .lightbox img { max-width: 95%; max-height: 95vh; box-shadow: 0 0 50px rgba(0,0,0,0.5); border: 1px solid #333; }
-        .close-lightbox {
-            position: absolute; top: 30px; right: 30px; color: white; font-size: 3rem; cursor: pointer;
-        }
+        .close-lightbox { position: absolute; top: 30px; right: 30px; color: white; font-size: 3rem; cursor: pointer; }
 
-        /* AGENT FORM */
-        #terminal {
-            background: #000; border-top: 1px solid var(--glass-border); padding: 100px 5%;
-            display: flex; justify-content: center;
-        }
+        /* --- TERMINAL FORM --- */
+        #terminal { padding-top: 50px; padding-bottom: 150px; }
         .terminal-window {
-            width: 100%; max-width: 800px;
+            width: 100%; max-width: 800px; margin: 0 auto;
             background: rgba(20,20,20,0.9); border: 1px solid #333; border-radius: 10px;
             box-shadow: 0 0 50px rgba(0,0,0,0.8); overflow: hidden;
         }
-        .terminal-header {
-            background: #1a1a1a; padding: 10px 20px; display: flex; gap: 8px; border-bottom: 1px solid #333;
-        }
+        .terminal-header { background: #1a1a1a; padding: 10px 20px; display: flex; gap: 8px; border-bottom: 1px solid #333; }
         .dot { width: 12px; height: 12px; border-radius: 50%; }
         .dot.red { background: #ff5f56; } .dot.yellow { background: #ffbd2e; } .dot.green { background: #27c93f; }
         
@@ -199,12 +226,18 @@
         }
         .cli-input:focus { outline: none; border-bottom-color: var(--neon-orange); }
         .cli-prompt { color: #666; font-size: 0.9rem; margin-bottom: 5px; display: block; }
-        
         #console-output { color: #27c93f; margin-top: 20px; display: none; }
         .blink { animation: blink 1s infinite; }
         @keyframes blink { 50% { opacity: 0; } }
 
         footer { text-align: center; padding: 40px; color: #444; font-size: 0.9rem; border-top: 1px solid #111; }
+        
+        /* Mobile Nav */
+        @media(max-width: 768px) {
+            .nav-links { display: none; }
+            .about-grid { grid-template-columns: 1fr; text-align: center; }
+            .profile-container { margin-bottom: 30px; }
+        }
     </style>
 </head>
 <body>
@@ -222,16 +255,17 @@
             <i data-lucide="zap"></i>
             ZeroFlow <span>AI</span>
         </div>
-
         <div class="nav-links">
-            <a href="#about" style="display:none; @media(min-width:768px){display:block;}">About</a>
-            <a href="#work">Workflows</a>
+            <a href="#about">Profile</a>
+            <a href="#process">Process</a>
+            <a href="#work">Work</a>
+            <a href="#hosting">Hosting</a>
             <a href="#terminal" class="nav-btn">Start Automation</a>
         </div>
     </nav>
 
     <header>
-        <div class="hero-badge">System Online • v2.1</div>
+        <div class="hero-badge">System Online • v3.0</div>
         <h1>Automate the Boring.<br><b>Scale the Interesting.</b></h1>
         <p class="hero-desc">I build autonomous n8n agents that run your business while you sleep. Stop doing manual data entry. Start dominating.</p>
         <a href="#terminal" class="cta-btn">Deploy Agent <i data-lucide="arrow-right"></i></a>
@@ -239,13 +273,14 @@
 
     <section id="about">
         <div class="about-grid">
-            <div class="about-image">
-                <img src="profile.jpg" alt="Priyo" onerror="this.style.display='none'"> 
+            <div class="profile-container">
+                <img src="profile.jpg" alt="Priyo" class="profile-img" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png'">
             </div>
             <div class="about-text">
                 <h2>Who is ZeroFlow?</h2>
+                <div class="divider" style="margin: 20px 0;"></div>
                 <p>
-                    I'm <strong>Priyo (0bl1vyx)</strong>, a 19-year-old developer from West Bengal. 
+                    I'm <strong>Priyo (0bl1vyx)</strong>, a developer from West Bengal. 
                     I don't just write code; I break it to make it stronger.
                 </p>
                 <p>
@@ -256,10 +291,42 @@
                 <div class="tech-stack">
                     <span class="tech-tag"><i data-lucide="zap"></i> n8n</span>
                     <span class="tech-tag"><i data-lucide="brain-circuit"></i> AI Agents</span>
-                    <span class="tech-tag"><i data-lucide="shield"></i> API Security</span>
-                    <span class="tech-tag"><i data-lucide="terminal"></i> Bash/Linux</span>
-                    <span class="tech-tag"><i data-lucide="mail"></i> Cold Outreach</span>
+                    <span class="tech-tag"><i data-lucide="shield"></i> Security</span>
+                    <span class="tech-tag"><i data-lucide="terminal"></i> Linux</span>
                 </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="process">
+        <div class="section-header">
+            <h2>My Workflow</h2>
+            <p>How I turn your chaos into order.</p>
+        </div>
+        <div class="process-grid">
+            <div class="process-card">
+                <span class="step-number">01</span>
+                <i data-lucide="search" class="process-icon"></i>
+                <h3>Discovery</h3>
+                <p>I analyze your manual tasks and find the bottlenecks slowing you down.</p>
+            </div>
+            <div class="process-card">
+                <span class="step-number">02</span>
+                <i data-lucide="pencil-ruler" class="process-icon"></i>
+                <h3>Architecture</h3>
+                <p>I design a secure, logic-proof workflow map before writing a single line of code.</p>
+            </div>
+            <div class="process-card">
+                <span class="step-number">03</span>
+                <i data-lucide="code-2" class="process-icon"></i>
+                <h3>Development</h3>
+                <p>I build the agents using n8n and AI, testing edge cases to prevent crashes.</p>
+            </div>
+            <div class="process-card">
+                <span class="step-number">04</span>
+                <i data-lucide="rocket" class="process-icon"></i>
+                <h3>Deployment</h3>
+                <p>I launch the system and provide you with documentation on how to control it.</p>
             </div>
         </div>
     </section>
@@ -267,14 +334,52 @@
     <section id="work">
         <div class="section-header">
             <h2>Workflow Database</h2>
-            <p style="color:#666">Click any workflow to inspect details.</p>
+            <p>Click any workflow to inspect details.</p>
         </div>
-
         <div class="masonry" id="project-grid">
             </div>
     </section>
 
+    <section id="hosting">
+        <div class="section-header">
+            <h2>Hosting Options</h2>
+            <p>Flexible deployment to suit your security needs.</p>
+        </div>
+        <div class="hosting-grid">
+            <div class="host-card">
+                <h3>Self-Hosted VPS</h3>
+                <p>Maximum privacy and control.</p>
+                <ul>
+                    <li><i data-lucide="check"></i> 100% Data Ownership</li>
+                    <li><i data-lucide="check"></i> Runs on Hetzner/DigitalOcean</li>
+                    <li><i data-lucide="check"></i> Cheapest Long Term</li>
+                </ul>
+            </div>
+            <div class="host-card featured">
+                <h3>GitHub Actions <span class="badge">Recommended</span></h3>
+                <p>The "ZeroFlow" Special. Serverless.</p>
+                <ul>
+                    <li><i data-lucide="check"></i> $0 Monthly Cost</li>
+                    <li><i data-lucide="check"></i> Trigger via Webhook</li>
+                    <li><i data-lucide="check"></i> Perfect for Batch Jobs</li>
+                </ul>
+            </div>
+            <div class="host-card">
+                <h3>n8n Cloud</h3>
+                <p>Managed service for ease of use.</p>
+                <ul>
+                    <li><i data-lucide="check"></i> No Maintenance</li>
+                    <li><i data-lucide="check"></i> Instant Setup</li>
+                    <li><i data-lucide="check"></i> Priority Support</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
     <section id="terminal">
+        <div class="section-header">
+            <h2>Initialize Agent</h2>
+        </div>
         <div class="terminal-window">
             <div class="terminal-header">
                 <div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div>
@@ -313,28 +418,30 @@
     <script>
         lucide.createIcons();
 
-        /* =========================================
-           1. PORTFOLIO CONFIGURATION
-           ========================================= */
+        /* --- DYNAMIC PORTFOLIO LOGIC --- */
+        // NOTE: Browsers cannot "scan" folders for security reasons. 
+        // You MUST list your files here, but I added logic to handle spaces and any extension.
         
-        // LIST YOUR FILES HERE. 
-        // Example: If you have "gym-scraper.jpg" in your "projects" folder, add "gym-scraper.jpg" here.
         const myProjects = [
-            "Personal Ai Agent.png",
+            "Personal Ai Agent.png", 
+            // Add other files from your projects folder here:
+            // "Another Project.jpg",
+            // "LinkedIn Bot.png"
         ];
 
         const grid = document.getElementById('project-grid');
 
         function formatTitle(filename) {
-            let name = filename.substring(0, filename.lastIndexOf('.'));
-            name = name.replace(/[-_]/g, ' ');
-            return name.replace(/\b\w/g, l => l.toUpperCase());
+            // Remove extension (.png, .jpg)
+            let name = filename.replace(/\.[^/.]+$/, "");
+            // Capitalize First Letters (optional, since your filename looks good already)
+            return name;
         }
 
-        // Render Grid
         if (myProjects.length > 0 && grid) {
             myProjects.forEach(filename => {
                 const title = formatTitle(filename);
+                // We assume images are in 'projects/' folder based on your screenshot
                 grid.innerHTML += `
                     <div class="project-card" onclick="openLightbox('projects/${filename}')">
                         <img src="projects/${filename}" alt="${title}">
@@ -345,24 +452,22 @@
                 `;
             });
         } else if (grid) {
-            grid.innerHTML = '<p style="color:#666">No workflows loaded. Add files to the array in index.html.</p>';
+            grid.innerHTML = '<p style="color:#666; text-align:center;">No workflows loaded. Update the array in index.html.</p>';
         }
 
-        /* =========================================
-           2. LIGHTBOX LOGIC
-           ========================================= */
+        /* --- LIGHTBOX LOGIC --- */
         const lightbox = document.getElementById('lightbox');
         const lightboxImg = document.getElementById('lightbox-img');
 
         function openLightbox(src) {
             lightboxImg.src = src;
             lightbox.classList.add('active');
-            document.body.style.overflow = 'hidden'; // Stop scrolling
+            document.body.style.overflow = 'hidden'; 
         }
 
         function closeLightbox() {
             lightbox.classList.remove('active');
-            document.body.style.overflow = 'auto'; // Resume scrolling
+            document.body.style.overflow = 'auto'; 
         }
 
         if(lightbox) {
@@ -371,9 +476,7 @@
             });
         }
 
-        /* =========================================
-           3. FORM LOGIC
-           ========================================= */
+        /* --- FORM LOGIC --- */
         const form = document.getElementById('agentForm');
         const output = document.getElementById('console-output');
         const btn = document.getElementById('runBtn');
