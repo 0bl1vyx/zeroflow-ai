@@ -4,16 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ZeroFlow AI | Enterprise Automation Solutions</title>
+    <meta name="description" content="Self-Hosted n8n AI Agents & Automation. 100% Data Ownership.">
     
     <script src="https://unpkg.com/lucide@latest"></script>
     
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     
     <link rel="stylesheet" href="style.css">
-    
-    <meta name="description" content="Self-Hosted n8n AI Agents & Automation. 100% Data Ownership. No Monthly Fees.">
 </head>
 <body>
+
+    <div class="cursor-dot" id="cursor-dot"></div>
+    <div class="cursor-outline" id="cursor-outline"></div>
 
     <div class="noise-overlay"></div>
     <div class="bg-mesh"></div>
@@ -28,9 +30,7 @@
 
     <nav>
         <div class="brand">
-            <div class="logo-icon">
-                <i data-lucide="zap"></i>
-            </div>
+            <div class="logo-icon"><i data-lucide="zap"></i></div>
             ZeroFlow <span>AI</span>
         </div>
         
@@ -54,22 +54,22 @@
         <a href="#about" onclick="toggleMobileMenu()">Philosophy</a>
         <a href="#hosting" onclick="toggleMobileMenu()">Deployment</a>
         <a href="#work" onclick="toggleMobileMenu()">Work</a>
-        <a href="#faq" onclick="toggleMobileMenu()">FAQ</a>
+        <a href="#demo" onclick="toggleMobileMenu()">Live Demo</a>
     </div>
 
     <header>
         <div class="hero-badge reveal">
-            <span class="pulse-dot"></span> System Online • v4.0
+            <span class="pulse-dot"></span> System Online • v4.5
         </div>
         
-        <h1 class="glitch-wrapper reveal">
+        <h1 class="reveal">
             Automate the Boring.<br>
-            <span class="highlight">Scale the Interesting.</span>
+            <span class="highlight type-effect" data-text="Scale the Interesting."></span><span class="cursor-blink">|</span>
         </h1>
         
         <p class="hero-desc reveal">
             I build <b>Self-Hosted n8n AI Agents</b> that replace manual labor with intelligent logic. 
-            <br>Stop renting your intelligence. Start owning it.
+            Stop renting your intelligence. Start owning it.
         </p>
         
         <div class="cta-group reveal">
@@ -84,7 +84,7 @@
         <div class="stat-row reveal">
             <div class="stat-item">
                 <span class="stat-num">100%</span>
-                <span class="stat-label">Data Privacy</span>
+                <span class="stat-label">Privacy</span>
             </div>
             <div class="stat-divider"></div>
             <div class="stat-item">
@@ -103,14 +103,14 @@
         <div class="marquee-track">
             <div class="tech-item"><i data-lucide="zap"></i> n8n Workflow</div>
             <div class="tech-item"><i data-lucide="bot"></i> OpenAI GPT-4</div>
-            <div class="tech-item"><i data-lucide="database"></i> Pinecone Vector</div>
+            <div class="tech-item"><i data-lucide="database"></i> Pinecone</div>
             <div class="tech-item"><i data-lucide="webhook"></i> Webhooks</div>
             <div class="tech-item"><i data-lucide="table"></i> Airtable</div>
             <div class="tech-item"><i data-lucide="mail"></i> Gmail API</div>
             <div class="tech-item"><i data-lucide="container"></i> Docker</div>
             <div class="tech-item"><i data-lucide="zap"></i> n8n Workflow</div>
             <div class="tech-item"><i data-lucide="bot"></i> OpenAI GPT-4</div>
-            <div class="tech-item"><i data-lucide="database"></i> Pinecone Vector</div>
+            <div class="tech-item"><i data-lucide="database"></i> Pinecone</div>
             <div class="tech-item"><i data-lucide="webhook"></i> Webhooks</div>
             <div class="tech-item"><i data-lucide="table"></i> Airtable</div>
             <div class="tech-item"><i data-lucide="mail"></i> Gmail API</div>
@@ -121,7 +121,7 @@
     <section id="about">
         <div class="about-grid">
             <div class="profile-container reveal">
-                <div class="image-wrapper">
+                <div class="image-wrapper tilt-card">
                     <img src="profile.jpg" alt="Priyo" class="profile-img" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png'">
                     <div class="scan-line"></div>
                 </div>
@@ -133,23 +133,14 @@
                     I'm <strong>Priyo (0bl1vyx)</strong>. I don't just "make bots." I build complete digital workforces.
                 </p>
                 <p>
-                    Specializing in <strong>n8n and Advanced AI Logic</strong>, I design workflows that can reason, decide, and execute tasks without human supervision. 
-                    Whether you need to scrape leads, automate customer support, or manage complex data pipelines, I build the engine that drives your business.
+                    Specializing in <strong>n8n and Advanced AI Logic</strong>, I design workflows that can reason, decide, and execute tasks without human supervision.
                 </p>
                 
                 <div class="tech-stack-grid">
-                    <div class="stack-card">
-                        <i data-lucide="check-circle"></i>
-                        <span>n8n Certified</span>
-                    </div>
-                    <div class="stack-card">
-                        <i data-lucide="brain-circuit"></i>
-                        <span>LLM Integration</span>
-                    </div>
-                    <div class="stack-card">
-                        <i data-lucide="server"></i>
-                        <span>DevOps & Security</span>
-                    </div>
+                    <div class="stack-card"><i data-lucide="check-circle"></i> n8n Certified</div>
+                    <div class="stack-card"><i data-lucide="brain-circuit"></i> AI Agents</div>
+                    <div class="stack-card"><i data-lucide="server"></i> DevOps</div>
+                    <div class="stack-card"><i data-lucide="code"></i> Python</div>
                 </div>
             </div>
         </div>
@@ -162,29 +153,27 @@
         </div>
         
         <div class="hosting-grid">
-            <div class="host-card reveal">
+            <div class="host-card tilt-card reveal">
                 <div class="host-icon"><i data-lucide="cloud"></i></div>
                 <h3>VPS Cloud</h3>
-                <p class="host-desc">Private server setup on Hostinger or DigitalOcean. Best for 24/7 reliability.</p>
+                <p class="host-desc">Private server setup on Hostinger/DigitalOcean. Best for 24/7 reliability.</p>
                 <ul class="host-features">
                     <li><i data-lucide="check"></i> 99.9% Uptime</li>
                     <li><i data-lucide="check"></i> Static IP Address</li>
-                    <li><i data-lucide="check"></i> Full Root Access</li>
                 </ul>
             </div>
 
-            <div class="host-card reveal">
+            <div class="host-card tilt-card reveal">
                 <div class="host-icon"><i data-lucide="laptop"></i></div>
                 <h3>Local Machine</h3>
-                <p class="host-desc">Runs on your own computer via Docker. Perfect for batch tasks or low budgets.</p>
+                <p class="host-desc">Runs on your own computer via Docker. Perfect for batch tasks.</p>
                 <ul class="host-features">
                     <li><i data-lucide="check"></i> $0 Server Cost</li>
                     <li><i data-lucide="check"></i> Runs on Demand</li>
-                    <li><i data-lucide="check"></i> Local Data Privacy</li>
                 </ul>
             </div>
 
-            <div class="host-card highlight reveal">
+            <div class="host-card highlight tilt-card reveal">
                 <div class="badge">RECOMMENDED</div>
                 <div class="host-icon"><i data-lucide="shield-check"></i></div>
                 <h3>Fully Managed</h3>
@@ -192,7 +181,6 @@
                 <ul class="host-features">
                     <li><i data-lucide="check"></i> <strong>Starts at $20/mo</strong></li>
                     <li><i data-lucide="check"></i> Automatic Updates</li>
-                    <li><i data-lucide="check"></i> Error Monitoring</li>
                 </ul>
             </div>
         </div>
@@ -203,11 +191,10 @@
             <h2 class="glitch-hover">Workflow Database</h2>
             <p>Real-world architectures deployed for clients.</p>
         </div>
-        
         <div class="masonry-grid" id="project-grid">
             <div class="loader-box">
                 <i data-lucide="loader-2" class="animate-spin"></i>
-                <p>Accessing Secure Database...</p>
+                <p>Scanning Secure Database...</p>
             </div>
         </div>
     </section>
@@ -220,25 +207,20 @@
 
         <div class="demo-wrapper reveal">
             <div class="demo-control">
-                <div class="panel-header">
-                    <i data-lucide="settings"></i> Input Parameters
-                </div>
+                <div class="panel-header"><i data-lucide="terminal"></i> Input Parameters</div>
                 <form id="agentForm">
                     <div class="input-group">
                         <label>Target Name</label>
                         <input type="text" id="name" placeholder="Client Name" required>
                     </div>
-                    
                     <div class="input-group">
                         <label>Report Email</label>
                         <input type="email" id="email" placeholder="client@email.com" required>
                     </div>
-                    
                     <div class="input-group">
                         <label>The Challenge</label>
-                        <textarea id="problem" placeholder="e.g., We spend 5 hours a week manually copying data from emails to Excel..." required></textarea>
+                        <textarea id="problem" placeholder="e.g., We spend 5 hours a week manually copying data from emails..." required></textarea>
                     </div>
-                    
                     <button type="submit" id="runBtn" class="cta-btn full-width">
                         <i data-lucide="play"></i> Run Simulation
                     </button>
@@ -252,25 +234,21 @@
                         <span>Trigger</span>
                     </div>
                     <div class="connector" id="conn-1"></div>
-                    
                     <div class="node" id="node-2">
                         <div class="node-icon"><i data-lucide="brain-circuit"></i></div>
                         <span>AI Logic</span>
                     </div>
                     <div class="connector" id="conn-2"></div>
-                    
                     <div class="node" id="node-3">
                         <div class="node-icon"><i data-lucide="file-spreadsheet"></i></div>
                         <span>Execution</span>
                     </div>
                     <div class="connector" id="conn-3"></div>
-                    
                     <div class="node" id="node-4">
                         <div class="node-icon"><i data-lucide="mail"></i></div>
                         <span>Output</span>
                     </div>
                 </div>
-                
                 <div class="console-window">
                     <div class="console-header">System Logs</div>
                     <div class="console-log" id="console-output">
@@ -283,24 +261,24 @@
 
     <section id="faq">
         <div class="section-header reveal">
-            <h2 class="glitch-hover">Frequently Asked Questions</h2>
+            <h2 class="glitch-hover">System FAQ</h2>
         </div>
         <div class="faq-grid reveal">
             <div class="faq-item">
-                <h3><i data-lucide="help-circle"></i> Do I need a monthly subscription?</h3>
-                <p>No. Once the automation is built, you own it. If you host it locally or on your own VPS, there are no recurring fees to me.</p>
+                <h3><i data-lucide="help-circle"></i> Recurring fees?</h3>
+                <p>None. You pay once for development. If you self-host, there are zero monthly costs.</p>
             </div>
             <div class="faq-item">
-                <h3><i data-lucide="help-circle"></i> Is my data secure?</h3>
-                <p>Yes. Unlike "rented" automations (Zapier), self-hosted n8n keeps your data on your own servers. It never passes through third-party logs.</p>
+                <h3><i data-lucide="lock"></i> Data Privacy?</h3>
+                <p>100%. Self-hosted means the data lives on your server, not mine or Zapier's.</p>
             </div>
             <div class="faq-item">
-                <h3><i data-lucide="help-circle"></i> What if the API changes?</h3>
-                <p>I build "self-healing" workflows with error handlers. If an API breaks, the system alerts you (and me) immediately instead of failing silently.</p>
+                <h3><i data-lucide="zap"></i> Complex sites?</h3>
+                <p>Yes. I use headless browsers to handle dynamic scraping and complex automation logic.</p>
             </div>
             <div class="faq-item">
-                <h3><i data-lucide="help-circle"></i> Can you scrape websites?</h3>
-                <p>Absolutely. I use advanced headless browsers within n8n to scrape data even from complex, dynamic websites.</p>
+                <h3><i data-lucide="wrench"></i> Maintenance?</h3>
+                <p>I provide "self-healing" code. If APIs change, I offer maintenance packages to keep you online.</p>
             </div>
         </div>
     </section>
@@ -308,7 +286,7 @@
     <section id="hire" class="hire-section">
         <div class="reveal">
             <h2>Ready to Deploy?</h2>
-            <p>Your digital workforce is waiting to be built.</p>
+            <p>Your digital workforce is waiting.</p>
             <div class="cta-group center">
                 <a href="https://www.fiverr.com/yodhyam_gamedev/build-a-complete-ai-chatbot-for-your-website-using-chatbase" target="_blank" class="cta-btn fiverr-btn">
                     Hire on Fiverr
@@ -323,14 +301,9 @@
     <footer>
         <div class="footer-content">
             <div class="footer-brand">ZeroFlow AI</div>
-            <div class="footer-links">
-                <a href="#">GitHub</a>
-                <a href="#">Twitter</a>
-                <a href="#">LinkedIn</a>
-            </div>
             <div class="copyright">
                 [ SYSTEM STATUS: OPERATIONAL ] <br> 
-                &copy; 2025 ZeroFlow AI. All Systems Go.
+                &copy; 2025 ZeroFlow AI. Built by 0bl1vyx.
             </div>
         </div>
     </footer>
