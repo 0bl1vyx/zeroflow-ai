@@ -3,69 +3,265 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZeroFlow AI | Automation & Agents</title>
-    <link rel="stylesheet" href="style.css">
+    <title>ZeroFlow AI | Enterprise Automation</title>
     <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- CORE VISUALS --- */
+        :root {
+            --neon-orange: #ff6b00;
+            --neon-red: #ff2a2a;
+            --glass-bg: rgba(20, 20, 20, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.08);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            background-color: #050505;
+            color: #fff;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* Animated Background */
+        .bg-mesh {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1;
+            background: radial-gradient(circle at 50% 50%, rgba(255, 107, 0, 0.05) 0%, transparent 50%),
+                        radial-gradient(circle at 90% 10%, rgba(255, 42, 42, 0.03) 0%, transparent 40%);
+        }
+        .grid-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
+            background-image: linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
+        }
+
+        /* Typography */
+        h1, h2, h3, .brand { font-family: 'Space Grotesk', sans-serif; }
+        
+        /* Navbar */
+        nav {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 20px 5%; position: fixed; width: 100%; top: 0; z-index: 100;
+            background: rgba(5, 5, 5, 0.8); backdrop-filter: blur(15px);
+            border-bottom: 1px solid var(--glass-border);
+        }
+        .brand { font-weight: 700; font-size: 1.5rem; display: flex; align-items: center; gap: 10px; letter-spacing: -1px; }
+        .brand span { color: var(--neon-orange); text-shadow: 0 0 15px rgba(255, 107, 0, 0.5); }
+        .nav-btn {
+            background: transparent; border: 1px solid rgba(255,255,255,0.2); color: white;
+            padding: 10px 25px; border-radius: 50px; font-weight: 600; cursor: pointer;
+            transition: 0.3s; font-size: 0.9rem;
+        }
+        .nav-btn:hover { border-color: var(--neon-orange); box-shadow: 0 0 20px rgba(255, 107, 0, 0.2); }
+
+        /* Hero Section */
+        header {
+            height: 90vh; display: flex; flex-direction: column; justify-content: center; align-items: center;
+            text-align: center; padding: 0 20px; position: relative;
+        }
+        .hero-badge {
+            background: rgba(255, 107, 0, 0.1); border: 1px solid rgba(255, 107, 0, 0.3);
+            color: var(--neon-orange); padding: 5px 15px; border-radius: 20px; font-size: 0.8rem;
+            margin-bottom: 20px; text-transform: uppercase; letter-spacing: 2px;
+        }
+        h1 {
+            font-size: clamp(3rem, 6vw, 5rem); line-height: 1.1; margin-bottom: 25px;
+            background: linear-gradient(135deg, #fff 40%, rgba(255,255,255,0.4));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        h1 b { color: var(--neon-orange); -webkit-text-fill-color: var(--neon-orange); }
+        .hero-desc { color: #888; max-width: 600px; font-size: 1.2rem; margin-bottom: 40px; }
+        
+        /* Buttons */
+        .cta-btn {
+            background: linear-gradient(90deg, var(--neon-orange), var(--neon-red));
+            color: white; border: none; padding: 18px 40px; font-size: 1.1rem; font-weight: 700;
+            border-radius: 8px; cursor: pointer; transition: 0.3s; text-transform: uppercase;
+            box-shadow: 0 10px 30px -10px rgba(255, 107, 0, 0.5); letter-spacing: 1px;
+            text-decoration: none; display: inline-flex; align-items: center; gap: 10px;
+        }
+        .cta-btn:hover { transform: translateY(-3px); box-shadow: 0 20px 40px -10px rgba(255, 107, 0, 0.7); }
+
+        /* Portfolio Grid */
+        #work { padding: 100px 5%; max-width: 1400px; margin: 0 auto; }
+        .section-header { margin-bottom: 60px; border-left: 4px solid var(--neon-orange); padding-left: 20px; }
+        .section-header h2 { font-size: 2.5rem; text-transform: uppercase; }
+        
+        .masonry { column-count: 3; column-gap: 25px; }
+        @media(max-width:1000px){ .masonry{column-count: 2;} }
+        @media(max-width:600px){ .masonry{column-count: 1;} }
+
+        .project-card {
+            background: #111; border: 1px solid var(--glass-border); border-radius: 12px;
+            overflow: hidden; margin-bottom: 25px; break-inside: avoid;
+            transition: 0.4s; position: relative; group: hover;
+        }
+        .project-card:hover { border-color: var(--neon-orange); transform: translateY(-5px); }
+        .project-card img { width: 100%; display: block; opacity: 0.8; transition: 0.4s; }
+        .project-card:hover img { opacity: 1; scale: 1.05; }
+        .card-info { padding: 20px; position: relative; z-index: 2; background: #111; }
+        .card-info h3 { font-size: 1.2rem; margin-bottom: 5px; }
+        .card-info p { color: #666; font-size: 0.9rem; }
+
+        /* The "Agent" Form Area */
+        #terminal {
+            background: #000; border-top: 1px solid var(--glass-border); padding: 100px 5%;
+            display: flex; justify-content: center;
+        }
+        .terminal-window {
+            width: 100%; max-width: 800px;
+            background: rgba(20,20,20,0.9); border: 1px solid #333; border-radius: 10px;
+            box-shadow: 0 0 50px rgba(0,0,0,0.8); overflow: hidden;
+        }
+        .terminal-header {
+            background: #1a1a1a; padding: 10px 20px; display: flex; gap: 8px; border-bottom: 1px solid #333;
+        }
+        .dot { width: 12px; height: 12px; border-radius: 50%; }
+        .dot.red { background: #ff5f56; } .dot.yellow { background: #ffbd2e; } .dot.green { background: #27c93f; }
+        
+        .terminal-body { padding: 40px; font-family: 'Courier New', monospace; }
+        .cli-input {
+            width: 100%; background: transparent; border: none; border-bottom: 1px solid #333;
+            color: var(--neon-orange); font-family: inherit; font-size: 1.1rem; padding: 10px 0; margin-bottom: 20px;
+        }
+        .cli-input:focus { outline: none; border-bottom-color: var(--neon-orange); }
+        .cli-prompt { color: #666; font-size: 0.9rem; margin-bottom: 5px; display: block; }
+        
+        #console-output { color: #27c93f; margin-top: 20px; display: none; }
+        .blink { animation: blink 1s infinite; }
+        @keyframes blink { 50% { opacity: 0; } }
+
+        footer { text-align: center; padding: 40px; color: #444; font-size: 0.9rem; border-top: 1px solid #111; }
+    </style>
 </head>
 <body>
 
+    <div class="bg-mesh"></div>
+    <div class="grid-overlay"></div>
+
     <nav>
-        <div class="container nav-container">
-            <div class="logo">
-                <img src="logo.png" alt="ZeroFlow Logo" class="logo-img">
-                ZeroFlow <span>AI</span>
-            </div>
-            <div class="links">
-                <a href="#work">Work</a>
-                <a href="#demo" class="btn-cta">Book Audit</a>
-            </div>
-        </div>
+        <div class="brand"><i data-lucide="zap"></i> ZeroFlow <span>AI</span></div>
+        <a href="#terminal" class="nav-btn">Start Automation</a>
     </nav>
 
-    <header class="container">
-        <h1>Automate the Chaos. <br> <span>Scale the Vision.</span></h1>
-        <p>I build robust n8n workflows and custom AI agents. Stop doing manual data entry. Start growing your business.</p>
+    <header>
+        <div class="hero-badge">System Online • v2.0</div>
+        <h1>Automate the Boring.<br><b>Scale the Interesting.</b></h1>
+        <p class="hero-desc">I build autonomous n8n agents that run your business while you sleep. Stop doing manual data entry. Start dominating.</p>
+        <a href="#terminal" class="cta-btn">Deploy Agent <i data-lucide="arrow-right"></i></a>
     </header>
 
-    <section id="work" class="container">
-        <h2 class="section-title"><i data-lucide="cpu"></i> Featured Workflows</h2>
-        
-        <div class="masonry-grid" id="portfolio-grid"></div>
+    <section id="work">
+        <div class="section-header">
+            <h2>Workflow Database</h2>
+            <p style="color:#666">Recent deployments & automations.</p>
+        </div>
+
+        <div class="masonry" id="project-grid">
+            </div>
     </section>
 
-    <section id="demo">
-        <div class="container">
-            <div class="form-wrapper">
-                <div class="form-header">
-                    <h2><i data-lucide="zap" color="#f97316"></i> Test Drive the AI Architect</h2>
-                    <p>Submit a manual task. My GitHub agent will design a solution and email it to you instantly.</p>
-                </div>
-                
-                <form id="automationForm">
-                    <input type="text" id="name" placeholder="Your Name" required>
-                    <input type="email" id="email" placeholder="Your Work Email" required>
-                    <textarea id="problem" placeholder="What problem do you want to solve? (e.g., 'I manually copy leads from Gmail to HubSpot')" required></textarea>
-                    <button type="submit" id="submitBtn" class="btn-submit">
-                        Generate Solution <i data-lucide="arrow-right"></i>
+    <section id="terminal">
+        <div class="terminal-window">
+            <div class="terminal-header">
+                <div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div>
+                <div style="margin-left:auto; color:#666; font-size:0.8rem; font-family:monospace;">bash -- agent-init</div>
+            </div>
+            <div class="terminal-body">
+                <form id="agentForm">
+                    <label class="cli-prompt">// ENTER TARGET NAME</label>
+                    <input type="text" id="name" class="cli-input" placeholder="John Doe" required>
+                    
+                    <label class="cli-prompt">// ENTER COMMUNICATION CHANNEL (EMAIL)</label>
+                    <input type="email" id="email" class="cli-input" placeholder="john@company.com" required>
+                    
+                    <label class="cli-prompt">// DEFINE MISSION PARAMETERS (THE PROBLEM)</label>
+                    <input type="text" id="problem" class="cli-input" placeholder="e.g. Scrape LinkedIn leads and sync to Airtable..." required>
+                    
+                    <button type="submit" id="runBtn" class="cta-btn" style="width:100%; margin-top:10px;">
+                        <i data-lucide="terminal"></i> INITIALIZE AGENT
                     </button>
                 </form>
-                
-                <div id="successMessage" class="hidden">
-                    <i data-lucide="check-circle" color="#4ade80" size="48"></i>
-                    <h3>Workflow Triggered Successfully!</h3>
-                    <p>The agent is analyzing your request. Check your inbox in 1-2 minutes.</p>
+
+                <div id="console-output">
+                    > CONNECTING TO GITHUB ACTIONS...<br>
+                    > ANALYZING REQUEST...<br>
+                    > <b>SUCCESS:</b> AGENT DEPLOYED via Gmail Relay.<br>
+                    > Check your inbox for the mission brief.
                 </div>
             </div>
         </div>
     </section>
 
     <footer>
-        <div class="container">
-            &copy; 2025 ZeroFlow AI. Built with n8n logic & GitHub Actions.
-        </div>
+        [ SYSTEM STATUS: OPERATIONAL ] <br> &copy; 2025 ZeroFlow AI.
     </footer>
 
-    <script src="script.js"></script>
-    <script>lucide.createIcons();</script>
+    <script>
+        lucide.createIcons();
+
+        // 1. DYNAMIC PORTFOLIO (Uses placeholders if you don't have images yet)
+        const projects = [
+            { title: "LinkedIn Scraper", img: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80", desc: "Auto-connect & Message" },
+            { title: "Support Bot", img: "https://images.unsplash.com/photo-1531746790731-6c087fecd65a?auto=format&fit=crop&w=800&q=80", desc: "RAG AI Agent" },
+            { title: "Invoice Parser", img: "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=800&q=80", desc: "Gmail to QuickBooks" },
+            { title: "Cold Outreach", img: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80", desc: "Email Warmup & Sending" }
+        ];
+
+        const grid = document.getElementById('project-grid');
+        
+        projects.forEach(p => {
+            grid.innerHTML += `
+                <div class="project-card">
+                    <img src="${p.img}" alt="${p.title}">
+                    <div class="card-info">
+                        <h3>${p.title}</h3>
+                        <p>${p.desc}</p>
+                    </div>
+                </div>
+            `;
+        });
+
+        // 2. FORM LOGIC (Connects to your existing API)
+        const form = document.getElementById('agentForm');
+        const output = document.getElementById('console-output');
+        const btn = document.getElementById('runBtn');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            btn.innerHTML = "PROCESSING <span class='blink'>_</span>";
+            btn.style.opacity = "0.7";
+
+            const data = {
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                problem: document.getElementById('problem').value
+            };
+
+            try {
+                // Tries to hit your Vercel API
+                const res = await fetch('/api/trigger', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(data)
+                });
+
+                if(res.ok) {
+                    form.style.display = 'none';
+                    output.style.display = 'block';
+                } else {
+                    alert("System Error: Check GitHub Token");
+                    btn.innerHTML = "RETRY";
+                }
+            } catch(err) {
+                alert("Connection Failed");
+                btn.innerHTML = "RETRY";
+            }
+        });
+    </script>
 </body>
 </html>
