@@ -2,24 +2,28 @@ import fs from 'fs';
 import path from 'path';
 
 export default function handler(req, res) {
-  // Define path to projects folder
-  // Note: In Vercel, static files are sometimes tricky. 
-  // We check standard 'public/projects' or root 'projects'.
-  const projectsDirectory = path.join(process.cwd(), 'projects');
+  // Vercel serverless environments are tricky. We check multiple potential locations.
+  const possiblePaths = [
+    path.join(process.cwd(), 'public', 'projects'), // Standard Next.js/Vercel structure
+    path.join(process.cwd(), 'projects'),           // Root structure
+    path.join(__dirname, '..', 'public', 'projects') // Relative fallback
+  ];
 
-  try {
-    // Read directory
-    const fileNames = fs.readdirSync(projectsDirectory);
-    
-    // Filter for images only
-    const images = fileNames.filter(file => 
-      /\.(jpg|jpeg|png|gif|webp)$/i.test(file)
-    );
+  let foundImages = [];
+  let debugPath = "";
 
-    res.status(200).json(images);
-  } catch (error) {
-    // Graceful fallback if folder is missing
-    console.error("Error reading projects directory:", error);
-    res.status(200).json([]); 
+  for (const p of possiblePaths) {
+    if (fs.existsSync(p)) {
+      try {
+        const files = fs.readdirSync(p);
+        foundImages = files.filter(file => /\.(jpg|jpeg|png|gif|webp)$/i.test(file));
+        if (foundImages.length > 0) break; // Stop if we found images
+      } catch (e) {
+        console.error(`Error reading ${p}:`, e);
+      }
+    }
   }
+
+  // Return empty array instead of crashing if nothing found
+  res.status(200).json(foundImages);
 }
