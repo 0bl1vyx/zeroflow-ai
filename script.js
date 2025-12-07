@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initTilt();
     typeWriterEffect();
     loadProjects();
+    initNetworkBackground(); // NEW
 });
 
 /* --- 1. TYPING EFFECT (Hero) --- */
@@ -49,7 +50,7 @@ function initCursor() {
     });
 
     // Add hover effect for clickable items
-    const clickables = document.querySelectorAll('a, button, .project-card, .host-card');
+    const clickables = document.querySelectorAll('a, button, .project-card, .host-card, .terminal-header');
     clickables.forEach(el => {
         el.addEventListener('mouseenter', () => document.body.classList.add('hovering'));
         el.addEventListener('mouseleave', () => document.body.classList.remove('hovering'));
@@ -222,3 +223,95 @@ if(demoForm) {
     });
 }
 function wait(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+/* --- 9. NEW: NETWORK BACKGROUND --- */
+function initNetworkBackground() {
+    const canvas = document.getElementById('neuro-network');
+    if(!canvas) return;
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    let particles = [];
+    const particleCount = 60; // Adjust for density
+
+    class Particle {
+        constructor() {
+            this.x = Math.random() * canvas.width;
+            this.y = Math.random() * canvas.height;
+            this.vx = (Math.random() - 0.5) * 0.5;
+            this.vy = (Math.random() - 0.5) * 0.5;
+            this.size = Math.random() * 2;
+        }
+        update() {
+            this.x += this.vx;
+            this.y += this.vy;
+            if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+            if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+        }
+        draw() {
+            ctx.fillStyle = '#ff6b00';
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            ctx.fill();
+        }
+    }
+
+    for (let i = 0; i < particleCount; i++) particles.push(new Particle());
+
+    function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        particles.forEach(p => {
+            p.update();
+            p.draw();
+            particles.forEach(p2 => {
+                const dx = p.x - p2.x;
+                const dy = p.y - p2.y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                if (dist < 150) {
+                    ctx.strokeStyle = `rgba(255, 107, 0, ${1 - dist/150})`;
+                    ctx.lineWidth = 0.5;
+                    ctx.beginPath();
+                    ctx.moveTo(p.x, p.y);
+                    ctx.lineTo(p2.x, p2.y);
+                    ctx.stroke();
+                }
+            });
+        });
+        requestAnimationFrame(animate);
+    }
+    animate();
+    
+    // Resize handler
+    window.addEventListener('resize', () => {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    });
+}
+
+/* --- 10. NEW: TERMINAL WIDGET --- */
+window.toggleTerminal = () => {
+    document.getElementById('terminal-widget').classList.toggle('open');
+};
+
+const termInput = document.getElementById('term-input');
+if(termInput) {
+    termInput.addEventListener('keypress', function (e) {
+        if (e.key === 'Enter') {
+            const txt = this.value;
+            if(!txt) return;
+            
+            const body = document.getElementById('terminal-body');
+            // Add User Message
+            body.innerHTML += `<div class="msg user">${txt}</div>`;
+            this.value = '';
+            body.scrollTop = body.scrollHeight;
+
+            // Fake Bot Response
+            setTimeout(() => {
+                body.innerHTML += `<div class="msg bot">Processing request: "${txt}"... <br>Please use the form above for official inquiries.</div>`;
+                body.scrollTop = body.scrollHeight;
+            }, 1000);
+        }
+    });
+}
