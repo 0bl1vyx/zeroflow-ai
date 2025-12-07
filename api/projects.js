@@ -2,21 +2,24 @@ import fs from 'fs';
 import path from 'path';
 
 export default function handler(req, res) {
-  // This looks inside the 'public/projects' folder (or just 'projects' depending on build)
+  // Define path to projects folder
+  // Note: In Vercel, static files are sometimes tricky. 
+  // We check standard 'public/projects' or root 'projects'.
   const projectsDirectory = path.join(process.cwd(), 'projects');
 
   try {
+    // Read directory
     const fileNames = fs.readdirSync(projectsDirectory);
     
-    // Filter to only keep image files
+    // Filter for images only
     const images = fileNames.filter(file => 
       /\.(jpg|jpeg|png|gif|webp)$/i.test(file)
     );
 
     res.status(200).json(images);
   } catch (error) {
-    // Fallback if folder isn't found (prevents crash)
-    console.error(error);
+    // Graceful fallback if folder is missing
+    console.error("Error reading projects directory:", error);
     res.status(200).json([]); 
   }
 }
