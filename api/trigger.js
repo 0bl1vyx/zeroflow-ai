@@ -3,7 +3,7 @@ export default async function handler(req, res) {
   const { name, email, problem } = req.body;
 
   // CHANGE THIS TO YOUR USERNAME
-  const repo = 'YOUR_GITHUB_USERNAME/zeroflow-ai'; 
+  const repo = '0bl1vyx/zeroflow-ai'; 
 
   try {
     const response = await fetch(`https://api.github.com/repos/${repo}/dispatches`, {
