@@ -2,6 +2,7 @@
   "version": 2,
   "routes": [
     { "src": "/api/trigger", "dest": "/api/trigger.js" },
+    { "src": "/api/projects", "dest": "/api/projects.js" },
     { "handle": "filesystem" },
     { "src": "/(.*)", "dest": "/index.html" }
   ]
