@@ -1,12 +1,16 @@
-// This runs on Vercel's Server, not the browser.
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).end();
 
   const { name, email, problem } = req.body;
 
+  // !!! UPDATE THIS LINE WITH YOUR USERNAME !!!
+  const repoPath = 'YOUR_GITHUB_USERNAME/zeroflow-ai'; 
+
+  console.log("Triggering workflow for:", repoPath);
+
   try {
     const response = await fetch(
-      `https://api.github.com/repos/${process.env.GITHUB_REPOSITORY}/dispatches`,
+      `https://api.github.com/repos/${repoPath}/dispatches`,
       {
         method: 'POST',
         headers: {
@@ -23,9 +27,12 @@ export default async function handler(req, res) {
     if (response.ok) {
       res.status(200).json({ message: 'Triggered' });
     } else {
-      res.status(500).json({ error: 'GitHub Refused' });
+      const errorText = await response.text();
+      console.error("GitHub Error:", errorText);
+      res.status(500).json({ error: 'GitHub Refused', details: errorText });
     }
   } catch (error) {
+    console.error("Server Error:", error);
     res.status(500).json({ error: 'Server Error' });
   }
 }
