@@ -1,17 +1,12 @@
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).end();
-
   const { name, email, problem } = req.body;
 
-  // !!! UPDATE THIS LINE WITH YOUR USERNAME !!!
-  const repoPath = 'YOUR_GITHUB_USERNAME/zeroflow-ai'; 
-
-  console.log("Triggering workflow for:", repoPath);
+  // CHANGE THIS TO YOUR USERNAME
+  const repo = 'YOUR_GITHUB_USERNAME/zeroflow-ai'; 
 
   try {
-    const response = await fetch(
-      `https://api.github.com/repos/${repoPath}/dispatches`,
-      {
+    const response = await fetch(`https://api.github.com/repos/${repo}/dispatches`, {
         method: 'POST',
         headers: {
           'Accept': 'application/vnd.github.v3+json',
@@ -21,18 +16,10 @@ export default async function handler(req, res) {
           event_type: 'trigger-automation',
           client_payload: { name, email, problem },
         }),
-      }
-    );
-
-    if (response.ok) {
-      res.status(200).json({ message: 'Triggered' });
-    } else {
-      const errorText = await response.text();
-      console.error("GitHub Error:", errorText);
-      res.status(500).json({ error: 'GitHub Refused', details: errorText });
-    }
+    });
+    if (response.ok) res.status(200).json({ status: 'ok' });
+    else res.status(500).json({ error: 'GitHub rejected' });
   } catch (error) {
-    console.error("Server Error:", error);
-    res.status(500).json({ error: 'Server Error' });
+    res.status(500).json({ error: 'Server error' });
   }
 }
