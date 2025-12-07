@@ -52,7 +52,29 @@ body.hovering .cursor-outline {
     z-index: -1; opacity: 0.3; pointer-events: none;
 }
 
-/* --- 4. TYPOGRAPHY & GLITCH --- */
+/* --- 4. LIGHTBOX (FIXED) --- */
+.lightbox {
+    display: none; /* Hidden by default */
+    position: fixed; z-index: 10000; left: 0; top: 0; width: 100%; height: 100%;
+    background-color: rgba(0, 0, 0, 0.95); /* Black w/ opacity */
+    justify-content: center; align-items: center;
+    backdrop-filter: blur(10px);
+}
+.lightbox-content { position: relative; max-width: 90%; max-height: 90%; display: flex; flex-direction: column; align-items: center; }
+.lightbox img {
+    max-width: 100%; max-height: 85vh; 
+    border: 1px solid var(--neon-orange);
+    box-shadow: 0 0 50px rgba(255, 107, 0, 0.1);
+    border-radius: 4px;
+}
+.close-lightbox {
+    position: absolute; top: 20px; right: 40px;
+    font-size: 50px; color: #fff; cursor: pointer; z-index: 10001;
+    transition: 0.3s;
+}
+.close-lightbox:hover { color: var(--neon-orange); transform: rotate(90deg); }
+
+/* --- 5. TYPOGRAPHY & GLITCH --- */
 h1, h2, h3, h4, .brand, .price-tier { font-family: 'Space Grotesk', sans-serif; }
 h1 { font-size: clamp(3rem, 7vw, 5.5rem); line-height: 1.1; margin-bottom: 25px; font-weight: 700; }
 .highlight {
@@ -87,7 +109,7 @@ h1 { font-size: clamp(3rem, 7vw, 5.5rem); line-height: 1.1; margin-bottom: 25px;
     100% { clip-path: polygon(0 50%, 100% 50%, 100% 70%, 0 70%); }
 }
 
-/* --- 5. NAVIGATION --- */
+/* --- 6. NAVIGATION --- */
 nav {
     display: flex; justify-content: space-between; align-items: center;
     padding: 20px 5%; position: fixed; width: 100%; top: 0; z-index: 100;
@@ -106,7 +128,7 @@ nav {
 .nav-btn:hover { border-color: var(--neon-orange); background: rgba(255, 107, 0, 0.1); }
 .mobile-menu-btn { display: none; cursor: pointer; }
 
-/* --- 6. HERO & HEADER --- */
+/* --- 7. HERO & HEADER --- */
 header { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 120px 20px 80px; }
 .hero-badge {
     background: rgba(255, 107, 0, 0.1); border: 1px solid rgba(255, 107, 0, 0.3);
@@ -143,7 +165,7 @@ header { min-height: 100vh; display: flex; flex-direction: column; justify-conte
 .cta-btn.secondary:hover { border-color: white; background: rgba(255,255,255,0.05); }
 .cta-btn.full-width { width: 100%; justify-content: center; }
 
-/* --- 7. CASE STUDY BANNER --- */
+/* --- 8. CASE STUDY BANNER --- */
 .case-study-banner {
     background: #111; border-top: 1px solid #333; border-bottom: 1px solid #333;
     padding: 40px 5%; display: flex; flex-wrap: wrap; align-items: center; justify-content: center;
@@ -156,7 +178,7 @@ header { min-height: 100vh; display: flex; flex-direction: column; justify-conte
 .cs-link { color: white; text-decoration: none; font-weight: 600; display: flex; align-items: center; gap: 5px; transition: 0.3s; border-bottom: 1px solid var(--neon-orange); padding-bottom: 2px; }
 .cs-link:hover { gap: 10px; color: var(--neon-orange); }
 
-/* --- 8. ROADMAP (Step Cards) --- */
+/* --- 9. ROADMAP (Step Cards) --- */
 .roadmap-container {
     display: flex; justify-content: space-between; align-items: flex-start; 
     flex-wrap: wrap; gap: 20px;
@@ -174,7 +196,7 @@ header { min-height: 100vh; display: flex; flex-direction: column; justify-conte
 .step-connector { flex: 0.5; height: 1px; background: #333; margin-top: 30px; display: none; }
 @media(min-width: 900px) { .step-connector { display: block; } }
 
-/* --- 9. TEMPLATES GRID --- */
+/* --- 10. TEMPLATES GRID --- */
 .template-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; }
 .tpl-card {
     background: var(--glass-bg); border: 1px solid var(--glass-border); padding: 30px; border-radius: 12px;
@@ -185,12 +207,32 @@ header { min-height: 100vh; display: flex; flex-direction: column; justify-conte
 .tpl-card h4 { font-size: 1.1rem; margin-bottom: 8px; }
 .tpl-card p { font-size: 0.9rem; color: #888; }
 
-/* --- 10. PRICING --- */
+/* --- 11. PRICING (FIXED TEXT COLOR) --- */
 .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; align-items: center; }
 .price-card {
     background: #0e0e0e; border: 1px solid #333; padding: 40px; border-radius: 16px; position: relative;
+    transition: transform 0.3s;
 }
-.price-card.highlight { background: #121212; border-color: var(--neon-orange); transform: scale(1.05); z-index: 2; box-shadow: 0 10px 40px rgba(0,0,0,0.5); }
+.price-card:hover { border-color: #444; }
+
+.price-card.highlight { 
+    background: #121212; 
+    border-color: var(--neon-orange); 
+    transform: scale(1.05); 
+    z-index: 2; 
+    box-shadow: 0 10px 40px rgba(0,0,0,0.5); 
+}
+/* FORCE WHITE TEXT IN HIGHLIGHT CARD */
+.price-card.highlight .price-tier, 
+.price-card.highlight .price-amt, 
+.price-card.highlight li,
+.price-card.highlight span { 
+    color: #ffffff !important; 
+}
+.price-card.highlight .price-amt span {
+    color: #cccccc !important;
+}
+
 .badge { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: var(--neon-orange); color: white; padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 800; }
 .price-tier { font-size: 1.2rem; color: #aaa; margin-bottom: 15px; }
 .price-amt { font-size: 2.5rem; font-weight: 700; color: white; margin-bottom: 30px; }
@@ -199,22 +241,44 @@ header { min-height: 100vh; display: flex; flex-direction: column; justify-conte
 .price-features li { display: flex; gap: 10px; margin-bottom: 12px; color: #ccc; font-size: 0.95rem; }
 .price-features li i { color: var(--neon-orange); width: 18px; }
 
-/* --- 11. REVIEWS --- */
+/* --- 12. REVIEWS --- */
 .reviews-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
 .review-card { background: #111; padding: 30px; border-radius: 12px; border: 1px solid #222; }
 .stars { color: #ffc107; margin-bottom: 15px; letter-spacing: 3px; }
 .review-card p { font-style: italic; color: #ddd; margin-bottom: 15px; }
 .reviewer { color: #666; font-size: 0.85rem; font-weight: 700; text-transform: uppercase; }
 
-/* --- 12. SECTIONS & GENERAL --- */
+/* --- 13. SECTIONS & GENERAL --- */
 section { padding: 100px 5%; max-width: 1300px; margin: 0 auto; }
 .section-header { margin-bottom: 70px; text-align: center; }
 .section-header h2 { font-size: 2.8rem; margin-bottom: 15px; }
 .divider { width: 60px; height: 3px; background: var(--neon-orange); margin: 25px 0; }
 
 .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
-.profile-img { width: 100%; border-radius: 20px; border: 2px solid var(--neon-orange); filter: grayscale(100%); transition: 0.5s; }
+
+/* UPDATED PROFILE PICTURE */
+.profile-container {
+    display: flex; justify-content: center; align-items: center;
+}
+.image-wrapper { 
+    width: 280px; height: 280px; 
+    border-radius: 50%; /* Perfect Circle */
+    border: 2px solid var(--neon-orange); 
+    overflow: hidden; 
+    box-shadow: 0 0 30px rgba(255, 107, 0, 0.2);
+    position: relative;
+    transition: 0.3s;
+}
+.image-wrapper:hover { transform: scale(1.05); border-color: #fff; }
+.profile-img { 
+    width: 100%; height: 100%; 
+    object-fit: cover; 
+    border-radius: 50%; 
+    filter: grayscale(100%); 
+    transition: 0.5s; 
+}
 .profile-img:hover { filter: grayscale(0%); }
+
 .tech-stack-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-top: 30px; }
 .stack-card { 
     background: #111; padding: 15px; border-radius: 8px; border: 1px solid #333;
@@ -222,7 +286,7 @@ section { padding: 100px 5%; max-width: 1300px; margin: 0 auto; }
 }
 .stack-card i { color: var(--neon-orange); }
 
-/* --- 13. SIMULATOR & NODES --- */
+/* --- 14. SIMULATOR & NODES --- */
 .demo-wrapper {
     display: grid; grid-template-columns: 1fr 1.8fr; background: #0a0a0a; border: 1px solid #333;
     border-radius: 16px; overflow: hidden; box-shadow: 0 30px 60px rgba(0,0,0,0.5);
@@ -262,27 +326,7 @@ section { padding: 100px 5%; max-width: 1300px; margin: 0 auto; }
 .log-line.processing { color: var(--neon-orange); }
 .log-line.success { color: #22c55e; }
 
-/* --- 14. FOOTER & TERMINAL --- */
-.terminal-widget {
-    position: fixed; bottom: 20px; right: 20px; width: 350px;
-    background: rgba(10, 10, 10, 0.95); border: 1px solid #333;
-    border-radius: 8px 8px 0 0; z-index: 999; overflow: hidden;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.5); transform: translateY(calc(100% - 40px));
-    transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-.terminal-widget.open { transform: translateY(0); border-color: var(--neon-orange); }
-.terminal-header {
-    background: #111; padding: 10px 15px; cursor: pointer; display: flex;
-    justify-content: space-between; font-family: monospace; font-size: 0.9rem;
-    color: var(--neon-orange); border-bottom: 1px solid #333;
-}
-.terminal-body { height: 300px; padding: 15px; overflow-y: auto; font-size: 0.85rem; }
-.msg { margin-bottom: 10px; padding: 8px 12px; border-radius: 4px; max-width: 85%; }
-.msg.bot { background: #1a1a1a; color: #ddd; border-left: 2px solid var(--neon-orange); }
-.msg.user { background: rgba(255, 107, 0, 0.1); color: white; margin-left: auto; text-align: right; }
-.terminal-input { display: flex; padding: 10px; background: #000; border-top: 1px solid #333; }
-.terminal-input input { background: transparent; border: none; color: white; width: 100%; outline: none; margin-left: 5px; font-family: monospace; }
-
+/* --- 15. FOOTER --- */
 footer { border-top: 1px solid #222; padding: 60px 0; background: #050505; text-align: center; }
 .footer-brand { font-size: 1.5rem; font-weight: 800; color: white; margin-bottom: 20px; }
 .copyright { color: #444; font-size: 0.8rem; font-family: monospace; }
@@ -309,7 +353,6 @@ footer { border-top: 1px solid #222; padding: 60px 0; background: #050505; text-
     .mobile-nav-overlay.active { opacity: 1; pointer-events: all; }
     .mobile-nav-overlay a { font-size: 1.5rem; color: white; text-decoration: none; font-weight: 700; }
     .close-mobile { position: absolute; top: 30px; right: 30px; color: white; font-size: 2rem; }
-    .terminal-widget { display: none; }
     .case-study-banner { text-align: center; justify-content: center; }
     .cs-link { margin: 0 auto; }
 }
