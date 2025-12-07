@@ -14,6 +14,8 @@
 </head>
 <body>
 
+    <canvas id="neuro-network"></canvas>
+
     <div class="cursor-dot" id="cursor-dot"></div>
     <div class="cursor-outline" id="cursor-outline"></div>
 
@@ -127,7 +129,7 @@
                 </div>
             </div>
             <div class="about-text reveal">
-                <h2 class="glitch-hover">The Automation Architect</h2>
+                <h2 class="glitch-hover" data-text="The Automation Architect">The Automation Architect</h2>
                 <div class="divider"></div>
                 <p>
                     I'm <strong>Priyo (0bl1vyx)</strong>. I don't just "make bots." I build complete digital workforces.
@@ -148,7 +150,7 @@
 
     <section id="hosting">
         <div class="section-header reveal">
-            <h2 class="glitch-hover">Deployment Protocols</h2>
+            <h2 class="glitch-hover" data-text="Deployment Protocols">Deployment Protocols</h2>
             <p>Where will these automations run? You have full control.</p>
         </div>
         
@@ -188,7 +190,7 @@
 
     <section id="work">
         <div class="section-header reveal">
-            <h2 class="glitch-hover">Workflow Database</h2>
+            <h2 class="glitch-hover" data-text="Workflow Database">Workflow Database</h2>
             <p>Real-world architectures deployed for clients.</p>
         </div>
         <div class="masonry-grid" id="project-grid">
@@ -201,7 +203,7 @@
 
     <section id="demo">
         <div class="section-header reveal">
-            <h2 class="glitch-hover">Live Simulation</h2>
+            <h2 class="glitch-hover" data-text="Live Simulation">Live Simulation</h2>
             <p>Visualize how an AI Agent processes a request in real-time.</p>
         </div>
 
@@ -233,17 +235,20 @@
                         <div class="node-icon"><i data-lucide="webhook"></i></div>
                         <span>Trigger</span>
                     </div>
-                    <div class="connector" id="conn-1"></div>
+                    <div class="connector" id="conn-1"><div class="packet"></div></div>
+                    
                     <div class="node" id="node-2">
                         <div class="node-icon"><i data-lucide="brain-circuit"></i></div>
                         <span>AI Logic</span>
                     </div>
-                    <div class="connector" id="conn-2"></div>
+                    <div class="connector" id="conn-2"><div class="packet"></div></div>
+                    
                     <div class="node" id="node-3">
                         <div class="node-icon"><i data-lucide="file-spreadsheet"></i></div>
                         <span>Execution</span>
                     </div>
-                    <div class="connector" id="conn-3"></div>
+                    <div class="connector" id="conn-3"><div class="packet"></div></div>
+                    
                     <div class="node" id="node-4">
                         <div class="node-icon"><i data-lucide="mail"></i></div>
                         <span>Output</span>
@@ -261,7 +266,7 @@
 
     <section id="faq">
         <div class="section-header reveal">
-            <h2 class="glitch-hover">System FAQ</h2>
+            <h2 class="glitch-hover" data-text="System FAQ">System FAQ</h2>
         </div>
         <div class="faq-grid reveal">
             <div class="faq-item">
@@ -307,6 +312,20 @@
             </div>
         </div>
     </footer>
+
+    <div class="terminal-widget" id="terminal-widget">
+        <div class="terminal-header" onclick="toggleTerminal()">
+            <span><i data-lucide="terminal-square"></i> ZeroFlow_Assistant</span>
+            <span class="minimize">_</span>
+        </div>
+        <div class="terminal-body" id="terminal-body">
+            <div class="msg bot">System initialized. How can I help?</div>
+        </div>
+        <div class="terminal-input">
+            <span>></span>
+            <input type="text" placeholder="Type command..." id="term-input">
+        </div>
+    </div>
 
     <script src="script.js"></script>
 </body>
