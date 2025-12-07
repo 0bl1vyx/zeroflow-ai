@@ -11,7 +11,7 @@
     --text-muted: #a1a1aa;
 }
 
-* { margin: 0; padding: 0; box-sizing: border-box; cursor: none; /* Hide default cursor */ }
+* { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
 
 html { scroll-behavior: smooth; }
 body {
@@ -29,11 +29,9 @@ body {
     width: 40px; height: 40px; border: 1px solid rgba(255, 107, 0, 0.5);
     transition: width 0.2s, height 0.2s, background 0.2s;
 }
-/* Expand cursor on hoverable elements */
 body.hovering .cursor-outline {
     width: 60px; height: 60px; background: rgba(255, 107, 0, 0.1); border-color: var(--neon-orange);
 }
-
 @media (max-width: 768px) {
     * { cursor: auto; }
     .cursor-dot, .cursor-outline { display: none; }
@@ -55,7 +53,7 @@ body.hovering .cursor-outline {
 }
 
 /* --- 4. TYPOGRAPHY & GLITCH --- */
-h1, h2, h3, .brand { font-family: 'Space Grotesk', sans-serif; }
+h1, h2, h3, h4, .brand, .price-tier { font-family: 'Space Grotesk', sans-serif; }
 h1 { font-size: clamp(3rem, 7vw, 5.5rem); line-height: 1.1; margin-bottom: 25px; font-weight: 700; }
 .highlight {
     background: linear-gradient(to right, var(--neon-orange), var(--neon-red));
@@ -64,7 +62,6 @@ h1 { font-size: clamp(3rem, 7vw, 5.5rem); line-height: 1.1; margin-bottom: 25px;
 .cursor-blink { animation: blink 1s infinite; color: var(--neon-orange); margin-left: 5px; }
 @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
 
-/* GLITCH EFFECT */
 .glitch-hover { position: relative; display: inline-block; }
 .glitch-hover::before, .glitch-hover::after {
     content: attr(data-text); position: absolute; top: 0; left: 0; width: 100%; height: 100%;
@@ -109,7 +106,7 @@ nav {
 .nav-btn:hover { border-color: var(--neon-orange); background: rgba(255, 107, 0, 0.1); }
 .mobile-menu-btn { display: none; cursor: pointer; }
 
-/* --- 6. HERO --- */
+/* --- 6. HERO & HEADER --- */
 header { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 120px 20px 80px; }
 .hero-badge {
     background: rgba(255, 107, 0, 0.1); border: 1px solid rgba(255, 107, 0, 0.3);
@@ -120,6 +117,17 @@ header { min-height: 100vh; display: flex; flex-direction: column; justify-conte
 .pulse-dot { width: 8px; height: 8px; background: var(--neon-orange); border-radius: 50%; animation: pulse 2s infinite; }
 @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
 .hero-desc { color: var(--text-muted); max-width: 650px; font-size: 1.25rem; margin-bottom: 40px; }
+
+/* MINI WORKFLOW VISUAL */
+.hero-mini-flow {
+    display: flex; align-items: center; gap: 15px; margin-bottom: 40px;
+    background: rgba(255, 255, 255, 0.03); padding: 15px 30px; border-radius: 50px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+.flow-step { display: flex; align-items: center; gap: 8px; color: #bbb; font-weight: 500; font-size: 0.9rem; }
+.flow-step.ai { color: var(--neon-orange); }
+.flow-arrow { color: #555; }
+
 .cta-group { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; }
 .cta-btn {
     padding: 16px 32px; font-size: 1rem; font-weight: 700; border-radius: 8px; 
@@ -133,30 +141,72 @@ header { min-height: 100vh; display: flex; flex-direction: column; justify-conte
 .cta-btn.primary:hover { transform: translateY(-3px); box-shadow: 0 20px 40px -10px rgba(255, 107, 0, 0.7); }
 .cta-btn.secondary { border: 1px solid rgba(255,255,255,0.2); color: white; background: transparent; }
 .cta-btn.secondary:hover { border-color: white; background: rgba(255,255,255,0.05); }
+.cta-btn.full-width { width: 100%; justify-content: center; }
 
-.stat-row {
-    display: flex; margin-top: 60px; gap: 40px; align-items: center;
-    border-top: 1px solid rgba(255,255,255,0.1); padding-top: 30px;
+/* --- 7. CASE STUDY BANNER --- */
+.case-study-banner {
+    background: #111; border-top: 1px solid #333; border-bottom: 1px solid #333;
+    padding: 40px 5%; display: flex; flex-wrap: wrap; align-items: center; justify-content: center;
+    gap: 40px; text-align: left;
 }
-.stat-item { text-align: center; }
-.stat-num { display: block; font-size: 1.5rem; font-weight: 700; color: white; }
-.stat-label { font-size: 0.8rem; color: #666; text-transform: uppercase; }
-.stat-divider { width: 1px; height: 30px; background: rgba(255,255,255,0.1); }
+.cs-content { max-width: 600px; }
+.cs-badge { color: var(--neon-orange); font-size: 0.75rem; letter-spacing: 1px; font-weight: 700; margin-bottom: 8px; }
+.case-study-banner h3 { font-size: 1.4rem; color: white; margin-bottom: 5px; }
+.case-study-banner p { color: #888; margin: 0; }
+.cs-link { color: white; text-decoration: none; font-weight: 600; display: flex; align-items: center; gap: 5px; transition: 0.3s; border-bottom: 1px solid var(--neon-orange); padding-bottom: 2px; }
+.cs-link:hover { gap: 10px; color: var(--neon-orange); }
 
-/* --- 7. MARQUEE --- */
-.marquee-wrapper {
-    width: 100%; overflow: hidden; background: #080808; border-top: 1px solid #222; border-bottom: 1px solid #222;
-    padding: 25px 0; white-space: nowrap; position: relative;
+/* --- 8. ROADMAP (Step Cards) --- */
+.roadmap-container {
+    display: flex; justify-content: space-between; align-items: flex-start; 
+    flex-wrap: wrap; gap: 20px;
 }
-.marquee-track { display: inline-flex; animation: scroll 30s linear infinite; }
-.tech-item {
-    display: flex; align-items: center; gap: 10px; margin: 0 40px;
-    font-size: 1.1rem; color: #888; font-weight: 600; text-transform: uppercase;
+.step-card { flex: 1; min-width: 200px; text-align: center; position: relative; }
+.step-num { font-size: 3rem; font-weight: 800; color: rgba(255,255,255,0.05); position: absolute; top: -20px; left: 50%; transform: translateX(-50%); z-index: 0; }
+.step-icon { 
+    width: 60px; height: 60px; background: #111; border: 1px solid #333; border-radius: 50%; 
+    display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; 
+    position: relative; z-index: 1; color: var(--neon-orange); transition: 0.3s;
 }
-.tech-item i { color: var(--neon-orange); }
-@keyframes scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+.step-card:hover .step-icon { border-color: var(--neon-orange); box-shadow: 0 0 15px rgba(255,107,0,0.2); }
+.step-card h4 { font-size: 1.2rem; margin-bottom: 10px; position: relative; z-index: 1; }
+.step-card p { font-size: 0.9rem; color: #888; position: relative; z-index: 1; }
+.step-connector { flex: 0.5; height: 1px; background: #333; margin-top: 30px; display: none; }
+@media(min-width: 900px) { .step-connector { display: block; } }
 
-/* --- 8. SECTIONS & CARDS --- */
+/* --- 9. TEMPLATES GRID --- */
+.template-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; }
+.tpl-card {
+    background: var(--glass-bg); border: 1px solid var(--glass-border); padding: 30px; border-radius: 12px;
+    transition: 0.3s;
+}
+.tpl-card:hover { border-color: var(--neon-orange); background: rgba(255, 255, 255, 0.03); }
+.tpl-card i { color: var(--neon-orange); margin-bottom: 15px; width: 32px; height: 32px; }
+.tpl-card h4 { font-size: 1.1rem; margin-bottom: 8px; }
+.tpl-card p { font-size: 0.9rem; color: #888; }
+
+/* --- 10. PRICING --- */
+.pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; align-items: center; }
+.price-card {
+    background: #0e0e0e; border: 1px solid #333; padding: 40px; border-radius: 16px; position: relative;
+}
+.price-card.highlight { background: #121212; border-color: var(--neon-orange); transform: scale(1.05); z-index: 2; box-shadow: 0 10px 40px rgba(0,0,0,0.5); }
+.badge { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: var(--neon-orange); color: white; padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 800; }
+.price-tier { font-size: 1.2rem; color: #aaa; margin-bottom: 15px; }
+.price-amt { font-size: 2.5rem; font-weight: 700; color: white; margin-bottom: 30px; }
+.price-amt span { font-size: 0.9rem; color: #666; font-weight: 400; }
+.price-features { list-style: none; margin-bottom: 30px; }
+.price-features li { display: flex; gap: 10px; margin-bottom: 12px; color: #ccc; font-size: 0.95rem; }
+.price-features li i { color: var(--neon-orange); width: 18px; }
+
+/* --- 11. REVIEWS --- */
+.reviews-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+.review-card { background: #111; padding: 30px; border-radius: 12px; border: 1px solid #222; }
+.stars { color: #ffc107; margin-bottom: 15px; letter-spacing: 3px; }
+.review-card p { font-style: italic; color: #ddd; margin-bottom: 15px; }
+.reviewer { color: #666; font-size: 0.85rem; font-weight: 700; text-transform: uppercase; }
+
+/* --- 12. SECTIONS & GENERAL --- */
 section { padding: 100px 5%; max-width: 1300px; margin: 0 auto; }
 .section-header { margin-bottom: 70px; text-align: center; }
 .section-header h2 { font-size: 2.8rem; margin-bottom: 15px; }
@@ -172,24 +222,7 @@ section { padding: 100px 5%; max-width: 1300px; margin: 0 auto; }
 }
 .stack-card i { color: var(--neon-orange); }
 
-/* TILT CARDS */
-.hosting-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; perspective: 1000px; }
-.host-card {
-    background: var(--glass-bg); backdrop-filter: blur(12px); border: 1px solid var(--glass-border);
-    padding: 40px; border-radius: 16px; position: relative; transition: transform 0.1s;
-    transform-style: preserve-3d;
-}
-.host-card:hover { border-color: var(--neon-orange); }
-.host-card.highlight { border-color: var(--neon-orange); background: rgba(255, 107, 0, 0.05); }
-.badge { position: absolute; top: -12px; right: 20px; background: var(--neon-orange); color: white; padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 800; }
-.host-icon { 
-    width: 50px; height: 50px; background: #151515; border: 1px solid #333; border-radius: 10px;
-    display: flex; align-items: center; justify-content: center; color: var(--neon-orange); margin-bottom: 20px;
-}
-.host-features li { display: flex; gap: 10px; margin-bottom: 12px; font-size: 0.9rem; color: #ddd; }
-.host-features li i { color: var(--neon-orange); width: 16px; }
-
-/* --- 9. SIMULATOR --- */
+/* --- 13. SIMULATOR & NODES --- */
 .demo-wrapper {
     display: grid; grid-template-columns: 1fr 1.8fr; background: #0a0a0a; border: 1px solid #333;
     border-radius: 16px; overflow: hidden; box-shadow: 0 30px 60px rgba(0,0,0,0.5);
@@ -210,7 +243,6 @@ section { padding: 100px 5%; max-width: 1300px; margin: 0 auto; }
 .node-icon { width: 50px; height: 50px; background: #111; border: 1px solid #333; border-radius: 12px; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; color: #555; transition: 0.4s; }
 .node.active .node-icon { border-color: var(--neon-orange); color: var(--neon-orange); box-shadow: 0 0 20px rgba(255,107,0,0.2); }
 
-/* Better Connector Animation */
 .connector { flex-grow: 1; height: 2px; background: #222; margin: 0 10px; position: relative; overflow: visible; }
 .connector .packet {
     position: absolute; top: -4px; left: 0; width: 10px; height: 10px;
@@ -222,10 +254,7 @@ section { padding: 100px 5%; max-width: 1300px; margin: 0 auto; }
     animation: travel 0.8s linear forwards;
     opacity: 1;
 }
-@keyframes travel {
-    0% { left: 0; }
-    100% { left: 100%; }
-}
+@keyframes travel { 0% { left: 0; } 100% { left: 100%; } }
 
 .console-window { border: 1px solid #333; border-radius: 8px; overflow: hidden; }
 .console-log { height: 150px; background: #000; padding: 15px; font-family: 'Courier New', monospace; font-size: 0.85rem; overflow-y: auto; color: #ccc; }
@@ -233,28 +262,7 @@ section { padding: 100px 5%; max-width: 1300px; margin: 0 auto; }
 .log-line.processing { color: var(--neon-orange); }
 .log-line.success { color: #22c55e; }
 
-/* --- 10. FAQ & FOOTER --- */
-.faq-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 30px; }
-.faq-item h3 { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; font-size: 1.1rem; }
-.faq-item p { color: #888; padding-left: 34px; }
-
-.hire-section { text-align: center; margin-bottom: 50px; }
-.fiverr-btn { background: #1dbf73; }
-.fiverr-btn:hover { background: #19a463; box-shadow: 0 10px 30px rgba(29, 191, 115, 0.3); }
-
-footer { border-top: 1px solid #222; padding: 60px 0; background: #050505; text-align: center; }
-.footer-brand { font-size: 1.5rem; font-weight: 800; color: white; margin-bottom: 20px; }
-.copyright { color: #444; font-size: 0.8rem; font-family: monospace; }
-
-/* MASONRY & REVEAL */
-.masonry-grid { column-count: 3; column-gap: 25px; min-height: 200px; }
-.project-card { margin-bottom: 25px; break-inside: avoid; border-radius: 12px; overflow: hidden; border: 1px solid #333; cursor: none; }
-.project-card img { width: 100%; display: block; transition: 0.4s; }
-.project-card:hover img { transform: scale(1.05); opacity: 0.8; }
-.reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s ease-out; }
-.reveal.active { opacity: 1; transform: translateY(0); }
-
-/* --- TERMINAL WIDGET --- */
+/* --- 14. FOOTER & TERMINAL --- */
 .terminal-widget {
     position: fixed; bottom: 20px; right: 20px; width: 350px;
     background: rgba(10, 10, 10, 0.95); border: 1px solid #333;
@@ -275,6 +283,18 @@ footer { border-top: 1px solid #222; padding: 60px 0; background: #050505; text-
 .terminal-input { display: flex; padding: 10px; background: #000; border-top: 1px solid #333; }
 .terminal-input input { background: transparent; border: none; color: white; width: 100%; outline: none; margin-left: 5px; font-family: monospace; }
 
+footer { border-top: 1px solid #222; padding: 60px 0; background: #050505; text-align: center; }
+.footer-brand { font-size: 1.5rem; font-weight: 800; color: white; margin-bottom: 20px; }
+.copyright { color: #444; font-size: 0.8rem; font-family: monospace; }
+
+/* MASONRY & REVEAL */
+.masonry-grid { column-count: 3; column-gap: 25px; min-height: 200px; }
+.project-card { margin-bottom: 25px; break-inside: avoid; border-radius: 12px; overflow: hidden; border: 1px solid #333; cursor: none; }
+.project-card img { width: 100%; display: block; transition: 0.4s; }
+.project-card:hover img { transform: scale(1.05); opacity: 0.8; }
+.reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s ease-out; }
+.reveal.active { opacity: 1; transform: translateY(0); }
+
 @media (max-width: 900px) {
     .about-grid, .demo-wrapper { grid-template-columns: 1fr; }
     .demo-control { border-right: none; border-bottom: 1px solid #333; }
@@ -289,6 +309,7 @@ footer { border-top: 1px solid #222; padding: 60px 0; background: #050505; text-
     .mobile-nav-overlay.active { opacity: 1; pointer-events: all; }
     .mobile-nav-overlay a { font-size: 1.5rem; color: white; text-decoration: none; font-weight: 700; }
     .close-mobile { position: absolute; top: 30px; right: 30px; color: white; font-size: 2rem; }
-    /* Hide terminal on mobile to prevent overlay issues */
     .terminal-widget { display: none; }
+    .case-study-banner { text-align: center; justify-content: center; }
+    .cs-link { margin: 0 auto; }
 }
