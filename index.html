@@ -3,10 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZeroFlow AI | Enterprise Automation</title>
+    <title>ZeroFlow AI | Enterprise Automation Solutions</title>
+    
     <script src="https://unpkg.com/lucide@latest"></script>
+    
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    
     <link rel="stylesheet" href="style.css">
+    
+    <meta name="description" content="Self-Hosted n8n AI Agents & Automation. 100% Data Ownership. No Monthly Fees.">
 </head>
 <body>
 
@@ -15,62 +20,111 @@
 
     <div class="lightbox" id="lightbox">
         <span class="close-lightbox" onclick="closeLightbox()">&times;</span>
-        <img id="lightbox-img" src="" alt="Workflow Detail">
+        <div class="lightbox-content">
+            <img id="lightbox-img" src="" alt="Workflow Detail">
+            <div class="lightbox-caption" id="lightbox-caption"></div>
+        </div>
     </div>
 
     <nav>
         <div class="brand">
-            <i data-lucide="zap"></i>
+            <div class="logo-icon">
+                <i data-lucide="zap"></i>
+            </div>
             ZeroFlow <span>AI</span>
         </div>
+        
         <div class="nav-links">
-            <a href="#about">About</a>
-            <a href="#hosting">Hosting</a>
-            <a href="#work">Work</a>
-            <a href="#demo" class="nav-btn">Try Demo</a>
+            <a href="#about">Philosophy</a>
+            <a href="#hosting">Deployment</a>
+            <a href="#work">Case Studies</a>
+            <a href="#faq">FAQ</a>
+            <a href="#demo" class="nav-btn">
+                <i data-lucide="play-circle" style="width:16px;"></i> Live Demo
+            </a>
+        </div>
+
+        <div class="mobile-menu-btn" onclick="toggleMobileMenu()">
+            <i data-lucide="menu"></i>
         </div>
     </nav>
 
+    <div id="mobile-nav" class="mobile-nav-overlay">
+        <span class="close-mobile" onclick="toggleMobileMenu()">&times;</span>
+        <a href="#about" onclick="toggleMobileMenu()">Philosophy</a>
+        <a href="#hosting" onclick="toggleMobileMenu()">Deployment</a>
+        <a href="#work" onclick="toggleMobileMenu()">Work</a>
+        <a href="#faq" onclick="toggleMobileMenu()">FAQ</a>
+    </div>
+
     <header>
-        <div class="hero-badge reveal">System Online • v4.0</div>
+        <div class="hero-badge reveal">
+            <span class="pulse-dot"></span> System Online • v4.0
+        </div>
+        
         <h1 class="glitch-wrapper reveal">
             Automate the Boring.<br>
             <span class="highlight">Scale the Interesting.</span>
         </h1>
+        
         <p class="hero-desc reveal">
             I build <b>Self-Hosted n8n AI Agents</b> that replace manual labor with intelligent logic. 
-            No monthly fees. 100% Data Ownership.
+            <br>Stop renting your intelligence. Start owning it.
         </p>
-        <div class="reveal cta-group">
-            <a href="#demo" class="cta-btn">Test The System <i data-lucide="play"></i></a>
-            <a href="mailto:0bl1vyx404@gmail.com" class="cta-btn secondary">Contact Me <i data-lucide="mail"></i></a>
+        
+        <div class="cta-group reveal">
+            <a href="#demo" class="cta-btn primary">
+                Test The System <i data-lucide="arrow-right"></i>
+            </a>
+            <a href="mailto:0bl1vyx404@gmail.com" class="cta-btn secondary">
+                <i data-lucide="mail"></i> Contact Engineering
+            </a>
+        </div>
+
+        <div class="stat-row reveal">
+            <div class="stat-item">
+                <span class="stat-num">100%</span>
+                <span class="stat-label">Data Privacy</span>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-item">
+                <span class="stat-num">0%</span>
+                <span class="stat-label">Monthly Fees</span>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-item">
+                <span class="stat-num">24/7</span>
+                <span class="stat-label">Uptime</span>
+            </div>
         </div>
     </header>
 
-    <div class="marquee-container">
-        <div class="marquee-content">
-            <span><i data-lucide="zap"></i> n8n</span>
-            <span><i data-lucide="bot"></i> OpenAI</span>
-            <span><i data-lucide="database"></i> Pinecone</span>
-            <span><i data-lucide="webhook"></i> Webhooks</span>
-            <span><i data-lucide="table"></i> Airtable</span>
-            <span><i data-lucide="mail"></i> Gmail</span>
-            <span><i data-lucide="cpu"></i> Docker</span>
-            
-            <span><i data-lucide="zap"></i> n8n</span>
-            <span><i data-lucide="bot"></i> OpenAI</span>
-            <span><i data-lucide="database"></i> Pinecone</span>
-            <span><i data-lucide="webhook"></i> Webhooks</span>
-            <span><i data-lucide="table"></i> Airtable</span>
-            <span><i data-lucide="mail"></i> Gmail</span>
-            <span><i data-lucide="cpu"></i> Docker</span>
+    <div class="marquee-wrapper">
+        <div class="marquee-track">
+            <div class="tech-item"><i data-lucide="zap"></i> n8n Workflow</div>
+            <div class="tech-item"><i data-lucide="bot"></i> OpenAI GPT-4</div>
+            <div class="tech-item"><i data-lucide="database"></i> Pinecone Vector</div>
+            <div class="tech-item"><i data-lucide="webhook"></i> Webhooks</div>
+            <div class="tech-item"><i data-lucide="table"></i> Airtable</div>
+            <div class="tech-item"><i data-lucide="mail"></i> Gmail API</div>
+            <div class="tech-item"><i data-lucide="container"></i> Docker</div>
+            <div class="tech-item"><i data-lucide="zap"></i> n8n Workflow</div>
+            <div class="tech-item"><i data-lucide="bot"></i> OpenAI GPT-4</div>
+            <div class="tech-item"><i data-lucide="database"></i> Pinecone Vector</div>
+            <div class="tech-item"><i data-lucide="webhook"></i> Webhooks</div>
+            <div class="tech-item"><i data-lucide="table"></i> Airtable</div>
+            <div class="tech-item"><i data-lucide="mail"></i> Gmail API</div>
+            <div class="tech-item"><i data-lucide="container"></i> Docker</div>
         </div>
     </div>
 
     <section id="about">
         <div class="about-grid">
             <div class="profile-container reveal">
-                <img src="profile.jpg" alt="Priyo" class="profile-img" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png'">
+                <div class="image-wrapper">
+                    <img src="profile.jpg" alt="Priyo" class="profile-img" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png'">
+                    <div class="scan-line"></div>
+                </div>
             </div>
             <div class="about-text reveal">
                 <h2 class="glitch-hover">The Automation Architect</h2>
@@ -80,13 +134,22 @@
                 </p>
                 <p>
                     Specializing in <strong>n8n and Advanced AI Logic</strong>, I design workflows that can reason, decide, and execute tasks without human supervision. 
-                    Whether you need to scrape leads, automate support, or manage complex data pipelines, I build the engine that drives your business.
+                    Whether you need to scrape leads, automate customer support, or manage complex data pipelines, I build the engine that drives your business.
                 </p>
                 
-                <div class="tech-stack">
-                    <span class="tech-tag"><i data-lucide="check-circle"></i> n8n Certified</span>
-                    <span class="tech-tag"><i data-lucide="brain-circuit"></i> LLM Integration</span>
-                    <span class="tech-tag"><i data-lucide="server"></i> DevOps</span>
+                <div class="tech-stack-grid">
+                    <div class="stack-card">
+                        <i data-lucide="check-circle"></i>
+                        <span>n8n Certified</span>
+                    </div>
+                    <div class="stack-card">
+                        <i data-lucide="brain-circuit"></i>
+                        <span>LLM Integration</span>
+                    </div>
+                    <div class="stack-card">
+                        <i data-lucide="server"></i>
+                        <span>DevOps & Security</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -94,41 +157,42 @@
 
     <section id="hosting">
         <div class="section-header reveal">
-            <h2 class="glitch-hover">Deployment Options</h2>
+            <h2 class="glitch-hover">Deployment Protocols</h2>
             <p>Where will these automations run? You have full control.</p>
         </div>
+        
         <div class="hosting-grid">
             <div class="host-card reveal">
-                <div class="icon-box"><i data-lucide="cloud"></i></div>
+                <div class="host-icon"><i data-lucide="cloud"></i></div>
                 <h3>VPS Cloud</h3>
-                <p>I set it up on a private server (Hostinger/DigitalOcean) for you.</p>
+                <p class="host-desc">Private server setup on Hostinger or DigitalOcean. Best for 24/7 reliability.</p>
                 <ul class="host-features">
-                    <li><i data-lucide="check"></i> 24/7 Uptime</li>
+                    <li><i data-lucide="check"></i> 99.9% Uptime</li>
                     <li><i data-lucide="check"></i> Static IP Address</li>
-                    <li><i data-lucide="check"></i> Best for Business</li>
+                    <li><i data-lucide="check"></i> Full Root Access</li>
                 </ul>
             </div>
 
             <div class="host-card reveal">
-                <div class="icon-box"><i data-lucide="laptop"></i></div>
-                <h3>Local / Docker</h3>
-                <p>Don't need 24/7? I help you run it on your own PC whenever you need.</p>
+                <div class="host-icon"><i data-lucide="laptop"></i></div>
+                <h3>Local Machine</h3>
+                <p class="host-desc">Runs on your own computer via Docker. Perfect for batch tasks or low budgets.</p>
                 <ul class="host-features">
-                    <li><i data-lucide="check"></i> Runs on your machine</li>
-                    <li><i data-lucide="check"></i> Zero Hosting Cost</li>
-                    <li><i data-lucide="check"></i> Good for batch tasks</li>
+                    <li><i data-lucide="check"></i> $0 Server Cost</li>
+                    <li><i data-lucide="check"></i> Runs on Demand</li>
+                    <li><i data-lucide="check"></i> Local Data Privacy</li>
                 </ul>
             </div>
 
             <div class="host-card highlight reveal">
-                <div class="badge">HASSLE FREE</div>
-                <div class="icon-box"><i data-lucide="shield-check"></i></div>
+                <div class="badge">RECOMMENDED</div>
+                <div class="host-icon"><i data-lucide="shield-check"></i></div>
                 <h3>Fully Managed</h3>
-                <p>I host, maintain, and monitor the servers for you.</p>
+                <p class="host-desc">I host, monitor, and maintain everything. You just use the dashboard.</p>
                 <ul class="host-features">
-                    <li><i data-lucide="check"></i> <strong>Starting at $20/mo</strong></li>
-                    <li><i data-lucide="check"></i> No technical setup</li>
-                    <li><i data-lucide="check"></i> I handle updates</li>
+                    <li><i data-lucide="check"></i> <strong>Starts at $20/mo</strong></li>
+                    <li><i data-lucide="check"></i> Automatic Updates</li>
+                    <li><i data-lucide="check"></i> Error Monitoring</li>
                 </ul>
             </div>
         </div>
@@ -139,29 +203,41 @@
             <h2 class="glitch-hover">Workflow Database</h2>
             <p>Real-world architectures deployed for clients.</p>
         </div>
-        <div class="masonry" id="project-grid">
-            <p style="text-align:center; width:100%; color:#666;">Scanning database...</p>
+        
+        <div class="masonry-grid" id="project-grid">
+            <div class="loader-box">
+                <i data-lucide="loader-2" class="animate-spin"></i>
+                <p>Accessing Secure Database...</p>
+            </div>
         </div>
     </section>
 
     <section id="demo">
         <div class="section-header reveal">
             <h2 class="glitch-hover">Live Simulation</h2>
-            <p>See how an AI Agent processes a request in real-time.</p>
+            <p>Visualize how an AI Agent processes a request in real-time.</p>
         </div>
 
         <div class="demo-wrapper reveal">
             <div class="demo-control">
-                <h3><i data-lucide="settings"></i> Input Parameters</h3>
+                <div class="panel-header">
+                    <i data-lucide="settings"></i> Input Parameters
+                </div>
                 <form id="agentForm">
-                    <label>Target Name</label>
-                    <input type="text" id="name" placeholder="Client Name" required>
+                    <div class="input-group">
+                        <label>Target Name</label>
+                        <input type="text" id="name" placeholder="Client Name" required>
+                    </div>
                     
-                    <label>Report Email</label>
-                    <input type="email" id="email" placeholder="client@email.com" required>
+                    <div class="input-group">
+                        <label>Report Email</label>
+                        <input type="email" id="email" placeholder="client@email.com" required>
+                    </div>
                     
-                    <label>The Challenge</label>
-                    <textarea id="problem" placeholder="e.g., We spend 5 hours a week manually copying data from emails to Excel..." required></textarea>
+                    <div class="input-group">
+                        <label>The Challenge</label>
+                        <textarea id="problem" placeholder="e.g., We spend 5 hours a week manually copying data from emails to Excel..." required></textarea>
+                    </div>
                     
                     <button type="submit" id="runBtn" class="cta-btn full-width">
                         <i data-lucide="play"></i> Run Simulation
@@ -173,50 +249,89 @@
                 <div class="node-flow">
                     <div class="node" id="node-1">
                         <div class="node-icon"><i data-lucide="webhook"></i></div>
-                        <span>Webhook</span>
+                        <span>Trigger</span>
                     </div>
                     <div class="connector" id="conn-1"></div>
                     
                     <div class="node" id="node-2">
                         <div class="node-icon"><i data-lucide="brain-circuit"></i></div>
-                        <span>AI Analysis</span>
+                        <span>AI Logic</span>
                     </div>
                     <div class="connector" id="conn-2"></div>
                     
                     <div class="node" id="node-3">
                         <div class="node-icon"><i data-lucide="file-spreadsheet"></i></div>
-                        <span>Generate Plan</span>
+                        <span>Execution</span>
                     </div>
                     <div class="connector" id="conn-3"></div>
                     
                     <div class="node" id="node-4">
                         <div class="node-icon"><i data-lucide="mail"></i></div>
-                        <span>Email Report</span>
+                        <span>Output</span>
                     </div>
                 </div>
                 
-                <div class="console-log" id="console-output">
-                    <span class="log-line">Waiting for trigger event...</span>
+                <div class="console-window">
+                    <div class="console-header">System Logs</div>
+                    <div class="console-log" id="console-output">
+                        <span class="log-line text-muted">> Waiting for trigger event...</span>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="hire" style="text-align: center; margin-bottom: 50px;">
-        <h2 style="margin-bottom: 30px;">Ready to Automate?</h2>
-        <div class="cta-group" style="justify-content: center;">
-            <a href="https://www.fiverr.com/yodhyam_gamedev/build-a-complete-ai-chatbot-for-your-website-using-chatbase" target="_blank" class="cta-btn" style="background: #1dbf73;">
-                Hire me on Fiverr
-            </a>
-            <a href="mailto:0bl1vyx404@gmail.com" class="cta-btn secondary">
-                Mail: 0bl1vyx404@gmail.com
-            </a>
+    <section id="faq">
+        <div class="section-header reveal">
+            <h2 class="glitch-hover">Frequently Asked Questions</h2>
+        </div>
+        <div class="faq-grid reveal">
+            <div class="faq-item">
+                <h3><i data-lucide="help-circle"></i> Do I need a monthly subscription?</h3>
+                <p>No. Once the automation is built, you own it. If you host it locally or on your own VPS, there are no recurring fees to me.</p>
+            </div>
+            <div class="faq-item">
+                <h3><i data-lucide="help-circle"></i> Is my data secure?</h3>
+                <p>Yes. Unlike "rented" automations (Zapier), self-hosted n8n keeps your data on your own servers. It never passes through third-party logs.</p>
+            </div>
+            <div class="faq-item">
+                <h3><i data-lucide="help-circle"></i> What if the API changes?</h3>
+                <p>I build "self-healing" workflows with error handlers. If an API breaks, the system alerts you (and me) immediately instead of failing silently.</p>
+            </div>
+            <div class="faq-item">
+                <h3><i data-lucide="help-circle"></i> Can you scrape websites?</h3>
+                <p>Absolutely. I use advanced headless browsers within n8n to scrape data even from complex, dynamic websites.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="hire" class="hire-section">
+        <div class="reveal">
+            <h2>Ready to Deploy?</h2>
+            <p>Your digital workforce is waiting to be built.</p>
+            <div class="cta-group center">
+                <a href="https://www.fiverr.com/yodhyam_gamedev/build-a-complete-ai-chatbot-for-your-website-using-chatbase" target="_blank" class="cta-btn fiverr-btn">
+                    Hire on Fiverr
+                </a>
+                <a href="mailto:0bl1vyx404@gmail.com" class="cta-btn secondary">
+                    0bl1vyx404@gmail.com
+                </a>
+            </div>
         </div>
     </section>
 
     <footer>
-        <div class="reveal">
-            &copy; 2025 ZeroFlow AI. Built by 0bl1vyx.
+        <div class="footer-content">
+            <div class="footer-brand">ZeroFlow AI</div>
+            <div class="footer-links">
+                <a href="#">GitHub</a>
+                <a href="#">Twitter</a>
+                <a href="#">LinkedIn</a>
+            </div>
+            <div class="copyright">
+                [ SYSTEM STATUS: OPERATIONAL ] <br> 
+                &copy; 2025 ZeroFlow AI. All Systems Go.
+            </div>
         </div>
     </footer>
 
