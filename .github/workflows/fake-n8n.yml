@@ -1,0 +1,30 @@
+name: Fake n8n Automation Backend
+
+on:
+  repository_dispatch:
+    types: [trigger-automation]
+
+jobs:
+  ai-consultant:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install Dependencies
+        run: npm install @google/generative-ai nodemailer
+
+      - name: Run AI Automation Script
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GMAIL_USER: ${{ secrets.GMAIL_USER }}
+          GMAIL_PASS: ${{ secrets.GMAIL_PASS }}
+          CLIENT_EMAIL: ${{ github.event.client_payload.email }}
+          CLIENT_NAME: ${{ github.event.client_payload.name }}
+          CLIENT_PROBLEM: ${{ github.event.client_payload.problem }}
+        run: node scripts/automation-worker.js
