@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initTilt();
     typeWriterEffect();
     loadProjects();
-    initNetworkBackground(); // NEW
+    initNetworkBackground();
 });
 
 /* --- 1. TYPING EFFECT (Hero) --- */
@@ -22,7 +22,6 @@ function typeWriterEffect() {
             setTimeout(type, 100);
         }
     }
-    // Start after a small delay
     setTimeout(type, 1000);
 }
 
@@ -31,26 +30,17 @@ function initCursor() {
     const dot = document.getElementById('cursor-dot');
     const outline = document.getElementById('cursor-outline');
     
-    // Disable on mobile
     if(window.innerWidth < 768) return;
 
     window.addEventListener('mousemove', (e) => {
         const posX = e.clientX;
         const posY = e.clientY;
-
-        // Dot follows instantly
         dot.style.left = `${posX}px`;
         dot.style.top = `${posY}px`;
-
-        // Outline follows with delay
-        outline.animate({
-            left: `${posX}px`,
-            top: `${posY}px`
-        }, { duration: 500, fill: "forwards" });
+        outline.animate({ left: `${posX}px`, top: `${posY}px` }, { duration: 500, fill: "forwards" });
     });
 
-    // Add hover effect for clickable items
-    const clickables = document.querySelectorAll('a, button, .project-card, .host-card, .terminal-header');
+    const clickables = document.querySelectorAll('a, button, .project-card, .price-card, .terminal-header, .tpl-card');
     clickables.forEach(el => {
         el.addEventListener('mouseenter', () => document.body.classList.add('hovering'));
         el.addEventListener('mouseleave', () => document.body.classList.remove('hovering'));
@@ -65,42 +55,26 @@ function initTilt() {
             const rect = card.getBoundingClientRect();
             const x = e.clientX - rect.left;
             const y = e.clientY - rect.top;
-            
-            // Calculate rotation based on mouse position
             const xRot = -1 * ((y - rect.height/2) / 20);
             const yRot = (x - rect.width/2) / 20;
-            
             card.style.transform = `perspective(1000px) rotateX(${xRot}deg) rotateY(${yRot}deg)`;
         });
-        
         card.addEventListener('mouseleave', () => {
             card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0)';
         });
     });
 }
 
-/* --- 4. PROJECT LOADER (Robust Fallback) --- */
+/* --- 4. PROJECT LOADER --- */
 async function loadProjects() {
     const grid = document.getElementById('project-grid');
     if(!grid) return;
-
-    // Manual list as fallback if API fails
-    const fallbackProjects = [
-        "Personal Ai Agent.png", 
-        "Lead Gen System.png", 
-        "Dashboard.jpg"
-    ];
+    const fallbackProjects = ["Personal Ai Agent.png", "Lead Gen System.png", "Dashboard.jpg"];
 
     try {
         const response = await fetch('/api/projects');
         let images = await response.json();
-
-        // Use fallback if API returns empty (common in dev environments)
-        if (!images || images.length === 0) {
-            console.warn("API empty, using fallback list.");
-            // Filter only valid fallback images (you must ensure these files exist!)
-            images = fallbackProjects; 
-        }
+        if (!images || images.length === 0) images = fallbackProjects; 
 
         if (images.length > 0) {
             grid.innerHTML = ''; 
@@ -114,10 +88,7 @@ async function loadProjects() {
                     </div>
                 `;
             });
-            setTimeout(() => {
-                lucide.createIcons();
-                initScrollReveal(); 
-            }, 100);
+            setTimeout(() => { lucide.createIcons(); initScrollReveal(); }, 100);
         } else {
             grid.innerHTML = '<p style="text-align:center; color:#555;">No projects found.</p>';
         }
@@ -154,10 +125,28 @@ window.closeLightbox = () => {
     document.body.style.overflow = 'auto'; 
 };
 
-/* --- 8. SIMULATOR LOGIC --- */
+/* --- 8. SIMULATOR LOGIC (UPDATED WITH TYPING) --- */
 const demoForm = document.getElementById('agentForm');
 const runBtn = document.getElementById('runBtn');
 const consoleOut = document.getElementById('console-output');
+
+// Helper to type log text slowly
+async function typeLog(message, type='') {
+    const time = new Date().toLocaleTimeString([], { hour12: false });
+    const fullLine = `[${time}] ${message}`;
+    
+    // Create line container
+    const lineDiv = document.createElement('div');
+    lineDiv.className = `log-line ${type}`;
+    consoleOut.appendChild(lineDiv);
+    
+    // Type characters
+    for (let i = 0; i < fullLine.length; i++) {
+        lineDiv.textContent += fullLine.charAt(i);
+        consoleOut.scrollTop = consoleOut.scrollHeight;
+        await wait(10); // Typing speed
+    }
+}
 
 if(demoForm) {
     demoForm.addEventListener('submit', async (e) => {
@@ -168,29 +157,25 @@ if(demoForm) {
         consoleOut.innerHTML = ''; 
         
         document.querySelectorAll('.node, .connector').forEach(el => el.classList.remove('active'));
-        const log = (msg, type='') => {
-            const time = new Date().toLocaleTimeString([], { hour12: false });
-            consoleOut.innerHTML += `<div class="log-line ${type}">[${time}] ${msg}</div>`;
-            consoleOut.scrollTop = consoleOut.scrollHeight;
-        }
 
-        log("System initialized.", "text-muted");
-        await wait(500);
+        await typeLog("System initialized.", "text-muted");
+        await wait(300);
         
         document.getElementById('node-1').classList.add('active');
-        log("Webhook Triggered.", "processing");
+        await typeLog("Webhook Triggered: Inbound payload received.", "processing");
         await wait(800);
         document.getElementById('conn-1').classList.add('active');
         
         await wait(800);
         document.getElementById('node-2').classList.add('active');
-        log("AI Agent analyzing payload...", "processing");
+        await typeLog("AI Agent analyzing request context...", "processing");
         await wait(1500);
+        await typeLog("Reasoning complete. Confidence: 98%.");
         document.getElementById('conn-2').classList.add('active');
         
         await wait(800);
         document.getElementById('node-3').classList.add('active');
-        log("Execution plan generated.", "processing");
+        await typeLog("Executing functions: Google Sheets, CRM.", "processing");
         
         // Fire actual API (Fire & Forget)
         try {
@@ -209,7 +194,7 @@ if(demoForm) {
         await wait(1200);
         document.getElementById('conn-3').classList.add('active');
         document.getElementById('node-4').classList.add('active');
-        log("Report dispatched via Gmail.", "success");
+        await typeLog("Report dispatched via Gmail. Task closed.", "success");
         
         runBtn.innerHTML = '<i data-lucide="check"></i> Complete';
         runBtn.style.background = '#22c55e';
@@ -224,7 +209,7 @@ if(demoForm) {
 }
 function wait(ms) { return new Promise(r => setTimeout(r, ms)); }
 
-/* --- 9. NEW: NETWORK BACKGROUND --- */
+/* --- 9. NETWORK BACKGROUND --- */
 function initNetworkBackground() {
     const canvas = document.getElementById('neuro-network');
     if(!canvas) return;
@@ -233,7 +218,7 @@ function initNetworkBackground() {
     canvas.height = window.innerHeight;
 
     let particles = [];
-    const particleCount = 60; // Adjust for density
+    const particleCount = 60; 
 
     class Particle {
         constructor() {
@@ -282,14 +267,13 @@ function initNetworkBackground() {
     }
     animate();
     
-    // Resize handler
     window.addEventListener('resize', () => {
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
     });
 }
 
-/* --- 10. NEW: TERMINAL WIDGET --- */
+/* --- 10. TERMINAL WIDGET --- */
 window.toggleTerminal = () => {
     document.getElementById('terminal-widget').classList.toggle('open');
 };
@@ -300,14 +284,10 @@ if(termInput) {
         if (e.key === 'Enter') {
             const txt = this.value;
             if(!txt) return;
-            
             const body = document.getElementById('terminal-body');
-            // Add User Message
             body.innerHTML += `<div class="msg user">${txt}</div>`;
             this.value = '';
             body.scrollTop = body.scrollHeight;
-
-            // Fake Bot Response
             setTimeout(() => {
                 body.innerHTML += `<div class="msg bot">Processing request: "${txt}"... <br>Please use the form above for official inquiries.</div>`;
                 body.scrollTop = body.scrollHeight;
