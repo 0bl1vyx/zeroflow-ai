@@ -6,20 +6,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="description" content="Self-hosted AI agents and n8n automations engineered by Priyo (0bl1vyx). Stop renting intelligence. Automate complexity. Own your data." />
 
-  <!-- IMPORTANT: relative path, not /style.css -->
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <!-- Custom cursor -->
   <div id="cursor-dot" class="cursor-dot"></div>
   <div id="cursor-outline" class="cursor-outline"></div>
 
-  <!-- Background layers -->
   <canvas id="neuro-network"></canvas>
   <div class="bg-mesh"></div>
   <div class="noise-overlay"></div>
 
-  <!-- Lightbox for project images -->
   <div id="lightbox" class="lightbox">
     <div class="lightbox-content">
       <span class="close-lightbox" onclick="closeLightbox()">&times;</span>
@@ -28,7 +24,6 @@
     </div>
   </div>
 
-  <!-- Navigation -->
   <nav>
     <div class="brand">
       <i data-lucide="workflow" class="logo-icon"></i>
@@ -41,7 +36,6 @@
       <a href="#archives">Archives</a>
       <a href="#investment">Investment</a>
 
-      <!-- Main CTA -->
       <a
         href="https://calendly.com/YOUR-SLUG/20min-ai-audit"
         target="_blank"
@@ -51,14 +45,13 @@
         <i data-lucide="sparkles"></i>
         20-Min AI Audit
       </a>
+    </div>
 
-      <div class="mobile-menu-btn" onclick="toggleMobileMenu()">
-        <i data-lucide="menu"></i>
-      </div>
+    <div class="mobile-menu-btn" onclick="toggleMobileMenu()">
+      <i data-lucide="menu"></i>
     </div>
   </nav>
 
-  <!-- Mobile nav -->
   <div id="mobile-nav" class="mobile-nav">
     <a href="#protocol" onclick="toggleMobileMenu()">Protocol</a>
     <a href="#infrastructure" onclick="toggleMobileMenu()">Infrastructure</a>
@@ -75,7 +68,6 @@
     </a>
   </div>
 
-  <!-- HERO -->
   <header id="top">
     <div class="hero-badge">
       <span class="pulse-dot"></span>
@@ -131,7 +123,6 @@
     </div>
   </header>
 
-  <!-- CASE STUDY BANNER -->
   <section class="case-study-banner">
     <div class="cs-content">
       <div class="cs-badge">Efficiency Report</div>
@@ -149,7 +140,6 @@
   </section>
 
   <main>
-    <!-- WHO THIS IS FOR -->
     <section id="who-for" class="section reveal">
       <div class="section-header">
         <h2>Built for</h2>
@@ -185,7 +175,6 @@
       </div>
     </section>
 
-    <!-- INFRASTRUCTURE MATRIX -->
     <section id="infrastructure" class="section reveal">
       <div class="section-header">
         <h2>Infrastructure Matrix</h2>
@@ -258,7 +247,6 @@
       </div>
     </section>
 
-    <!-- ENGAGEMENT PROTOCOL -->
     <section id="protocol" class="section reveal">
       <div class="section-header">
         <h2>Engagement Protocol</h2>
@@ -312,7 +300,6 @@
       </div>
     </section>
 
-    <!-- SYSTEM MODULES -->
     <section id="modules" class="section reveal">
       <div class="section-header">
         <h2>System Modules</h2>
@@ -349,7 +336,6 @@
       </div>
     </section>
 
-    <!-- AUTOMATION ARCHIVES -->
     <section id="archives" class="section reveal">
       <div class="section-header">
         <h2>Automation Archives</h2>
@@ -359,11 +345,9 @@
       </div>
 
       <div id="project-grid" class="project-grid">
-        <!-- filled by JS -->
-      </div>
+        </div>
     </section>
 
-    <!-- OPERATIONAL COSTS -->
     <section id="investment" class="section reveal">
       <div class="section-header">
         <h2>Operational Costs</h2>
@@ -418,7 +402,6 @@
       </div>
     </section>
 
-    <!-- LOGIC SIMULATOR -->
     <section id="simulator" class="section reveal">
       <div class="section-header">
         <h2>Logic Simulator</h2>
@@ -428,7 +411,6 @@
       </div>
 
       <div class="sim-layout">
-        <!-- Left: form -->
         <form id="agentForm" class="sim-form">
           <h3>Input Parameters</h3>
 
@@ -453,7 +435,6 @@
           </button>
         </form>
 
-        <!-- Right: visual + console -->
         <div class="sim-visual">
           <div class="node-graph">
             <div id="node-1" class="node">
@@ -491,7 +472,6 @@
       </div>
     </section>
 
-    <!-- FIELD REPORTS -->
     <section id="field-reports" class="section reveal">
       <div class="section-header">
         <h2>Field Reports</h2>
@@ -543,7 +523,6 @@
       </div>
     </section>
 
-    <!-- SYSTEM ARCHITECT -->
     <section id="architect" class="section reveal">
       <div class="section-header">
         <h2>System Architect</h2>
@@ -551,7 +530,6 @@
 
       <div class="architect-layout">
         <div class="architect-photo">
-          <!-- IMPORTANT: relative path, not /profile.jpg -->
           <img src="profile.jpg" alt="Priyo (0bl1vyx)" />
         </div>
         <div class="architect-content">
@@ -574,7 +552,6 @@
     </section>
   </main>
 
-  <!-- Terminal widget -->
   <div id="terminal-widget" class="terminal-widget">
     <div class="terminal-header">
       <span>zeroflow@host:~</span>
@@ -595,9 +572,7 @@
     <span>© 2025 • Built by 0bl1vyx</span>
   </footer>
 
-  <!-- Scripts -->
   <script src="https://unpkg.com/lucide@latest"></script>
-  <!-- IMPORTANT: relative path, not /script.js -->
   <script src="script.js"></script>
 </body>
 </html>
