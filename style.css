@@ -1,386 +1,600 @@
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&family=Inter:wght@400;600;800&display=swap');
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>ZeroFlow AI | Sovereign Automation Systems</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Self-hosted AI agents and n8n automations engineered by Priyo (0bl1vyx). Stop renting intelligence. Automate complexity. Own your data." />
 
-/* --- 1. CORE & RESET --- */
-:root {
-    --neon-orange: #ff6b00;
-    --neon-red: #ff2a2a;
-    --dark-bg: #050505;
-    --glass-bg: rgba(20, 20, 20, 0.7);
-    --glass-border: rgba(255, 255, 255, 0.08);
-    --text-main: #ffffff;
-    --text-muted: #a1a1aa;
-}
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+  <!-- Custom cursor -->
+  <div id="cursor-dot" class="cursor-dot"></div>
+  <div id="cursor-outline" class="cursor-outline"></div>
 
-* { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
+  <!-- Background layers -->
+  <canvas id="neuro-network"></canvas>
+  <div class="bg-mesh"></div>
+  <div class="noise-overlay"></div>
 
-html { scroll-behavior: smooth; }
-body {
-    background-color: var(--dark-bg); color: var(--text-main);
-    font-family: 'Inter', sans-serif; overflow-x: hidden; line-height: 1.6;
-}
+  <!-- Lightbox for project images -->
+  <div id="lightbox" class="lightbox">
+    <div class="lightbox-content">
+      <span class="close-lightbox" onclick="closeLightbox()">&times;</span>
+      <img id="lightbox-img" src="" alt="Workflow schematic" />
+      <div id="lightbox-caption" class="lightbox-caption"></div>
+    </div>
+  </div>
 
-/* --- 2. CUSTOM CURSOR --- */
-.cursor-dot, .cursor-outline {
-    position: fixed; top: 0; left: 0; transform: translate(-50%, -50%);
-    border-radius: 50%; z-index: 9999; pointer-events: none;
-}
-.cursor-dot { width: 8px; height: 8px; background: var(--neon-orange); }
-.cursor-outline {
-    width: 40px; height: 40px; border: 1px solid rgba(255, 107, 0, 0.5);
-    transition: width 0.2s, height 0.2s, background 0.2s;
-}
-body.hovering .cursor-outline {
-    width: 60px; height: 60px; background: rgba(255, 107, 0, 0.1); border-color: var(--neon-orange);
-}
-@media (max-width: 768px) {
-    * { cursor: auto; }
-    .cursor-dot, .cursor-outline { display: none; }
-}
+  <!-- Navigation -->
+  <nav>
+    <div class="brand">
+      <i data-lucide="workflow" class="logo-icon"></i>
+      <span>ZeroFlow AI</span>
+    </div>
 
-/* --- 3. BACKGROUNDS & NETWORK --- */
-.noise-overlay {
-    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.04'/%3E%3C/svg%3E");
-    pointer-events: none; z-index: 998;
-}
-.bg-mesh {
-    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1;
-    background: radial-gradient(circle at 50% 50%, rgba(255, 107, 0, 0.06) 0%, transparent 70%);
-}
-#neuro-network {
-    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    z-index: -1; opacity: 0.3; pointer-events: none;
-}
+    <div class="nav-links">
+      <a href="#protocol">Protocol</a>
+      <a href="#infrastructure">Infrastructure</a>
+      <a href="#archives">Archives</a>
+      <a href="#investment">Investment</a>
 
-/* --- 4. LIGHTBOX (FIXED CURSOR) --- */
-.lightbox {
-    display: none; 
-    position: fixed; z-index: 10000; left: 0; top: 0; width: 100%; height: 100%;
-    background-color: rgba(0, 0, 0, 0.95); 
-    justify-content: center; align-items: center;
-    backdrop-filter: blur(10px);
-    cursor: auto !important; /* Force cursor visibility */
-}
-/* Ensure all children of lightbox also have normal cursor */
-.lightbox * { cursor: auto !important; }
+      <!-- Main CTA -->
+      <a
+        href="https://calendly.com/YOUR-SLUG/20min-ai-audit"
+        target="_blank"
+        rel="noopener"
+        class="nav-btn nav-primary"
+      >
+        <i data-lucide="sparkles"></i>
+        20-Min AI Audit
+      </a>
 
-.lightbox-content { position: relative; max-width: 90%; max-height: 90%; display: flex; flex-direction: column; align-items: center; }
-.lightbox img {
-    max-width: 100%; max-height: 85vh; 
-    border: 1px solid var(--neon-orange);
-    box-shadow: 0 0 50px rgba(255, 107, 0, 0.1);
-    border-radius: 4px;
-}
-.close-lightbox {
-    position: absolute; top: 20px; right: 40px;
-    font-size: 50px; color: #fff; cursor: pointer; z-index: 10001;
-    transition: 0.3s;
-}
-.close-lightbox:hover { color: var(--neon-orange); transform: rotate(90deg); }
+      <div class="mobile-menu-btn" onclick="toggleMobileMenu()">
+        <i data-lucide="menu"></i>
+      </div>
+    </div>
+  </nav>
 
-/* --- 5. TYPOGRAPHY & GLITCH --- */
-h1, h2, h3, h4, .brand, .price-tier { font-family: 'Space Grotesk', sans-serif; }
-h1 { font-size: clamp(3rem, 7vw, 5.5rem); line-height: 1.1; margin-bottom: 25px; font-weight: 700; }
-.highlight {
-    background: linear-gradient(to right, var(--neon-orange), var(--neon-red));
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-}
-.cursor-blink { animation: blink 1s infinite; color: var(--neon-orange); margin-left: 5px; }
-@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+  <!-- Mobile nav -->
+  <div id="mobile-nav" class="mobile-nav">
+    <a href="#protocol" onclick="toggleMobileMenu()">Protocol</a>
+    <a href="#infrastructure" onclick="toggleMobileMenu()">Infrastructure</a>
+    <a href="#archives" onclick="toggleMobileMenu()">Archives</a>
+    <a href="#investment" onclick="toggleMobileMenu()">Investment</a>
+    <a
+      href="https://calendly.com/YOUR-SLUG/20min-ai-audit"
+      target="_blank"
+      rel="noopener"
+      onclick="toggleMobileMenu()"
+      class="mobile-nav-cta"
+    >
+      20-Min AI Audit
+    </a>
+  </div>
 
-.glitch-hover { position: relative; display: inline-block; }
-.glitch-hover::before, .glitch-hover::after {
-    content: attr(data-text); position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-    background: var(--dark-bg); opacity: 0.8; clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
-    transition: 0.3s; pointer-events: none;
-}
-.glitch-hover:hover::before {
-    left: -2px; text-shadow: 2px 0 #ff00c1; clip-path: polygon(0 20%, 100% 20%, 100% 40%, 0 40%);
-    animation: glitch-anim-1 2s infinite linear alternate-reverse;
-}
-.glitch-hover:hover::after {
-    left: 2px; text-shadow: -2px 0 #00fff9; clip-path: polygon(0 60%, 100% 60%, 100% 80%, 0 80%);
-    animation: glitch-anim-2 2s infinite linear alternate-reverse;
-}
-@keyframes glitch-anim-1 {
-    0% { clip-path: polygon(0 20%, 100% 20%, 100% 40%, 0 40%); }
-    20% { clip-path: polygon(0 60%, 100% 60%, 100% 80%, 0 80%); }
-    40% { clip-path: polygon(0 10%, 100% 10%, 100% 30%, 0 30%); }
-    100% { clip-path: polygon(0 0, 100% 0, 100% 10%, 0 10%); }
-}
-@keyframes glitch-anim-2 {
-    0% { clip-path: polygon(0 10%, 100% 10%, 100% 30%, 0 30%); }
-    100% { clip-path: polygon(0 50%, 100% 50%, 100% 70%, 0 70%); }
-}
+  <!-- HERO -->
+  <header id="top">
+    <div class="hero-badge">
+      <span class="pulse-dot"></span>
+      <span>System Online • v5.2</span>
+    </div>
 
-/* --- 6. NAVIGATION --- */
-nav {
-    display: flex; justify-content: space-between; align-items: center;
-    padding: 20px 5%; position: fixed; width: 100%; top: 0; z-index: 100;
-    background: rgba(5, 5, 5, 0.85); backdrop-filter: blur(20px);
-    border-bottom: 1px solid var(--glass-border);
-}
-.brand { font-weight: 700; font-size: 1.5rem; display: flex; gap: 10px; color: white; }
-.logo-icon { color: var(--neon-orange); transform: rotate(-10deg); }
-.nav-links { display: flex; gap: 30px; align-items: center; }
-.nav-links a { text-decoration: none; color: #888; font-weight: 500; transition: 0.3s; }
-.nav-links a:hover { color: white; }
-.nav-btn {
-    display: flex; align-items: center; gap: 8px; border: 1px solid rgba(255,255,255,0.2);
-    color: white; padding: 8px 20px; border-radius: 50px; font-weight: 600; transition: 0.3s;
-}
-.nav-btn:hover { border-color: var(--neon-orange); background: rgba(255, 107, 0, 0.1); }
-.mobile-menu-btn { display: none; cursor: pointer; }
+    <h1>
+      <span class="type-effect" data-text="Stop Renting Intelligence."></span>
+      <span class="cursor-blink">|</span>
+    </h1>
 
-/* --- 7. HERO & HEADER --- */
-header { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 120px 20px 80px; }
-.hero-badge {
-    background: rgba(255, 107, 0, 0.1); border: 1px solid rgba(255, 107, 0, 0.3);
-    color: var(--neon-orange); padding: 6px 16px; border-radius: 20px; font-size: 0.8rem;
-    margin-bottom: 30px; text-transform: uppercase; letter-spacing: 2px;
-    display: inline-flex; align-items: center; gap: 8px;
-}
-.pulse-dot { width: 8px; height: 8px; background: var(--neon-orange); border-radius: 50%; animation: pulse 2s infinite; }
-@keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
-.hero-desc { color: var(--text-muted); max-width: 650px; font-size: 1.25rem; margin-bottom: 40px; }
+    <p class="hero-desc">
+      I engineer <span class="highlight">self-hosted AI agents</span> that live on your servers, not mine.
+      Automate complexity. Eliminate repetitive labor. Own your data.
+    </p>
 
-.hero-mini-flow {
-    display: flex; align-items: center; gap: 15px; margin-bottom: 40px;
-    background: rgba(255, 255, 255, 0.03); padding: 15px 30px; border-radius: 50px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-}
-.flow-step { display: flex; align-items: center; gap: 8px; color: #bbb; font-weight: 500; font-size: 0.9rem; }
-.flow-step.ai { color: var(--neon-orange); }
-.flow-arrow { color: #555; }
+    <div class="hero-mini-flow">
+      <div class="flow-step">
+        <i data-lucide="signal"></i>
+        <span>Input Signal</span>
+      </div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-step ai">
+        <i data-lucide="brain-circuit"></i>
+        <span>Neural Processing</span>
+      </div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-step">
+        <i data-lucide="check-circle-2"></i>
+        <span>Execution</span>
+      </div>
+    </div>
 
-.cta-group { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; }
-.cta-btn {
-    padding: 16px 32px; font-size: 1rem; font-weight: 700; border-radius: 8px; 
-    cursor: pointer; transition: all 0.3s ease; text-decoration: none; 
-    display: inline-flex; align-items: center; gap: 10px; border: none;
-}
-.cta-btn.primary {
-    background: linear-gradient(135deg, var(--neon-orange), var(--neon-red)); color: white; 
-    box-shadow: 0 10px 30px -10px rgba(255, 107, 0, 0.5);
-}
-.cta-btn.primary:hover { transform: translateY(-3px); box-shadow: 0 20px 40px -10px rgba(255, 107, 0, 0.7); }
-.cta-btn.secondary { border: 1px solid rgba(255,255,255,0.2); color: white; background: transparent; }
-.cta-btn.secondary:hover { border-color: white; background: rgba(255,255,255,0.05); }
-.cta-btn.full-width { width: 100%; justify-content: center; }
+    <div class="cta-group hero-actions">
+      <button
+        id="hero-sim-btn"
+        class="cta-btn primary glitch-hover"
+        data-text="Initiate Simulation"
+      >
+        <span>Initiate Simulation</span>
+        <i data-lucide="terminal"></i>
+      </button>
 
-/* --- 8. CASE STUDY BANNER --- */
-.case-study-banner {
-    background: #111; border-top: 1px solid #333; border-bottom: 1px solid #333;
-    padding: 40px 5%; display: flex; flex-wrap: wrap; align-items: center; justify-content: center;
-    gap: 40px; text-align: left;
-}
-.cs-content { max-width: 600px; }
-.cs-badge { color: var(--neon-orange); font-size: 0.75rem; letter-spacing: 1px; font-weight: 700; margin-bottom: 8px; }
-.case-study-banner h3 { font-size: 1.4rem; color: white; margin-bottom: 5px; }
-.case-study-banner p { color: #888; margin: 0; }
-.cs-link { color: white; text-decoration: none; font-weight: 600; display: flex; align-items: center; gap: 5px; transition: 0.3s; border-bottom: 1px solid var(--neon-orange); padding-bottom: 2px; }
-.cs-link:hover { gap: 10px; color: var(--neon-orange); }
+      <a
+        href="https://calendly.com/YOUR-SLUG/20min-ai-audit"
+        target="_blank"
+        rel="noopener"
+        class="cta-btn secondary"
+      >
+        <i data-lucide="calendar"></i>
+        Request Consultation
+      </a>
+    </div>
+  </header>
 
-/* --- 9. HOSTING & ROADMAP --- */
-.roadmap-container {
-    display: flex; justify-content: space-between; align-items: flex-start; 
-    flex-wrap: wrap; gap: 20px;
-}
-.step-card { flex: 1; min-width: 200px; text-align: center; position: relative; }
-.step-num { font-size: 3rem; font-weight: 800; color: rgba(255,255,255,0.05); position: absolute; top: -20px; left: 50%; transform: translateX(-50%); z-index: 0; }
-.step-icon { 
-    width: 60px; height: 60px; background: #111; border: 1px solid #333; border-radius: 50%; 
-    display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; 
-    position: relative; z-index: 1; color: var(--neon-orange); transition: 0.3s;
-}
-.step-card:hover .step-icon { border-color: var(--neon-orange); box-shadow: 0 0 15px rgba(255,107,0,0.2); }
-.step-card h4 { font-size: 1.2rem; margin-bottom: 10px; position: relative; z-index: 1; }
-.step-card p { font-size: 0.9rem; color: #888; position: relative; z-index: 1; }
-.step-connector { flex: 0.5; height: 1px; background: #333; margin-top: 30px; display: none; }
-@media(min-width: 900px) { .step-connector { display: block; } }
+  <!-- CASE STUDY BANNER -->
+  <section class="case-study-banner">
+    <div class="cs-content">
+      <div class="cs-badge">Efficiency Report</div>
+      <h3>Reduced operational drag by 14 hrs/week for an e-commerce vector.</h3>
+      <p>
+        Automated order fulfillment pipeline using Gmail, OpenAI, and Google Sheets.
+      </p>
+    </div>
+    <div class="cs-cta">
+      <a href="#archives" class="cs-link">
+        <span>Analyze Workflow</span>
+        <i data-lucide="arrow-right"></i>
+      </a>
+    </div>
+  </section>
 
-/* HOSTING GRID */
-.hosting-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 25px; perspective: 1000px; }
-.host-card {
-    background: var(--glass-bg); backdrop-filter: blur(12px); border: 1px solid var(--glass-border);
-    padding: 30px; border-radius: 16px; position: relative; transition: transform 0.1s;
-    transform-style: preserve-3d;
-}
-.host-card:hover { border-color: var(--neon-orange); }
-.host-icon { 
-    width: 40px; height: 40px; background: #151515; border: 1px solid #333; border-radius: 10px;
-    display: flex; align-items: center; justify-content: center; color: var(--neon-orange); margin-bottom: 15px;
-}
-.host-desc { font-size: 0.9rem; color: #999; margin-bottom: 20px; line-height: 1.4; }
-.host-features li { display: flex; gap: 8px; margin-bottom: 8px; font-size: 0.85rem; color: #ddd; }
-.host-features li i { color: var(--neon-orange); width: 14px; }
+  <main>
+    <!-- WHO THIS IS FOR -->
+    <section id="who-for" class="section reveal">
+      <div class="section-header">
+        <h2>Built for</h2>
+        <p class="section-subtitle">
+          If you’re one of these, you’ll get stupid ROI from automation.
+        </p>
+      </div>
 
-/* --- 10. TEMPLATES GRID --- */
-.template-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; }
-.tpl-card {
-    background: var(--glass-bg); border: 1px solid var(--glass-border); padding: 30px; border-radius: 12px;
-    transition: 0.3s;
-}
-.tpl-card:hover { border-color: var(--neon-orange); background: rgba(255, 255, 255, 0.03); }
-.tpl-card i { color: var(--neon-orange); margin-bottom: 15px; width: 32px; height: 32px; }
-.tpl-card h4 { font-size: 1.1rem; margin-bottom: 8px; }
-.tpl-card p { font-size: 0.9rem; color: #888; }
+      <div class="persona-grid">
+        <article class="persona-card tilt-card">
+          <h3>E-commerce Founders</h3>
+          <ul>
+            <li>Order status & returns clog your inbox</li>
+            <li>Manual spreadsheet updates every day</li>
+          </ul>
+        </article>
 
-/* --- 11. PRICING --- */
-.pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; align-items: center; }
-.price-card {
-    background: #0e0e0e; border: 1px solid #333; padding: 40px; border-radius: 16px; position: relative;
-    transition: transform 0.3s;
-}
-.price-card:hover { border-color: #444; }
+        <article class="persona-card tilt-card">
+          <h3>Agencies</h3>
+          <ul>
+            <li>Lead intake & qualification is chaotic</li>
+            <li>Proposal follow-ups aren’t consistent</li>
+          </ul>
+        </article>
 
-.badge { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: var(--neon-orange); color: white; padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 800; }
-.price-tier { font-size: 1.2rem; color: #aaa; margin-bottom: 15px; }
-.price-amt { font-size: 2.5rem; font-weight: 700; color: white; margin-bottom: 30px; }
-.price-amt span { font-size: 0.9rem; color: #666; font-weight: 400; }
-.price-features { list-style: none; margin-bottom: 30px; }
-.price-features li { display: flex; gap: 10px; margin-bottom: 12px; color: #ccc; font-size: 0.95rem; }
-.price-features li i { color: var(--neon-orange); width: 18px; }
+        <article class="persona-card tilt-card">
+          <h3>Solo Builders</h3>
+          <ul>
+            <li>You juggle content, emails, and ops alone</li>
+            <li>You know AI can help but hate SaaS bloat</li>
+          </ul>
+        </article>
+      </div>
+    </section>
 
-/* --- 12. REVIEWS --- */
-.reviews-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
-.review-card { background: #111; padding: 30px; border-radius: 12px; border: 1px solid #222; }
-.stars { color: #ffc107; margin-bottom: 15px; letter-spacing: 3px; }
-.review-card p { font-style: italic; color: #ddd; margin-bottom: 15px; }
-.reviewer { color: #666; font-size: 0.85rem; font-weight: 700; text-transform: uppercase; }
+    <!-- INFRASTRUCTURE MATRIX -->
+    <section id="infrastructure" class="section reveal">
+      <div class="section-header">
+        <h2>Infrastructure Matrix</h2>
+        <p class="section-subtitle">
+          Select your deployment environment. I support all 4 vectors.
+        </p>
+      </div>
 
-/* --- 13. SECTIONS & GENERAL --- */
-section { padding: 100px 5%; max-width: 1300px; margin: 0 auto; }
-.section-header { margin-bottom: 70px; text-align: center; }
-.section-header h2 { font-size: 2.8rem; margin-bottom: 15px; }
-.divider { width: 60px; height: 3px; background: var(--neon-orange); margin: 25px 0; }
+      <div class="hosting-grid">
+        <article class="host-card tilt-card">
+          <div class="host-icon">
+            <i data-lucide="cloud"></i>
+          </div>
+          <h3>n8n Cloud</h3>
+          <p class="host-desc">
+            The official managed cloud. Simplest setup, but higher recurring costs.
+          </p>
+          <ul class="host-features">
+            <li><i data-lucide="zap"></i><span>Instant deployment</span></li>
+            <li><i data-lucide="credit-card"></i><span>High monthly fees ($50+)</span></li>
+            <li><i data-lucide="shield"></i><span>Zero maintenance</span></li>
+          </ul>
+        </article>
 
-.about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
-.profile-container { display: flex; justify-content: center; align-items: center; }
-.image-wrapper { 
-    width: 280px; height: 280px; border-radius: 50%; border: 2px solid var(--neon-orange); 
-    overflow: hidden; box-shadow: 0 0 30px rgba(255, 107, 0, 0.2); position: relative; transition: 0.3s;
-}
-.image-wrapper:hover { transform: scale(1.05); border-color: #fff; }
-.profile-img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; filter: grayscale(100%); transition: 0.5s; }
-.profile-img:hover { filter: grayscale(0%); }
+        <article class="host-card tilt-card">
+          <div class="host-icon">
+            <i data-lucide="server"></i>
+          </div>
+          <h3>Self-Host VPS</h3>
+          <p class="host-desc">
+            Best value. Run on a $6/mo Hostinger VPS. I guide you through the setup.
+          </p>
+          <ul class="host-features">
+            <li><i data-lucide="lock"></i><span>Total data sovereignty</span></li>
+            <li><i data-lucide="wallet-cards"></i><span>Cheapest 24/7 option</span></li>
+            <li><i data-lucide="key-round"></i><span>Full root access</span></li>
+          </ul>
+        </article>
 
-.tech-stack-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-top: 30px; }
-.stack-card { 
-    background: #111; padding: 15px; border-radius: 8px; border: 1px solid #333;
-    display: flex; align-items: center; gap: 10px; font-size: 0.9rem; color: #ccc;
-}
-.stack-card i { color: var(--neon-orange); }
+        <article class="host-card tilt-card">
+          <div class="host-icon">
+            <i data-lucide="cpu"></i>
+          </div>
+          <h3>Local Docker</h3>
+          <p class="host-desc">
+            Free & private. Runs on your own machine. Ideal for batch tasks and testing.
+          </p>
+          <ul class="host-features">
+            <li><i data-lucide="badge-dollar-sign"></i><span>$0 operational cost</span></li>
+            <li><i data-lucide="moon"></i><span>No 24/7 uptime</span></li>
+            <li><i data-lucide="eye-off"></i><span>Maximum privacy</span></li>
+          </ul>
+        </article>
 
-/* --- 14. SIMULATOR & NODES --- */
-.demo-wrapper {
-    display: grid; grid-template-columns: 1fr 1.8fr; background: #0a0a0a; border: 1px solid #333;
-    border-radius: 16px; overflow: hidden; box-shadow: 0 30px 60px rgba(0,0,0,0.5);
-}
-.demo-control { padding: 40px; background: #0e0e0e; border-right: 1px solid #333; }
-.panel-header { display: flex; align-items: center; gap: 10px; color: white; font-weight: 700; margin-bottom: 25px; }
-.input-group { margin-bottom: 20px; }
-.input-group label { display: block; color: #666; font-size: 0.8rem; margin-bottom: 8px; font-weight: 600; }
-.input-group input, .input-group textarea {
-    width: 100%; background: #050505; border: 1px solid #333; color: white; padding: 12px; border-radius: 8px; font-family: inherit; transition: 0.3s;
-}
-.input-group input:focus { border-color: var(--neon-orange); outline: none; }
-.demo-visualizer { background: #050505; padding: 40px; display: flex; flex-direction: column; justify-content: center; }
+        <article class="host-card tilt-card recommended">
+          <div class="recommended-tag">RECOMMENDED</div>
+          <div class="host-icon">
+            <i data-lucide="sparkles"></i>
+          </div>
+          <h3>Managed by Me</h3>
+          <p class="host-desc">
+            Peace of mind. I host, update, and maintain your agents for a flat fee.
+          </p>
+          <ul class="host-features">
+            <li><i data-lucide="badge-dollar-sign"></i><span>$20/month flat rate</span></li>
+            <li><i data-lucide="shield-check"></i><span>Updates & security included</span></li>
+            <li><i data-lucide="headphones"></i><span>Priority support</span></li>
+          </ul>
+        </article>
+      </div>
+    </section>
 
-.node-flow { display: flex; align-items: center; justify-content: space-between; margin-bottom: 40px; }
-.node { width: 80px; text-align: center; opacity: 0.5; transition: 0.4s; }
-.node.active { opacity: 1; transform: scale(1.1); }
-.node-icon { width: 50px; height: 50px; background: #111; border: 1px solid #333; border-radius: 12px; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; color: #555; transition: 0.4s; }
-.node.active .node-icon { border-color: var(--neon-orange); color: var(--neon-orange); box-shadow: 0 0 20px rgba(255,107,0,0.2); }
+    <!-- ENGAGEMENT PROTOCOL -->
+    <section id="protocol" class="section reveal">
+      <div class="section-header">
+        <h2>Engagement Protocol</h2>
+        <p class="section-subtitle">
+          From bottleneck identification to automated resolution.
+        </p>
+      </div>
 
-.connector { flex-grow: 1; height: 2px; background: #222; margin: 0 10px; position: relative; overflow: visible; }
-.connector .packet {
-    position: absolute; top: -4px; left: 0; width: 10px; height: 10px;
-    background: var(--neon-orange); border-radius: 50%;
-    box-shadow: 0 0 10px var(--neon-orange);
-    opacity: 0; transition: none;
-}
-.connector.active .packet { animation: travel 0.8s linear forwards; opacity: 1; }
-@keyframes travel { 0% { left: 0; } 100% { left: 100%; } }
+      <div class="roadmap-container">
+        <div class="step-card tilt-card">
+          <div class="step-num">01</div>
+          <div class="step-icon">
+            <i data-lucide="search"></i>
+          </div>
+          <h4>Identify</h4>
+          <p>You submit the manual process slowing you down.</p>
+        </div>
 
-.console-window { border: 1px solid #333; border-radius: 8px; overflow: hidden; }
-.console-log { height: 150px; background: #000; padding: 15px; font-family: 'Courier New', monospace; font-size: 0.85rem; overflow-y: auto; color: #ccc; }
-.log-line { display: block; margin-bottom: 6px; }
-.log-line.processing { color: var(--neon-orange); }
-.log-line.success { color: #22c55e; }
+        <div class="step-connector"></div>
 
-/* --- 15. FOOTER --- */
-footer { border-top: 1px solid #222; padding: 60px 0; background: #050505; text-align: center; }
-.footer-brand { font-size: 1.5rem; font-weight: 800; color: white; margin-bottom: 20px; }
-.copyright { color: #444; font-size: 0.8rem; font-family: monospace; }
+        <div class="step-card tilt-card">
+          <div class="step-num">02</div>
+          <div class="step-icon">
+            <i data-lucide="circuit-board"></i>
+          </div>
+          <h4>Architect</h4>
+          <p>I design the logic flow and AI decision nodes.</p>
+        </div>
 
-/* MASONRY & REVEAL */
-.masonry-grid { column-count: 3; column-gap: 25px; min-height: 200px; }
-.project-card { margin-bottom: 25px; break-inside: avoid; border-radius: 12px; overflow: hidden; border: 1px solid #333; cursor: none; }
-.project-card img { width: 100%; display: block; transition: 0.4s; }
-.project-card:hover img { transform: scale(1.05); opacity: 0.8; }
-.reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s ease-out; }
-.reveal.active { opacity: 1; transform: translateY(0); }
+        <div class="step-connector"></div>
 
-@media (max-width: 900px) {
-    .about-grid, .demo-wrapper { grid-template-columns: 1fr; }
-    .demo-control { border-right: none; border-bottom: 1px solid #333; }
-    .masonry-grid { column-count: 1; }
-    .nav-links { display: none; }
-    .mobile-menu-btn { display: block; }
-    .mobile-nav-overlay {
-        position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000;
-        z-index: 200; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 40px;
-        opacity: 0; pointer-events: none; transition: 0.3s;
-    }
-    .mobile-nav-overlay.active { opacity: 1; pointer-events: all; }
-    .mobile-nav-overlay a { font-size: 1.5rem; color: white; text-decoration: none; font-weight: 700; }
-    .close-mobile { position: absolute; top: 30px; right: 30px; color: white; font-size: 2rem; }
-    .case-study-banner { text-align: center; justify-content: center; }
-    .cs-link { margin: 0 auto; }
-}
+        <div class="step-card tilt-card">
+          <div class="step-num">03</div>
+          <div class="step-icon">
+            <i data-lucide="rocket"></i>
+          </div>
+          <h4>Deploy</h4>
+          <p>We launch the agents on your chosen infrastructure.</p>
+        </div>
 
-/* ======================================================= */
-/* !!! TEXT VISIBILITY FIX FOR HIGHLIGHT CARDS !!! */
-/* ======================================================= */
+        <div class="step-connector"></div>
 
-/* 1. Target both Pricing and Hosting highlighted cards */
-.price-card.highlight, 
-.host-card.highlight {
-    background: #080808 !important; /* Ensure extremely dark bg for contrast */
-    border: 1px solid var(--neon-orange);
-    transform: scale(1.05);
-    z-index: 2;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.5);
-}
+        <div class="step-card tilt-card">
+          <div class="step-num">04</div>
+          <div class="step-icon">
+            <i data-lucide="repeat-2"></i>
+          </div>
+          <h4>Scale</h4>
+          <p>System runs autonomously. Zero monthly SaaS bloat.</p>
+        </div>
+      </div>
+    </section>
 
-/* 2. FORCE WHITE TEXT on all relevant child elements */
-.price-card.highlight .price-tier,
-.price-card.highlight .price-amt,
-.price-card.highlight ul li,
-.price-card.highlight ul li span,
-.host-card.highlight h3,
-.host-card.highlight p,
-.host-card.highlight .host-desc,
-.host-card.highlight ul li {
-    color: #ffffff !important;
-    text-shadow: 0 0 2px rgba(0,0,0,0.8); /* Adds separation from bg */
-}
+    <!-- SYSTEM MODULES -->
+    <section id="modules" class="section reveal">
+      <div class="section-header">
+        <h2>System Modules</h2>
+        <p class="section-subtitle">
+          Pre-configured architectures ready for deployment.
+        </p>
+      </div>
 
-/* 3. Keep Icons Orange */
-.price-card.highlight i,
-.host-card.highlight i {
-    color: var(--neon-orange) !important;
-}
+      <div class="module-grid">
+        <article class="tpl-card tilt-card">
+          <h3>Inbound Filter</h3>
+          <p>AI scores incoming leads and syncs high-value targets to your CRM.</p>
+        </article>
+        <article class="tpl-card tilt-card">
+          <h3>Support Droid</h3>
+          <p>Drafts intelligent responses to FAQs using your knowledge base.</p>
+        </article>
+        <article class="tpl-card tilt-card">
+          <h3>Content Engine</h3>
+          <p>Monitors industry news and generates SEO-optimized drafts.</p>
+        </article>
+        <article class="tpl-card tilt-card">
+          <h3>Auto-Reply</h3>
+          <p>Instant, context-aware responses to form submissions.</p>
+        </article>
+        <article class="tpl-card tilt-card">
+          <h3>Data Sync</h3>
+          <p>Unified data pipeline between Email, LinkedIn, and HubSpot.</p>
+        </article>
+        <article class="tpl-card tilt-card">
+          <h3>Expense Logger</h3>
+          <p>Extracts data from PDF invoices and logs it to accounting.</p>
+        </article>
+      </div>
+    </section>
 
-/* 4. Sub-text specific styling */
-.price-card.highlight .price-amt span {
-    color: #cccccc !important;
-    font-weight: normal;
-}
+    <!-- AUTOMATION ARCHIVES -->
+    <section id="archives" class="section reveal">
+      <div class="section-header">
+        <h2>Automation Archives</h2>
+        <p class="section-subtitle">
+          Click any schematic to inspect the agent architecture.
+        </p>
+      </div>
 
-/* 5. Ensure badge text is white */
-.price-card.highlight .badge,
-.host-card.highlight .badge {
-    color: #ffffff !important;
-}
+      <div id="project-grid" class="project-grid">
+        <!-- filled by JS -->
+      </div>
+    </section>
+
+    <!-- OPERATIONAL COSTS -->
+    <section id="investment" class="section reveal">
+      <div class="section-header">
+        <h2>Operational Costs</h2>
+        <p class="section-subtitle">
+          One-time engineering fees. No hidden subscriptions.
+        </p>
+      </div>
+
+      <div class="price-grid">
+        <article class="price-card tilt-card">
+          <div class="price-tier">Single Agent</div>
+          <div class="price-amount">$49<span>/one-time</span></div>
+          <ul class="price-list">
+            <li>1 linear workflow</li>
+            <li>Standard OpenAI logic</li>
+            <li>Google Sheets integration</li>
+            <li>3-day turnaround</li>
+          </ul>
+          <button class="cta-btn full-width primary">
+            Initialize
+          </button>
+        </article>
+
+        <article class="price-card tilt-card featured">
+          <div class="badge">Most Deployed</div>
+          <div class="price-tier">Pro System</div>
+          <div class="price-amount">$149<span>/one-time</span></div>
+          <ul class="price-list">
+            <li>Multi-step logic reasoning</li>
+            <li>RAG (chat with your data)</li>
+            <li>Full CRM/database sync</li>
+            <li>7-day turnaround</li>
+          </ul>
+          <button class="cta-btn full-width primary">
+            Initialize System
+          </button>
+        </article>
+
+        <article class="price-card tilt-card">
+          <div class="price-tier">Custom Ops</div>
+          <div class="price-amount">Contact</div>
+          <ul class="price-list">
+            <li>Full enterprise architecture</li>
+            <li>Complex web scraping</li>
+            <li>Private server setup</li>
+            <li>Ongoing maintenance</li>
+          </ul>
+          <button class="cta-btn full-width secondary">
+            Talk Engineering
+          </button>
+        </article>
+      </div>
+    </section>
+
+    <!-- LOGIC SIMULATOR -->
+    <section id="simulator" class="section reveal">
+      <div class="section-header">
+        <h2>Logic Simulator</h2>
+        <p class="section-subtitle">
+          Observe the decision-making process in real time.
+        </p>
+      </div>
+
+      <div class="sim-layout">
+        <!-- Left: form -->
+        <form id="agentForm" class="sim-form">
+          <h3>Input Parameters</h3>
+
+          <label for="name">Target Identity</label>
+          <input id="name" name="name" type="text" placeholder="E-com Founder, Agency Owner, etc." required />
+
+          <label for="email">Destination Comms</label>
+          <input id="email" name="email" type="email" placeholder="founder@example.com" required />
+
+          <label for="problem">Operational Bottleneck</label>
+          <textarea
+            id="problem"
+            name="problem"
+            rows="4"
+            placeholder="Describe the manual workflow you want to eliminate..."
+            required
+          ></textarea>
+
+          <button id="runBtn" type="submit" class="cta-btn primary full-width">
+            <i data-lucide="cpu"></i>
+            Run Simulation
+          </button>
+        </form>
+
+        <!-- Right: visual + console -->
+        <div class="sim-visual">
+          <div class="node-graph">
+            <div id="node-1" class="node">
+              <span>Trigger</span>
+              <small>Webhook / Form</small>
+            </div>
+            <div id="node-2" class="node">
+              <span>Reasoning</span>
+              <small>AI Agent</small>
+            </div>
+            <div id="node-3" class="node">
+              <span>Action</span>
+              <small>n8n Workflows</small>
+            </div>
+            <div id="node-4" class="node">
+              <span>Output</span>
+              <small>Email / Sheets / CRM</small>
+            </div>
+
+            <div id="conn-1" class="connector"></div>
+            <div id="conn-2" class="connector"></div>
+            <div id="conn-3" class="connector"></div>
+          </div>
+
+          <div class="console">
+            <div class="console-header">
+              <span>System Logs</span>
+              <span class="status-dot"></span>
+            </div>
+            <div id="console-output" class="console-body">
+              <div class="log-line text-muted">&gt; Waiting for trigger event...</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FIELD REPORTS -->
+    <section id="field-reports" class="section reveal">
+      <div class="section-header">
+        <h2>Field Reports</h2>
+        <p class="section-subtitle">
+          Operators who've already deployed ZeroFlow architectures.
+        </p>
+      </div>
+
+      <div class="testimonial-grid">
+        <article class="testimonial-card">
+          <div class="rating">★★★★★</div>
+          <p class="quote">
+            "Priyo automated our lead flow. Saves us 10 hours/month. Absolute magic."
+          </p>
+          <p class="author">Sarah J. — E-com Founder (US)</p>
+        </article>
+
+        <article class="testimonial-card">
+          <div class="rating">★★★★★</div>
+          <p class="quote">
+            "The support ticket agent handles 80% of our queries now. Highly recommended."
+          </p>
+          <p class="author">Mark T. — SaaS CTO (EU)</p>
+        </article>
+
+        <article class="testimonial-card">
+          <div class="rating">★★★★★</div>
+          <p class="quote">
+            "Clean logic, fast delivery, and actually works. ZeroFlow is legit."
+          </p>
+          <p class="author">Alex R. — Agency Owner (UK)</p>
+        </article>
+
+        <article class="testimonial-card">
+          <div class="rating">★★★★★</div>
+          <p class="quote">
+            "Finally an automation engineer who understands business logic, not just code."
+          </p>
+          <p class="author">David K. — Operations Lead (IN)</p>
+        </article>
+
+        <article class="testimonial-card">
+          <div class="rating">★★★★★</div>
+          <p class="quote">
+            "The self-hosted setup saves us $200/mo in Zapier fees. Worth every penny."
+          </p>
+          <p class="author">Emma L. — Marketing Director (CA)</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- SYSTEM ARCHITECT -->
+    <section id="architect" class="section reveal">
+      <div class="section-header">
+        <h2>System Architect</h2>
+      </div>
+
+      <div class="architect-layout">
+        <div class="architect-photo">
+          <img src="/profile.jpg" alt="Priyo (0bl1vyx)" />
+        </div>
+        <div class="architect-content">
+          <p>
+            I'm Priyo (<span class="highlight">0bl1vyx</span>). I don't just "make bots." I architect complete
+            digital workforces.
+          </p>
+          <p>
+            Specializing in <strong>n8n</strong> and <strong>advanced AI logic</strong>, I design workflows that
+            can reason, decide, and execute tasks without human supervision.
+          </p>
+          <div class="skill-tags">
+            <span>n8n Certified</span>
+            <span>AI Agents</span>
+            <span>DevOps</span>
+            <span>Python</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Terminal widget (fun little toy) -->
+  <div id="terminal-widget" class="terminal-widget">
+    <div class="terminal-header">
+      <span>zeroflow@host:~</span>
+      <button onclick="toggleTerminal()">
+        <i data-lucide="minus"></i>
+      </button>
+    </div>
+    <div id="terminal-body" class="terminal-body">
+      <div>$ automation --status</div>
+      <div>[OK] System online. Awaiting new workflows.</div>
+    </div>
+    <input id="term-input" type="text" placeholder="Type a command and hit Enter…" />
+  </div>
+
+  <footer class="footer">
+    <span>ZeroFlow AI</span>
+    <span>[ SYSTEM STATUS: OPERATIONAL ]</span>
+    <span>© 2025 • Built by 0bl1vyx</span>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="/script.js"></script>
+</body>
+</html>
