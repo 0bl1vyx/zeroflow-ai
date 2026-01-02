@@ -12,7 +12,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  cursor: none; /* Hides default cursor for your custom one */
+  cursor: none; /* Hides default cursor */
 }
 
 body {
@@ -21,6 +21,19 @@ body {
   font-family: var(--font-stack);
   overflow-x: hidden;
   line-height: 1.6;
+}
+
+/* --- SCROLL PROGRESS BAR --- */
+#scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  background: var(--primary);
+  z-index: 9999;
+  width: 0%;
+  box-shadow: 0 0 10px var(--primary);
+  transition: width 0.1s;
 }
 
 /* --- Layout & Backgrounds --- */
@@ -176,12 +189,77 @@ header#top {
   box-shadow: 0 0 8px #22c55e;
 }
 
+/* --- GLITCH EFFECT --- */
 h1 {
   font-size: 3.5rem;
   font-weight: 800;
   margin-bottom: 1rem;
   color: #fff;
   letter-spacing: -1px;
+}
+
+.glitch-wrapper {
+  display: inline-block;
+  position: relative;
+}
+
+.glitch {
+  position: relative;
+  color: #fff;
+}
+
+.glitch::before, .glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--bg);
+}
+
+.glitch::before {
+  left: 2px;
+  text-shadow: -1px 0 #ff00c1;
+  clip: rect(44px, 450px, 56px, 0);
+  animation: glitch-anim-1 5s infinite linear alternate-reverse;
+}
+
+.glitch::after {
+  left: -2px;
+  text-shadow: -1px 0 #00fff9;
+  clip: rect(44px, 450px, 56px, 0);
+  animation: glitch-anim-2 5s infinite linear alternate-reverse;
+}
+
+@keyframes glitch-anim-1 {
+  0% { clip: rect(30px, 9999px, 10px, 0); }
+  5% { clip: rect(70px, 9999px, 90px, 0); }
+  10% { clip: rect(10px, 9999px, 30px, 0); }
+  15% { clip: rect(50px, 9999px, 80px, 0); }
+  20% { clip: rect(20px, 9999px, 40px, 0); }
+  25% { clip: rect(90px, 9999px, 10px, 0); }
+  30% { clip: rect(60px, 9999px, 20px, 0); }
+  35% { clip: rect(10px, 9999px, 50px, 0); }
+  40% { clip: rect(80px, 9999px, 70px, 0); }
+  45% { clip: rect(30px, 9999px, 20px, 0); }
+  50% { clip: rect(50px, 9999px, 60px, 0); }
+  100% { clip: rect(10px, 9999px, 90px, 0); }
+}
+
+@keyframes glitch-anim-2 {
+  0% { clip: rect(60px, 9999px, 80px, 0); }
+  5% { clip: rect(20px, 9999px, 10px, 0); }
+  10% { clip: rect(90px, 9999px, 50px, 0); }
+  15% { clip: rect(10px, 9999px, 60px, 0); }
+  20% { clip: rect(40px, 9999px, 20px, 0); }
+  25% { clip: rect(70px, 9999px, 90px, 0); }
+  30% { clip: rect(20px, 9999px, 10px, 0); }
+  35% { clip: rect(50px, 9999px, 60px, 0); }
+  40% { clip: rect(80px, 9999px, 20px, 0); }
+  45% { clip: rect(10px, 9999px, 40px, 0); }
+  50% { clip: rect(30px, 9999px, 70px, 0); }
+  100% { clip: rect(60px, 9999px, 10px, 0); }
 }
 
 .highlight {
@@ -193,14 +271,6 @@ h1 {
   margin-bottom: 2.5rem;
   color: var(--text-muted);
   font-size: 1.1rem;
-}
-
-.cursor-blink {
-  animation: blink 1s infinite;
-}
-
-@keyframes blink {
-  50% { opacity: 0; }
 }
 
 .hero-mini-flow {
@@ -675,6 +745,7 @@ h1 {
   color: #666;
 }
 
+/* --- Connector Data Flow Animation --- */
 .connector {
   flex-grow: 1;
   height: 2px;
@@ -684,9 +755,17 @@ h1 {
   transition: background 0.3s;
 }
 
+@keyframes dataFlow {
+  0% { background-position: 100% 0; }
+  100% { background-position: -100% 0; }
+}
+
 .connector.active {
-  background: var(--primary);
-  box-shadow: 0 0 8px var(--primary);
+  /* Create a gradient that we can animate */
+  background: linear-gradient(90deg, #333 0%, var(--primary) 50%, #333 100%);
+  background-size: 200% 100%;
+  animation: dataFlow 1.5s linear infinite;
+  box-shadow: none;
 }
 
 /* --- Console --- */
