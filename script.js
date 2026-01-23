@@ -1,145 +1,254 @@
-/* --- CONFIG & DATA (HARDCODED FOR STABILITY) --- */
-const projects = [
-  {
-    id: "amazon-lead-gen",
-    title: "Amazon PPC Lead Generator",
-    type: "Client Project",
-    tags: ["n8n", "Scraping", "Sales"],
-    image: "projects/Local Gyms Lead Finder.png", // Using your uploaded image
-    intro: "Automated scraping system that identifies high-value leads by analyzing tech stacks.",
-    problem: "Client was spending 15 hours/week manually checking agency websites to find sales targets. Hiring a VA was too slow and error-prone.",
-    solution: "Designed an n8n workflow that ingests domain lists, scrapes HTML content to detect specific WordPress versions, and filters qualified leads directly into a CRM.",
-    tech_stack: ["n8n (Self-Hosted)", "Puppeteer", "Regex Logic", "Google Sheets"],
-    result: "Reduced manual research time by 95%. Client now receives a qualified list of leads every Monday morning automatically."
-  },
-  {
-    id: "bug-bounty-finder",
-    title: "Bug Bounty Program Finder",
-    type: "Internal Tool",
-    tags: ["Security", "Automation", "LLM"],
-    image: "projects/Self Hosted BugBounty Programs Finder.png",
-    intro: "A recon system that finds self-hosted bug bounty programs hidden on the web.",
-    problem: "Finding private bug bounty programs requires hours of 'Google Dorking' and manual verification.",
-    solution: "Built an autonomous agent that searches specific dorks, visits the target sites, and uses a Gemini 1.5 Flash model to read the policy page and confirm if it's a valid bounty program.",
-    tech_stack: ["Google Search API", "Gemini 1.5 Flash", "n8n Loop", "HTTP Request"],
-    result: "Found 20+ valid programs in the first run that were not listed on major platforms like HackerOne."
-  },
-  {
-    id: "personal-agent",
-    title: "Telegram Personal AI Agent",
-    type: "Personal System",
-    tags: ["AI Agent", "Telegram", "RAG"],
-    image: "projects/personal-ai-agent.png",
-    intro: "A JARVIS-like assistant that lives in Telegram and controls my entire digital life.",
-    problem: "Switching between apps (Calendar, Notes, Weather, Search) on mobile is inefficient.",
-    solution: "Created a centralized Telegram bot connected to an n8n backend. It uses function calling to check my calendar, save notes to Notion, and answer complex queries via Perplexity logic.",
-    tech_stack: ["Telegram API", "OpenAI Function Calling", "Notion API", "Postgres"],
-    result: "Handles 50+ tasks per day via simple text commands. Zero context switching."
-  }
-];
-
 document.addEventListener('DOMContentLoaded', () => {
-  if (window.lucide) lucide.createIcons();
-  
-  renderProjects();
+  if (window.lucide && typeof lucide.createIcons === 'function') {
+    lucide.createIcons();
+  }
+
   initScrollReveal();
   initCursor();
   initTilt();
+  loadProjects();
   initNetworkBackground();
-  initSimulation();
+  initHeroSimulationShortcut();
+  initScrollProgress();
+  initSimulationLogic();
 });
 
-/* --- 1. RENDER CASE STUDIES --- */
-function renderProjects() {
-  const grid = document.getElementById('project-grid');
-  if(!grid) return;
-  grid.innerHTML = '';
-
-  projects.forEach((p, index) => {
-    // Create Card
-    const card = document.createElement('article');
-    card.className = 'project-card reveal';
-    card.style.animationDelay = `${index * 100}ms`;
-    card.innerHTML = `
-      <div class="project-thumb">
-        <img src="${p.image}" alt="${p.title}" onerror="this.src='https://placehold.co/600x400/111/333?text=System+Schematic'">
-      </div>
-      <div class="project-meta">
-        <h3>${p.title}</h3>
-        <p>${p.intro}</p>
-        <div class="tech-tags">
-          ${p.tags.map(t => `<span class="tech-tag">${t}</span>`).join('')}
-        </div>
-      </div>
-    `;
-    
-    // Click Event -> Open Modal
-    card.addEventListener('click', () => openModal(p));
-    grid.appendChild(card);
+/* --- 0. SCROLL PROGRESS --- */
+function initScrollProgress() {
+  const bar = document.getElementById('scroll-progress');
+  if(!bar) return;
+  window.addEventListener('scroll', () => {
+    const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+    const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    const percent = (scrollTop / scrollHeight) * 100;
+    bar.style.width = percent + "%";
   });
 }
 
-/* --- 2. MODAL LOGIC --- */
-const modal = document.getElementById('project-modal');
+/* --- 1. SIMULATION LOGIC (FIXED: API CALL RESTORED) --- */
+function initSimulationLogic() {
+  const form = document.getElementById('agentForm');
+  const runBtn = document.getElementById('runBtn');
+  const consoleOut = document.getElementById('console-output');
 
-function openModal(project) {
-  // Populate Data
-  document.getElementById('m-title').innerText = project.title;
-  document.getElementById('m-type').innerText = project.type;
-  document.getElementById('m-desc').innerText = project.intro;
-  document.getElementById('m-image').src = project.image;
+  if (!form || !runBtn || !consoleOut) return;
+
+  function wait(ms) { return new Promise(r => setTimeout(r, ms)); }
   
-  document.getElementById('m-problem').innerText = project.problem;
-  document.getElementById('m-solution').innerText = project.solution;
-  document.getElementById('m-result').innerText = project.result;
+  async function typeLog(message, type = '') {
+    const time = new Date().toLocaleTimeString([], { hour12: false });
+    const fullLine = `[${time}] ${message}`;
+    const lineDiv = document.createElement('div');
+    lineDiv.className = `log-line ${type}`;
+    consoleOut.appendChild(lineDiv);
+    consoleOut.scrollTop = consoleOut.scrollHeight;
+    await wait(20);
+  }
 
-  const stackList = document.getElementById('m-stack');
-  stackList.innerHTML = '';
-  project.tech_stack.forEach(tech => {
-    const li = document.createElement('li');
-    li.innerText = tech;
-    stackList.appendChild(li);
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    // UI State: Running
+    runBtn.disabled = true;
+    runBtn.innerHTML = '<i data-lucide="loader" class="spin"></i> Processing...';
+    consoleOut.innerHTML = '';
+    
+    // Reset visuals
+    document.querySelectorAll('.node, .connector').forEach(el => el.classList.remove('active'));
+
+    await typeLog('System initialized.', 'text-muted');
+    await wait(300);
+
+    // --- STEP 1: TRIGGER ---
+    document.getElementById('node-1').classList.add('active');
+    await typeLog('Webhook received. Parsing payload...', 'processing');
+    
+    // --- RESTORED API CALL START ---
+    // This sends the actual email via your backend
+    const formData = {
+      name: document.getElementById('name').value,
+      email: document.getElementById('email').value,
+      problem: document.getElementById('problem').value
+    };
+
+    try {
+       fetch('/api/trigger', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData)
+      }).catch(err => console.error("Silent API Fail:", err)); // Catch but don't stop demo
+    } catch (err) {
+      console.log("Simulating offline mode");
+    }
+    // --- RESTORED API CALL END ---
+
+    await wait(800);
+
+    // Flow Animation
+    document.getElementById('conn-1').classList.add('active');
+    await wait(1000);
+
+    // --- STEP 2: AI AGENT ---
+    document.getElementById('node-2').classList.add('active');
+    await typeLog('AI analyzing request context...', 'processing');
+    await wait(1200);
+    await typeLog('Intent detected: Request. Confidence: 99%.');
+
+    document.getElementById('conn-2').classList.add('active');
+    await wait(1000);
+
+    // --- STEP 3: DATABASE ---
+    document.getElementById('node-3').classList.add('active');
+    await typeLog('Querying Google Sheets...', 'processing');
+    await wait(800);
+    await typeLog('Data retrieved successfully.');
+
+    document.getElementById('conn-3').classList.add('active');
+    await wait(1000);
+
+    // --- STEP 4: GMAIL ACTION ---
+    document.getElementById('node-4').classList.add('active');
+    await typeLog('Drafting response via Gmail...', 'processing');
+    await wait(800);
+    await typeLog('Email sent successfully. Workflow closed.', 'success');
+
+    // UI State: Done
+    runBtn.innerHTML = '<i data-lucide="check"></i> Done';
+    runBtn.style.background = '#22c55e';
+    
+    setTimeout(() => {
+      runBtn.disabled = false;
+      runBtn.innerHTML = '<i data-lucide="play"></i> Run Workflow';
+      runBtn.style.background = '';
+      if (window.lucide) lucide.createIcons();
+    }, 4000);
+
+    if (window.lucide) lucide.createIcons();
   });
-
-  // Show
-  document.body.style.overflow = 'hidden'; // Lock scroll
-  modal.classList.add('open');
 }
 
-window.closeModal = () => {
-  modal.classList.remove('open');
-  document.body.style.overflow = 'auto'; // Unlock scroll
+/* --- 2. HERO SHORTCUT --- */
+function initHeroSimulationShortcut() {
+  const heroBtn = document.getElementById('hero-sim-btn');
+  if (!heroBtn) return;
+  
+  heroBtn.addEventListener('click', () => {
+    const sim = document.getElementById('simulator');
+    if (sim) {
+      // Improved scrolling centering
+      const yOffset = -100; 
+      const y = sim.getBoundingClientRect().top + window.pageYOffset + yOffset;
+      window.scrollTo({top: y, behavior: 'smooth'});
+    }
+    
+    setTimeout(() => {
+      const nameInput = document.getElementById('name');
+      if(nameInput) nameInput.focus();
+    }, 800);
+  });
+}
+
+/* --- 3. PROJECT LOADER --- */
+async function loadProjects() {
+  const grid = document.getElementById('project-grid');
+  if (!grid) return;
+  
+  const genericDesc = "Custom n8n workflow engineered for autonomous operation.";
+
+  try {
+    const response = await fetch('/api/projects');
+    let images = await response.json();
+
+    if (!Array.isArray(images) || images.length === 0) {
+      // Silent fallback so the section isn't empty
+      images = ['personal-ai-agent.png', 'lead-gen-system.png']; 
+    }
+
+    grid.innerHTML = '';
+
+    images.forEach((file, index) => {
+      const delay = index * 100;
+      const src = `/projects/${file}`;
+      
+      let rawTitle = file.replace(/\.[^/.]+$/, "").replace(/[-_]/g, " ");
+      const title = rawTitle.replace(/\w\S*/g, (w) => (w.replace(/^\w/, (c) => c.toUpperCase())));
+      const safeTitle = title.replace(/'/g, "\\'");
+
+      grid.innerHTML += `
+        <article 
+          class="project-card reveal tilt-card" 
+          style="animation-delay:${delay}ms"
+          onclick="openLightbox('${src}', '${safeTitle}')"
+        >
+          <div class="project-thumb">
+            <img src="${src}" alt="${title}" loading="lazy" onerror="this.parentElement.style.display='none'">
+            <div class="thumb-overlay">
+              <i data-lucide="zoom-in"></i>
+            </div>
+          </div>
+          <div class="project-meta">
+            <h3>${title}</h3>
+            <p class="project-desc">${genericDesc}</p>
+            <div class="project-footer">
+              <span class="tech-badge">n8n</span>
+              <span class="tech-badge">AI</span>
+            </div>
+          </div>
+        </article>
+      `;
+    });
+
+    setTimeout(() => {
+      if (window.lucide) lucide.createIcons();
+      initTilt(); 
+    }, 100);
+
+  } catch (error) {
+    console.error('Loader failed:', error);
+    grid.innerHTML = `<div class="console"><div class="console-body"><div class="log-line text-muted">Archives offline.</div></div></div>`;
+  }
+}
+
+/* --- 4. LIGHTBOX --- */
+const lightbox = document.getElementById('lightbox');
+const lightboxImg = document.getElementById('lightbox-img');
+const lightboxCaption = document.getElementById('lightbox-caption');
+
+window.openLightbox = (src, title) => {
+  if (!lightbox || !lightboxImg) return;
+  lightbox.style.display = 'flex';
+  lightboxImg.src = src;
+  if (lightboxCaption) lightboxCaption.textContent = title || '';
+  document.body.style.overflow = 'hidden';
 };
 
-// Close on Escape or Outside Click
-document.addEventListener('keydown', (e) => { if(e.key === 'Escape') closeModal(); });
-modal.addEventListener('click', (e) => { if(e.target === modal) closeModal(); });
+window.closeLightbox = () => {
+  if (!lightbox || !lightboxImg) return;
+  lightbox.style.display = 'none';
+  lightboxImg.src = '';
+  document.body.style.overflow = 'auto';
+};
 
-
-/* --- 3. ANIMATION & FX --- */
-function initScrollReveal() {
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(entry => { if(entry.isIntersecting) entry.target.classList.add('active'); });
-  }, { threshold: 0.1 });
-  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-}
-
+/* --- 5. STANDARD UI FUNCS --- */
 function initCursor() {
   const dot = document.getElementById('cursor-dot');
   const outline = document.getElementById('cursor-outline');
-  if(!dot || !outline || window.innerWidth < 768) return;
-
+  if (!dot || !outline || window.innerWidth < 768) return;
+  
   window.addEventListener('mousemove', (e) => {
-    const x = e.clientX; const y = e.clientY;
-    dot.style.transform = `translate(${x}px, ${y}px)`;
-    // Slight delay for outline
-    outline.animate({ transform: `translate(${x}px, ${y}px)` }, { duration: 500, fill: 'forwards' });
+    const posX = e.clientX;
+    const posY = e.clientY;
+    dot.style.left = `${posX}px`; 
+    dot.style.top = `${posY}px`;
+    
+    // Using simple style setting instead of animate for better performance
+    outline.style.left = `${posX}px`;
+    outline.style.top = `${posY}px`;
   });
 
-  // Hover effects
-  document.querySelectorAll('a, button, .project-card').forEach(el => {
-    el.addEventListener('mouseenter', () => outline.style.transform = `translate(${e.clientX}px, ${e.clientY}px) scale(1.5)`);
-    el.addEventListener('mouseleave', () => outline.style.transform = `scale(1)`);
+  document.querySelectorAll('a, button, .tilt-card, .project-card').forEach(el => {
+    el.addEventListener('mouseenter', () => document.body.classList.add('hovering'));
+    el.addEventListener('mouseleave', () => document.body.classList.remove('hovering'));
   });
 }
 
@@ -147,93 +256,53 @@ function initTilt() {
   document.querySelectorAll('.tilt-card').forEach(card => {
     card.addEventListener('mousemove', e => {
       const rect = card.getBoundingClientRect();
-      const x = e.clientX - rect.left;
+      const x = e.clientX - rect.left; 
       const y = e.clientY - rect.top;
-      const xRot = -1 * ((y - rect.height/2) / 20);
-      const yRot = (x - rect.width/2) / 20;
-      card.style.transform = `perspective(1000px) rotateX(${xRot}deg) rotateY(${yRot}deg)`;
+      card.style.transform = `perspective(1000px) rotateX(${-1 * ((y - rect.height / 2) / 30)}deg) rotateY(${(x - rect.width / 2) / 30}deg)`;
     });
     card.addEventListener('mouseleave', () => card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0)');
   });
 }
 
-/* --- 4. SIMULATION --- */
-function initSimulation() {
-  const runBtn = document.getElementById('runBtn');
-  const consoleOut = document.getElementById('console-output');
-  
-  if(!runBtn) return;
-
-  document.getElementById('agentForm').addEventListener('submit', (e) => {
-    e.preventDefault();
-    runBtn.innerHTML = '<i data-lucide="loader" class="spin"></i> RUNNING...';
-    consoleOut.innerHTML = '';
-    
-    // Simulate steps
-    const steps = [
-      { msg: "> Webhook received. Parsing payload...", node: "node-1" },
-      { msg: "> AI analyzing sentiment...", node: "node-2" },
-      { msg: "> Logic Path: Negative Sentiment Detected", node: "node-2" },
-      { msg: "> Drafting response draft...", node: "node-3" },
-      { msg: "> SUCCESS: Email queued.", node: "node-3", status: true }
-    ];
-
-    let i = 0;
-    function nextStep() {
-      if(i >= steps.length) {
-        runBtn.innerHTML = '<i data-lucide="check"></i> DONE';
-        setTimeout(() => { runBtn.innerHTML = '<i data-lucide="play"></i> EXECUTE'; }, 2000);
-        return;
-      }
-      
-      const step = steps[i];
-      // Highlight Node
-      document.querySelectorAll('.node').forEach(n => n.classList.remove('active'));
-      document.getElementById(step.node).classList.add('active');
-      
-      // Log
-      const p = document.createElement('div');
-      p.className = 'log-line';
-      p.innerText = step.msg;
-      if(step.status) { p.style.color = '#22c55e'; document.querySelector('.status-dot').classList.add('active'); }
-      consoleOut.appendChild(p);
-      
-      i++;
-      setTimeout(nextStep, 800);
-    }
-    nextStep();
-  });
+function initScrollReveal() {
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => { if(entry.isIntersecting) entry.target.classList.add('active'); });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 }
 
-/* --- 5. NETWORK BG --- */
+window.toggleMobileMenu = () => {
+  const nav = document.getElementById('mobile-nav');
+  if(nav) nav.classList.toggle('active');
+};
+
 function initNetworkBackground() {
   const canvas = document.getElementById('neuro-network');
-  if(!canvas) return;
+  if (!canvas || !canvas.getContext) return;
   const ctx = canvas.getContext('2d');
-  let w, h;
+  let width, height;
   
-  const resize = () => { w = window.innerWidth; h = window.innerHeight; canvas.width = w; canvas.height = h; };
+  function resize() { width = window.innerWidth; height = window.innerHeight; canvas.width = width; canvas.height = height; }
   window.addEventListener('resize', resize); resize();
   
-  const points = Array.from({length: 30}).map(() => ({
-    x: Math.random()*w, y: Math.random()*h, vx: (Math.random()-0.5)*0.5, vy: (Math.random()-0.5)*0.5
+  const particles = Array.from({length: 50}, () => ({
+    x: Math.random()*width, y: Math.random()*height,
+    vx: (Math.random()-0.5)*0.3, vy: (Math.random()-0.5)*0.3
   }));
 
   function animate() {
-    ctx.clearRect(0,0,w,h);
-    points.forEach(p => {
+    ctx.clearRect(0,0,width,height);
+    particles.forEach((p, i) => {
       p.x += p.vx; p.y += p.vy;
-      if(p.x < 0 || p.x > w) p.vx *= -1;
-      if(p.y < 0 || p.y > h) p.vy *= -1;
-      ctx.fillStyle = 'rgba(255,107,0,0.3)'; ctx.beginPath(); ctx.arc(p.x,p.y,2,0,Math.PI*2); ctx.fill();
-    });
-    // Connect
-    points.forEach((p, i) => {
-      for(let j=i+1; j<points.length; j++) {
-        const d = Math.hypot(p.x-points[j].x, p.y-points[j].y);
-        if(d < 150) {
-          ctx.strokeStyle = `rgba(255,107,0,${0.1 * (1 - d/150)})`;
-          ctx.beginPath(); ctx.moveTo(p.x,p.y); ctx.lineTo(points[j].x, points[j].y); ctx.stroke();
+      if(p.x < 0 || p.x > width) p.vx *= -1; if(p.y < 0 || p.y > height) p.vy *= -1;
+      
+      ctx.fillStyle = '#ff6b00'; ctx.beginPath(); ctx.arc(p.x, p.y, 1.5, 0, Math.PI*2); ctx.fill();
+      
+      for(let j=i+1; j<particles.length; j++) {
+        const d = Math.hypot(p.x-particles[j].x, p.y-particles[j].y);
+        if(d < 120) {
+          ctx.strokeStyle = `rgba(255,107,0,${1 - d/120})`; ctx.lineWidth = 0.4;
+          ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(particles[j].x, particles[j].y); ctx.stroke();
         }
       }
     });
