@@ -2,85 +2,48 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>ZeroFlow AI | Automation Architect</title>
+  <title>ZeroFlow AI | Custom Automation Solutions</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Custom n8n automation and AI agents. Self-hosted solutions that save time and cut costs." />
+  <meta name="description" content="I build custom AI automation systems for businesses. Save time, cut costs, and own your data with self-hosted agents by Priyo (0bl1vyx)." />
   <link rel="stylesheet" href="style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
-  
   <div id="scroll-progress"></div>
   <div id="cursor-dot" class="cursor-dot"></div>
   <div id="cursor-outline" class="cursor-outline"></div>
+
   <canvas id="neuro-network"></canvas>
   <div class="bg-mesh"></div>
-  <div class="scanlines"></div>
+  <div class="noise-overlay"></div>
 
-  <div id="project-modal" class="modal-overlay">
-    <div class="modal-content">
-      <button class="close-modal" onclick="closeModal()">
-        <span class="mono">ESC</span> &times;
-      </button>
-      
-      <div class="modal-grid">
-        <div class="modal-sidebar">
-          <div class="modal-meta">
-            <span class="label">CLASSIFICATION</span>
-            <h3 id="m-type" class="text-primary">Loading...</h3>
-          </div>
-          <div class="modal-meta">
-             <span class="label">STACK</span>
-             <ul id="m-stack" class="stack-list"></ul>
-          </div>
-          <a href="https://calendly.com/0bl1vyx404/20min-ai-audit" target="_blank" class="cta-btn primary full-width">
-            <i data-lucide="zap"></i> Build This For Me
-          </a>
-        </div>
-
-        <div class="modal-body">
-          <h2 id="m-title">Project Title</h2>
-          <p id="m-desc" class="modal-intro"></p>
-          
-          <div class="modal-image-wrapper">
-             <img id="m-image" src="" alt="System Visualization">
-             <div class="img-grid-overlay"></div>
-          </div>
-
-          <div class="challenge-solution">
-            <div class="cs-block">
-               <h4><span class="mono text-primary">01.</span> THE BOTTLENECK</h4>
-               <p id="m-problem"></p>
-            </div>
-            <div class="cs-block">
-               <h4><span class="mono text-primary">02.</span> THE AUTOMATION</h4>
-               <p id="m-solution"></p>
-            </div>
-          </div>
-
-          <div class="result-box">
-             <span class="label">SYSTEM OUTPUT</span>
-             <p id="m-result" class="result-text"></p>
-          </div>
-        </div>
-      </div>
+  <div id="lightbox" class="lightbox">
+    <div class="lightbox-content">
+      <span class="close-lightbox" onclick="closeLightbox()">&times;</span>
+      <img id="lightbox-img" src="" alt="Workflow schematic" />
+      <div id="lightbox-caption" class="lightbox-caption"></div>
     </div>
   </div>
 
   <nav>
     <div class="brand">
-      <i data-lucide="cpu" class="logo-icon"></i>
-      <span class="mono">ZeroFlow_AI</span>
+      <i data-lucide="workflow" class="logo-icon"></i>
+      <span>ZeroFlow AI</span>
     </div>
 
     <div class="nav-links">
-      <a href="#case-studies">Case Studies</a>
-      <a href="#process">Process</a>
+      <a href="#process">The Process</a>
+      <a href="#hosting">Hosting</a>
       <a href="#pricing">Pricing</a>
-      
-      <a href="https://calendly.com/0bl1vyx404/20min-ai-audit" target="_blank" class="nav-btn nav-primary">
-        <i data-lucide="terminal"></i>
-        <span>INIT_AUDIT</span>
+      <a href="#examples">Archives</a>
+
+      <a
+        href="https://calendly.com/0bl1vyx404/20min-ai-audit"
+        target="_blank"
+        rel="noopener"
+        class="nav-btn nav-primary"
+      >
+        <i data-lucide="sparkles"></i>
+        Book Free Audit
       </a>
     </div>
 
@@ -90,146 +53,300 @@
   </nav>
 
   <div id="mobile-nav" class="mobile-nav">
-    <a href="#case-studies" onclick="toggleMobileMenu()">Case Studies</a>
-    <a href="#process" onclick="toggleMobileMenu()">Process</a>
+    <a href="#process" onclick="toggleMobileMenu()">The Process</a>
+    <a href="#hosting" onclick="toggleMobileMenu()">Hosting</a>
     <a href="#pricing" onclick="toggleMobileMenu()">Pricing</a>
+    <a href="#examples" onclick="toggleMobileMenu()">Archives</a>
+    <a href="#" class="mobile-nav-cta">Book Free Audit</a>
   </div>
 
   <header id="top">
     <div class="hero-badge">
       <span class="pulse-dot"></span>
-      <span class="mono">SYSTEM_STATUS: ONLINE • ACCEPTING CLIENTS</span>
+      <span>Accepting New Clients • Jan 2026</span>
     </div>
 
     <h1>
-      I Replace Your <br> 
       <div class="glitch-wrapper">
-        <span class="glitch" data-text="Manual Grunt Work">Manual Grunt Work</span>
+        <span class="glitch" data-text="Own Your AI. Stop Renting It.">Own Your AI. Stop Renting It.</span>
       </div>
     </h1>
 
     <p class="hero-desc">
-      Stop renting AI. I build custom <span class="highlight">n8n automation systems</span> that run on your own private server. 
-      Pay once, own the code forever.
+      I engineer custom <span class="highlight">automation systems</span> that run on your own private server.
+      No expensive monthly subscriptions. No data leaks. You pay a one-time setup fee, and the robot is yours forever.
     </p>
 
+    <div class="hero-mini-flow">
+      <div class="flow-step">
+        <i data-lucide="mail"></i>
+        <span>New Email</span>
+      </div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-step ai">
+        <i data-lucide="brain-circuit"></i>
+        <span>AI Decides</span>
+      </div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-step">
+        <i data-lucide="check-circle-2"></i>
+        <span>Task Done</span>
+      </div>
+    </div>
+
     <div class="cta-group hero-actions">
-      <a href="#case-studies" class="cta-btn primary glitch-hover">
-        <span>View Deployment Logs</span>
+      <button id="hero-sim-btn" class="cta-btn primary glitch-hover">
+        <span>See It In Action</span>
         <i data-lucide="arrow-down"></i>
-      </a>
-      <button id="hero-sim-btn" class="cta-btn secondary">
-        <i data-lucide="play"></i> Run Simulator
       </button>
+
+      <a href="https://calendly.com/0bl1vyx404/20min-ai-audit" target="_blank" class="cta-btn secondary">
+        <i data-lucide="calendar"></i>
+        Let's Chat
+      </a>
     </div>
   </header>
 
   <main>
-    <section id="case-studies" class="section reveal">
-      <div class="section-header">
-        <h2>Deployed Systems</h2>
-        <p class="section-subtitle">Real workflows saving real hours. Click to inspect the architecture.</p>
-      </div>
-      <div id="project-grid" class="project-grid">
-        </div>
-    </section>
-
     <section id="who-for" class="section reveal">
       <div class="section-header">
-        <h2>Target Profiles</h2>
+        <h2>Is this for you?</h2>
+        <p class="section-subtitle">If you spend more time on admin than growing your business, we need to talk.</p>
       </div>
 
       <div class="persona-grid">
         <article class="persona-card tilt-card">
-          <div class="card-icon"><i data-lucide="shopping-bag"></i></div>
-          <h3>E-com Ops</h3>
-          <p>Stop copy-pasting tracking numbers. Sync Shopify to Sheets to Email automatically.</p>
+          <h3>E-commerce Founders</h3>
+          <ul>
+            <li><strong>The Pain:</strong> Copy-pasting order details and tracking numbers all day.</li>
+            <li><strong>The Fix:</strong> An agent that syncs Shopify to Sheets automatically.</li>
+          </ul>
         </article>
         <article class="persona-card tilt-card">
-          <div class="card-icon"><i data-lucide="users"></i></div>
-          <h3>Agencies</h3>
-          <p>Leads sitting in your inbox? Use AI to qualify and book calls instantly.</p>
+          <h3>Agency Owners</h3>
+          <ul>
+            <li><strong>The Pain:</strong> Leads sit in your inbox for hours before you reply.</li>
+            <li><strong>The Fix:</strong> Instant, personalized AI replies that book calls for you.</li>
+          </ul>
         </article>
         <article class="persona-card tilt-card">
-          <div class="card-icon"><i data-lucide="briefcase"></i></div>
-          <h3>Founders</h3>
-          <p>You are doing $50/hr work. Let a digital worker handle invoices and admin.</p>
+          <h3>Solo Entrepreneurs</h3>
+          <ul>
+            <li><strong>The Pain:</strong> You're doing the work of a team of five.</li>
+            <li><strong>The Fix:</strong> A digital workforce that handles email, content, and invoices.</li>
+          </ul>
         </article>
       </div>
     </section>
 
-    <section id="simulator" class="section reveal">
+    <section id="hosting" class="section reveal">
       <div class="section-header">
-        <h2>Workflow Simulator</h2>
-        <p class="section-subtitle">Test a live n8n logic flow.</p>
+        <h2>Hosting Options</h2>
+        <p class="section-subtitle">Where does your AI live? I help you choose the best home for your budget.</p>
       </div>
-      <div class="sim-layout">
-        <form id="agentForm" class="sim-form">
-          <div class="form-header mono">Input Parameters</div>
-          <label>Scenario</label>
-          <input id="problem" name="problem" type="text" placeholder="e.g. Detect angry email & draft apology" required />
-          <button id="runBtn" type="submit" class="cta-btn primary full-width">
-            <i data-lucide="play"></i> EXECUTE
-          </button>
-        </form>
-        <div class="sim-visual">
-          <div class="node-graph">
-            <div id="node-1" class="node n8n-style trigger">
-              <div class="n8n-header"><i data-lucide="webhook"></i> Trigger</div>
-            </div>
-            <div id="conn-1" class="connector"></div>
-            <div id="node-2" class="node n8n-style ai">
-              <div class="n8n-header"><i data-lucide="brain"></i> AI Logic</div>
-            </div>
-            <div id="conn-2" class="connector"></div>
-            <div id="node-3" class="node n8n-style action">
-              <div class="n8n-header"><i data-lucide="send"></i> Action</div>
-            </div>
-          </div>
-          <div class="console">
-            <div class="console-header mono">
-              <span>TERMINAL_OUTPUT</span>
-              <span class="status-dot"></span>
-            </div>
-            <div id="console-output" class="console-body mono">
-              <div class="log-line text-muted">&gt; System standby...</div>
-            </div>
-          </div>
+
+      <div class="hosting-grid">
+        <article class="host-card tilt-card">
+          <div class="host-icon"><i data-lucide="cloud"></i></div>
+          <h3>n8n Cloud</h3>
+          <p class="host-desc"><strong>The "Easy" Button.</strong> Managed by the official n8n team. Good if you want zero setup.</p>
+          <ul class="host-features">
+            <li><i data-lucide="zap"></i><span>Fastest setup</span></li>
+            <li><i data-lucide="credit-card"></i><span>Starts at ~$50/month</span></li>
+            <li><i data-lucide="shield"></i><span>They handle maintenance</span></li>
+          </ul>
+        </article>
+        <article class="host-card tilt-card recommended">
+          <div class="recommended-tag">BEST VALUE</div>
+          <div class="host-icon"><i data-lucide="server"></i></div>
+          <h3>Your Private Server</h3>
+          <p class="host-desc"><strong>The "Smart" Choice.</strong> I set it up on a cheap VPS (like Hostinger). You own it.</p>
+          <ul class="host-features">
+            <li><i data-lucide="badge-dollar-sign"></i><span>Only ~$6/month cost</span></li>
+            <li><i data-lucide="lock"></i><span>100% Data Privacy</span></li>
+            <li><i data-lucide="ban"></i><span>No limit on workflows</span></li>
+          </ul>
+        </article>
+        <article class="host-card tilt-card">
+          <div class="host-icon"><i data-lucide="sparkles"></i></div>
+          <h3>Managed by Me</h3>
+          <p class="host-desc"><strong>Peace of Mind.</strong> I host and maintain your agents on my secure servers.</p>
+          <ul class="host-features">
+            <li><i data-lucide="badge-dollar-sign"></i><span>Flat $20/month fee</span></li>
+            <li><i data-lucide="shield-check"></i><span>I handle all updates</span></li>
+            <li><i data-lucide="headphones"></i><span>Priority email support</span></li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section id="process" class="section reveal">
+      <div class="section-header">
+        <h2>How We Work</h2>
+        <p class="section-subtitle">Simple. Transparent. Fast.</p>
+      </div>
+      <div class="roadmap-container">
+        <div class="step-card tilt-card">
+          <div class="step-num">01</div>
+          <div class="step-icon"><i data-lucide="message-square"></i></div>
+          <h4>Discovery</h4>
+          <p>We hop on a 20-min call. You tell me what boring task you hate doing.</p>
+        </div>
+        <div class="step-connector"></div>
+        <div class="step-card tilt-card">
+          <div class="step-num">02</div>
+          <div class="step-icon"><i data-lucide="pen-tool"></i></div>
+          <h4>Build</h4>
+          <p>I engineer the solution using n8n and AI, testing it to ensure 100% accuracy.</p>
+        </div>
+        <div class="step-connector"></div>
+        <div class="step-card tilt-card">
+          <div class="step-num">03</div>
+          <div class="step-icon"><i data-lucide="rocket"></i></div>
+          <h4>Launch</h4>
+          <p>We deploy it to your server. I show you how to use it (it's easy).</p>
+        </div>
+        <div class="step-connector"></div>
+        <div class="step-card tilt-card">
+          <div class="step-num">04</div>
+          <div class="step-icon"><i data-lucide="smile"></i></div>
+          <h4>Freedom</h4>
+          <p>The bot runs 24/7. You save hours every week and focus on growth.</p>
         </div>
       </div>
     </section>
 
     <section id="pricing" class="section reveal">
       <div class="section-header">
-        <h2>Development Costs</h2>
-        <p class="section-subtitle">One-time fees. No monthly retainers.</p>
+        <h2>Simple Pricing</h2>
+        <p class="section-subtitle">You pay for the build once. No hidden monthly subscriptions.</p>
       </div>
       <div class="price-grid">
         <article class="price-card tilt-card">
-          <div class="price-tier mono">PROTOCOL_A</div>
-          <div class="price-amount">$299</div>
-          <p class="price-desc">Single-Task Automation</p>
+          <div class="price-tier">Starter Automation</div>
+          <div class="price-amount">$49<span>/one-time</span></div>
           <ul class="price-list">
-            <li>Webhook Integrations</li>
-            <li>Google Sheets / Airtable Sync</li>
-            <li>Basic AI Parsing</li>
-            <li>3-Day Turnaround</li>
+            <li>Perfect for 1 specific task</li>
+            <li>Email to Google Sheets sync</li>
+            <li>Basic AI text generation</li>
+            <li>Delivered in 3 days</li>
           </ul>
-          <a href="mailto:your-email@example.com" class="cta-btn secondary full-width">Initialize</a>
+          <a href="mailto:your-email@example.com?subject=Starter%20Automation" class="cta-btn full-width primary">Get Started</a>
         </article>
         <article class="price-card tilt-card featured">
-          <div class="badge mono">RECOMMENDED</div>
-          <div class="price-tier mono">PROTOCOL_B</div>
-          <div class="price-amount">$899</div>
-          <p class="price-desc">Full Business System</p>
+          <div class="badge">Most Popular</div>
+          <div class="price-tier">Complete System</div>
+          <div class="price-amount">$149<span>/one-time</span></div>
           <ul class="price-list">
-            <li>Complex Multi-step Logic</li>
-            <li>RAG (Chat with Data) Agents</li>
-            <li>Custom API Reverse Engineering</li>
-            <li>Private Server Setup Included</li>
+            <li>Multi-step complex workflows</li>
+            <li>"Chat with your data" (RAG)</li>
+            <li>Full CRM & Database integration</li>
+            <li>Delivered in 7 days</li>
           </ul>
-          <a href="mailto:your-email@example.com" class="cta-btn primary full-width">Initialize</a>
+          <a href="mailto:your-email@example.com?subject=Pro%20System" class="cta-btn full-width primary">Get Started</a>
         </article>
+        <article class="price-card tilt-card">
+          <div class="price-tier">Custom Project</div>
+          <div class="price-amount">Let's Talk</div>
+          <ul class="price-list">
+            <li>Full business architecture</li>
+            <li>Web scraping & monitoring</li>
+            <li>Private server setup included</li>
+            <li>Ongoing maintenance options</li>
+          </ul>
+          <a href="https://calendly.com/YOUR-SLUG/20min-ai-audit" target="_blank" class="cta-btn full-width secondary">Book Consultation</a>
+        </article>
+      </div>
+    </section>
+
+    <section id="simulator" class="section reveal">
+      <div class="section-header">
+        <h2>See How It Works</h2>
+        <p class="section-subtitle">Watch a live simulation of an n8n workflow in action.</p>
+      </div>
+      <div class="sim-layout">
+        <form id="agentForm" class="sim-form">
+          <h3>Try the Demo</h3>
+          <label for="name">Your Role</label>
+          <input id="name" name="name" type="text" placeholder="e.g. Store Owner" required />
+          <label for="email">Email Address</label>
+          <input id="email" name="email" type="email" placeholder="you@example.com" required />
+          <label for="problem">The Task</label>
+          <textarea id="problem" name="problem" rows="4" placeholder="e.g. Check order status and email the customer..." required></textarea>
+          <button id="runBtn" type="submit" class="cta-btn primary full-width">
+            <i data-lucide="play"></i> Run Workflow
+          </button>
+        </form>
+        <div class="sim-visual">
+          <div class="node-graph">
+            <div id="node-1" class="node n8n-style trigger">
+              <div class="n8n-header"><i data-lucide="zap"></i> Webhook</div>
+              <div class="n8n-body">Receive Data</div>
+            </div>
+            <div id="conn-1" class="connector"></div>
+            <div id="node-2" class="node n8n-style ai">
+              <div class="n8n-header"><i data-lucide="brain-circuit"></i> AI Agent</div>
+              <div class="n8n-body">Analyze Request</div>
+            </div>
+            <div id="conn-2" class="connector"></div>
+            <div id="node-3" class="node n8n-style tool">
+              <div class="n8n-header"><i data-lucide="database"></i> Database</div>
+              <div class="n8n-body">Fetch Info</div>
+            </div>
+            <div id="conn-3" class="connector"></div>
+            <div id="node-4" class="node n8n-style action">
+              <div class="n8n-header"><i data-lucide="mail"></i> Gmail</div>
+              <div class="n8n-body">Send Reply</div>
+            </div>
+          </div>
+          <div class="console">
+            <div class="console-header">
+              <span>Execution Logs</span>
+              <span class="status-dot"></span>
+            </div>
+            <div id="console-output" class="console-body">
+              <div class="log-line text-muted">&gt; System ready. Waiting for input...</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="field-reports" class="section reveal">
+      <div class="section-header"><h2>Client Feedback</h2></div>
+      <div class="marquee-wrapper">
+        <div class="marquee-content">
+          <article class="testimonial-card">
+            <div class="rating">★★★★★</div>
+            <p>"Saves us 10 hours/month. Absolute magic."</p>
+            <p class="author">Sarah J. — E-com Founder</p>
+          </article>
+          <article class="testimonial-card">
+            <div class="rating">★★★★★</div>
+            <p>"The support bot handles 80% of queries. Legit."</p>
+            <p class="author">Mark T. — SaaS CTO</p>
+          </article>
+          <article class="testimonial-card">
+            <div class="rating">★★★★★</div>
+            <p>"Finally an engineer who understands business."</p>
+            <p class="author">David K. — Ops Lead</p>
+          </article>
+          <article class="testimonial-card">
+            <div class="rating">★★★★★</div>
+            <p>"Self-hosting saved us $200/mo in Zapier fees."</p>
+            <p class="author">Emma L. — Marketing Dir</p>
+          </article>
+           <article class="testimonial-card">
+            <div class="rating">★★★★★</div>
+            <p>"Saves us 10 hours/month. Absolute magic."</p>
+            <p class="author">Sarah J. — E-com Founder</p>
+          </article>
+          <article class="testimonial-card">
+            <div class="rating">★★★★★</div>
+            <p>"The support bot handles 80% of queries. Legit."</p>
+            <p class="author">Mark T. — SaaS CTO</p>
+          </article>
+        </div>
       </div>
     </section>
 
@@ -237,30 +354,45 @@
       <div class="architect-container">
         <div class="architect-glass">
           <div class="architect-content">
-            <div class="badge-role mono">ARCHITECT_PROFILE</div>
+            <div class="badge-role">SYSTEM ARCHITECT</div>
             <h2>Priyo (0bl1vyx)</h2>
             <p class="bio-text">
-              I don't use drag-and-drop builders. I write <strong>Python scripts</strong>, deploy <strong>Docker containers</strong>, and reverse-engineer <strong>APIs</strong>. 
+              I don't just "write code". I build <strong>digital employees</strong>.
               <br><br>
-              You aren't hiring a VA; you're hiring a technical partner to build your infrastructure.
+              My goal is to remove you from the day-to-day operations of your business so you can focus on strategy. 
+              I specialize in <strong>n8n</strong>, <strong>Python</strong>, and <strong>Large Language Models</strong>.
             </p>
-            <div class="stat-row mono">
-              <div class="stat"><strong>50+</strong><span>SYSTEMS</span></div>
-              <div class="stat"><strong>1k+</strong><span>HRS_SAVED</span></div>
+            <div class="stat-row">
+              <div class="stat"><strong>50+</strong><span>Systems Built</span></div>
+              <div class="stat"><strong>1000+</strong><span>Hours Saved</span></div>
+              <div class="stat"><strong>100%</strong><span>Data Privacy</span></div>
             </div>
+            <a href="https://linkedin.com/in/0bl1vyx" target="_blank" class="cta-btn secondary">
+              <i data-lucide="linkedin"></i> Connect on LinkedIn
+            </a>
           </div>
           <div class="architect-image">
-             <img src="profile.jpg" alt="Priyo">
+             <img src="profile.jpg" alt="Priyo" />
+             <div class="img-overlay"></div>
           </div>
         </div>
       </div>
     </section>
+
+    <section id="examples" class="section reveal">
+      <div class="section-header">
+        <h2>The Archives</h2>
+        <p class="section-subtitle">Click an image to see the actual "blueprints" of systems I've built.</p>
+      </div>
+      <div id="project-grid" class="project-grid"></div>
+    </section>
   </main>
 
   <footer class="footer">
-    <div class="footer-content mono">
-      <span>ZeroFlow_AI v2.0</span>
-      <span>© 2026 • Kolkata, IN</span>
+    <div class="footer-content">
+      <span>ZeroFlow AI</span>
+      <span>© 2026 • Kolkata, India</span>
+      <a href="#top">Back to Top</a>
     </div>
   </footer>
 
